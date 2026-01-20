@@ -1,0 +1,179 @@
+<!-- templates/recetas/formulario.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="${titulo}"></title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="mb-0" th:text="${titulo}"></h4>
+            </div>
+            <div class="card-body">
+              <form th:action="@{/recetas/guardar}" method="post">
+                <input type="hidden" name="id" th:value="${receta.id}" />
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Nombre *</label>
+                    <input
+                      type="text"
+                      name="nombre"
+                      th:value="${receta.nombre}"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Costo Calculado</label>
+                    <input
+                      type="text"
+                      class="form-control bg-light"
+                      th:value="${'$' + #numbers.formatDecimal(receta.costoReceta, 1, 2)}"
+                      readonly
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Descripción</label>
+                  <textarea
+                    name="descripcion"
+                    class="form-control"
+                    rows="2"
+                    th:text="${receta.descripcion}"
+                  ></textarea>
+                </div>
+
+                <!-- SECCIÓN DE INGREDIENTES -->
+                <div class="card mb-4">
+                  <div
+                    class="card-header d-flex justify-content-between align-items-center"
+                  >
+                    <h5 class="mb-0">Ingredientes</h5>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-success"
+                      id="agregarIngrediente"
+                    >
+                      + Agregar Ingrediente
+                    </button>
+                  </div>
+                  <div class="card-body">
+                    <div id="ingredientesContainer">
+                      <!-- Fila de ingrediente dinámica -->
+                      <div
+                        class="row mb-2 ingrediente-fila"
+                        th:each="detalle, stat : ${receta.ingredientes}"
+                      >
+                        <div class="col-md-6">
+                          <select name="ingredienteIds" class="form-select">
+                            <option value="">Seleccionar ingrediente</option>
+                            <option
+                              th:each="ing : ${ingredientes}"
+                              th:value="${ing.id}"
+                              th:text="${ing.nombre + ' (' + ing.unidadMedida + ')'}"
+                              th:selected="${detalle.ingrediente.id == ing.id}"
+                            ></option>
+                          </select>
+                        </div>
+                        <div class="col-md-4">
+                          <input
+                            type="number"
+                            step="0.01"
+                            name="cantidades"
+                            class="form-control"
+                            placeholder="Cantidad"
+                            th:value="${detalle.cantidadIngrediente}"
+                          />
+                        </div>
+                        <div class="col-md-2">
+                          <button
+                            type="button"
+                            class="btn btn-danger btn-sm quitarIngrediente"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                  <a th:href="@{/recetas}" class="btn btn-secondary"
+                    >Cancelar</a
+                  >
+                  <button type="submit" class="btn btn-primary">
+                    Guardar Receta
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plantilla para nueva fila de ingrediente (hidden) -->
+    <div id="plantillaIngrediente" style="display: none">
+      <div class="row mb-2 ingrediente-fila">
+        <div class="col-md-6">
+          <select name="ingredienteIds" class="form-select">
+            <option value="">Seleccionar ingrediente</option>
+            <option
+              th:each="ing : ${ingredientes}"
+              th:value="${ing.id}"
+              th:text="${ing.nombre + ' (' + ing.unidadMedida + ')'}"
+            ></option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <input
+            type="number"
+            step="0.01"
+            name="cantidades"
+            class="form-control"
+            placeholder="Cantidad"
+          />
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-danger btn-sm quitarIngrediente">
+            ✕
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        // Agregar nueva fila de ingrediente
+        $("#agregarIngrediente").click(function () {
+          var nuevaFila = $("#plantillaIngrediente").html();
+          $("#ingredientesContainer").append(nuevaFila);
+        });
+
+        // Quitar fila de ingrediente
+        $(document).on("click", ".quitarIngrediente", function () {
+          if ($(".ingrediente-fila").length > 1) {
+            $(this).closest(".ingrediente-fila").remove();
+          } else {
+            alert("Debe haber al menos un ingrediente");
+          }
+        });
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

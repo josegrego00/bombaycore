@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${producto.id != null ? 'Editar Producto' : 'Nuevo Producto'}"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0" th:text="${producto.id != null ? '✏️ Editar Producto' : '➕ Nuevo Producto'}"></h4>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/productos/guardar}" method="post">
+                            <input type="hidden" name="id" th:value="${producto.id}" />
+
+                            <div class="row mb-3">
+                                <div class="col-md-8">
+                                    <label class="form-label">Nombre *</label>
+                                    <input type="text" name="nombre" 
+                                           th:value="${producto.nombre}"
+                                           class="form-control" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Tipo de Producto</label>
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="checkbox" 
+                                               name="tieneReceta" id="tieneReceta"
+                                               th:checked="${producto.tieneReceta}">
+                                        <label class="form-check-label" for="tieneReceta">
+                                            Producto Elaborado (con receta)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SECCIÓN CONDICIONAL PARA RECETA -->
+                            <div class="card mb-3" id="recetaSection" style="display: none;">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Receta Asociada</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Seleccionar Receta *</label>
+                                        <select name="recetaId" class="form-select" id="recetaSelect">
+                                            <option value="">-- Seleccionar Receta --</option>
+                                            <option th:each="receta : ${recetas}"
+                                                    th:value="${receta.id}"
+                                                    th:text="${receta.nombre + ' ($' + #numbers.formatDecimal(receta.costoReceta, 1, 2) + ')'}"
+                                                    th:selected="${producto.receta != null && producto.receta.id == receta.id}">
+                                            </option>
+                                        </select>
+                                        <div class="form-text">
+                                            Costo de receta: 
+                                            <span id="costoReceta" class="fw-bold">$0.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Precio de Venta *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" step="0.01" name="precioVenta" 
+                                               th:value="${producto.precioVenta}"
+                                               class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Stock Actual</label>
+                                    <input type="number" name="stock" 
+                                           th:value="${producto.stock}"
+                                           class="form-control" min="0">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Unidad de Medida</label>
+                                    <input type="text" name="unidadMedidaVenta" 
+                                           th:value="${producto.unidadMedidaVenta}"
+                                           class="form-control" 
+                                           placeholder="Ej: unidades, litros">
+                                </div>
+                            </div>
+
+                            <!-- Mostrar Precio de Compra (información) -->
+                            <div class="alert alert-info" th:if="${producto.precioCompra > 0}">
+                                <strong>Información de Costos:</strong><br>
+                                Precio de Compra: <span th:text="${'$' + #numbers.formatDecimal(producto.precioCompra, 1, 2)}"></span><br>
+                                Margen: <span th:text="${#numbers.formatDecimal((producto.precioVenta - producto.precioCompra) / producto.precioCompra * 100, 1, 1) + '%'}"></span>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <a th:href="@{/productos}" class="btn btn-secondary">Cancelar</a>
+                                <button type="submit" class="btn btn-primary">
+                                    <span th:text="${producto.id != null ? 'Actualizar' : 'Crear'}"></span> Producto
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Mostrar/ocultar sección de receta
+            function toggleRecetaSection() {
+                if ($('#tieneReceta').is(':checked')) {
+                    $('#recetaSection').slideDown();
+                    $('#recetaSelect').prop('required', true);
+                } else {
+                    $('#recetaSection').slideUp();
+                    $('#recetaSelect').prop('required', false);
+                }
+            }
+
+            // Mostrar costo de receta seleccionada
+            function actualizarCostoReceta() {
+                var selectedOption = $('#recetaSelect option:selected');
+                var texto = selectedOption.text();
+                var costoMatch = texto.match(/\$([0-9,.]+)/);
+                if (costoMatch) {
+                    $('#costoReceta').text('$' + costoMatch[1]);
+                } else {
+                    $('#costoReceta').text('$0.00');
+                }
+            }
+
+            // Inicializar
+            toggleRecetaSection();
+            actualizarCostoReceta();
+
+            // Event listeners
+            $('#tieneReceta').change(toggleRecetaSection);
+            $('#recetaSelect').change(actualizarCostoReceta);
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

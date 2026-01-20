@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title
+      th:text="${proveedor.id != null} ? 'Editar Proveedor' : 'Nuevo Proveedor'"
+    ></title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mt-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1
+          th:text="${proveedor.id != null} ? '✏️ Editar Proveedor' : '➕ Nuevo Proveedor'"
+        ></h1>
+        <a th:href="@{/proveedores}" class="btn btn-secondary">← Volver</a>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <form
+            th:action="${proveedor.id != null} ? @{/proveedores/editar/{id}(id=${proveedor.id})} : @{/proveedores/guardar}"
+            method="post"
+          >
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="nombre" class="form-label">Nombre *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nombre"
+                  name="nombre"
+                  th:value="${proveedor.nombre}"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="identificacion" class="form-label"
+                  >Identificación *</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="identificacion"
+                  name="identificacion"
+                  th:value="${proveedor.identificacion}"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="telefono"
+                  name="telefono"
+                  th:value="${proveedor.telefono}"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="correo" class="form-label">Correo</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="correo"
+                  name="correo"
+                  th:value="${proveedor.correo}"
+                />
+              </div>
+            </div>
+
+            <div class="mb-3" th:if="${proveedor.id != null}">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="activo"
+                  name="activo"
+                  th:checked="${proveedor.activo}"
+                />
+                <label class="form-check-label" for="activo">
+                  Proveedor Activo
+                </label>
+              </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <a th:href="@{/proveedores}" class="btn btn-secondary me-md-2"
+                >Cancelar</a
+              >
+              <button type="submit" class="btn btn-primary">
+                <span
+                  th:text="${proveedor.id != null} ? 'Actualizar' : 'Guardar'"
+                ></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

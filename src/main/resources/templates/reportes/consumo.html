@@ -1,0 +1,224 @@
+<!-- templates/reportes/consumo.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reporte de Consumo</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+    />
+  </head>
+  <body>
+    <div class="container-fluid mt-4">
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-graph-up"></i> Reporte de Consumo</h1>
+        <a th:href="@{/principal}" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left"></i> Volver al Inicio
+        </a>
+      </div>
+
+      <!-- Filtros -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <i class="bi bi-funnel"></i> Filtros del Reporte
+        </div>
+        <div class="card-body">
+          <form method="get" th:action="@{/reportes/consumo}">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label for="inicio" class="form-label">Fecha Inicio</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="inicio"
+                  name="inicio"
+                  th:value="${fechaInicio}"
+                />
+              </div>
+              <div class="col-md-4">
+                <label for="fin" class="form-label">Fecha Fin</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="fin"
+                  name="fin"
+                  th:value="${fechaFin}"
+                  max="${hoy}"
+                />
+              </div>
+              <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">
+                  <i class="bi bi-search"></i> Generar Reporte
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Resumen -->
+      <div class="row mb-4" th:if="${reporte}">
+        <div class="col-md-3">
+          <div class="card bg-light">
+            <div class="card-body text-center">
+              <h5><i class="bi bi-calendar-range"></i> Período</h5>
+              <p
+                class="h6"
+                th:text="${fechaInicioStr} + ' - ' + ${fechaFinStr}"
+              ></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div
+            class="card"
+            th:classappend="${reporte.totalValorDiferencia >= 0} ? 'bg-success text-white' : 'bg-danger text-white'"
+          >
+            <div class="card-body text-center">
+              <h5><i class="bi bi-cash-coin"></i> Diferencia Total</h5>
+              <p
+                class="h6"
+                th:text="${'$' + #numbers.formatDecimal(reporte.totalValorDiferencia, 1, 2, 'COMMA')}"
+              ></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card bg-info text-white">
+            <div class="card-body text-center">
+              <h5><i class="bi bi-percent"></i> Diferencia</h5>
+              <p
+                class="h6"
+                th:text="${#numbers.formatDecimal(reporte.porcentajeDiferenciaTotal, 1, 2) + ' %'}"
+              ></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card bg-secondary text-white">
+            <div class="card-body text-center">
+              <h5><i class="bi bi-boxes"></i> Ingredientes</h5>
+              <p
+                class="h6"
+                th:text="${reporte.totalIngredientesAnalizados}"
+              ></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de Reporte -->
+      <div class="card" th:if="${reporte}">
+        <div
+          class="card-header bg-dark text-white d-flex justify-content-between align-items-center"
+        >
+          <span
+            ><i class="bi bi-table"></i> Detalle de Consumo por
+            Ingrediente</span
+          >
+          <button class="btn btn-sm btn-light" onclick="exportToExcel()">
+            <i class="bi bi-download"></i> Exportar Excel
+          </button>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table table-hover table-striped" id="tablaReporte">
+            <thead class="table-dark">
+              <tr>
+                <th>Ingrediente</th>
+                <th>Unidad</th>
+                <th>Stock Inicial</th>
+                <th>Compras</th>
+                <th>Consumo Ventas</th>
+                <th>Stock Teórico</th>
+                <th>Stock Real</th>
+                <th>Diferencia</th>
+                <th>Costo Unitario</th>
+                <th>Valor Diferencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="item : ${reporte.items}">
+                <td th:text="${item.nombreIngrediente}"></td>
+                <td th:text="${item.unidadMedida}"></td>
+                <td
+                  th:text="${#numbers.formatDecimal(item.stockInicial, 1, 2)}"
+                ></td>
+                <td
+                  th:text="${#numbers.formatDecimal(item.comprasPeriodo, 1, 2)}"
+                ></td>
+                <td
+                  th:text="${#numbers.formatDecimal(item.consumoVentas, 1, 2)}"
+                ></td>
+                <td
+                  th:text="${#numbers.formatDecimal(item.stockTeoricoFinal, 1, 2)}"
+                ></td>
+                <td
+                  th:text="${#numbers.formatDecimal(item.stockRealFinal, 1, 2)}"
+                ></td>
+
+                <!-- Diferencia con manejo de null -->
+                <td
+                  th:with="dif=${item.diferencia != null ? item.diferencia : 0}"
+                  th:classappend="${dif < 0} ? 'table-danger' : (${dif > 0} ? 'table-success' : '')"
+                >
+                  <span th:text="${#numbers.formatDecimal(dif, 1, 2)}"></span>
+                </td>
+
+                <td
+                  th:text="${'$' + #numbers.formatDecimal(item.costoUnitarioPromedio, 1, 2, 'COMMA')}"
+                ></td>
+
+                <!-- Valor Diferencia con manejo de null -->
+                <td
+                  th:with="valorDif=${item.valorDiferencia != null ? item.valorDiferencia : 0}"
+                  th:classappend="${valorDif < 0} ? 'table-danger' : (${valorDif > 0} ? 'table-success' : '')"
+                >
+                  <span
+                    th:text="${'$' + #numbers.formatDecimal(valorDif, 1, 2, 'COMMA')}"
+                  ></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer text-muted">
+          <small>Generado el <span th:text="${hoyStr}"></span></small>
+        </div>
+      </div>
+
+      <!-- Mensaje de error -->
+      <div th:if="${error}" class="alert alert-danger mt-3" role="alert">
+        <i class="bi bi-exclamation-triangle"></i>
+        <span th:text="${error}"></span>
+      </div>
+
+      <!-- Sin datos -->
+      <div th:unless="${reporte}" class="alert alert-info mt-3">
+        <i class="bi bi-info-circle"></i>
+        Selecciona un rango de fechas y haz clic en "Generar Reporte"
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script>
+      function exportToExcel() {
+        const tabla = document.getElementById("tablaReporte");
+        const libro = XLSX.utils.table_to_book(tabla, {
+          sheet: "Reporte Consumo",
+        });
+
+        // Nombre del archivo con fecha
+        const fecha = new Date().toISOString().split("T")[0];
+        XLSX.writeFile(libro, `Reporte_Consumo_${fecha}.xlsx`);
+      }
+    </script>
+  </body>
+</html>

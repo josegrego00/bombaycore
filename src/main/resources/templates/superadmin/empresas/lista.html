@@ -1,0 +1,103 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Empresas</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mt-4">
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>🏢 Empresas Cliente</h1>
+        <div>
+          <span class="me-3">Hola, [[${nombreUsuario}]]</span>
+          <a
+            th:href="@{/superadmin/empresas/nueva}"
+            class="btn btn-primary me-2"
+          >
+            + Nueva Empresa
+          </a>
+          <a th:href="@{/logout}" class="btn btn-secondary">Salir</a>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="card">
+        <div class="card-body">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Subdominio</th>
+                <th>Plan</th>
+                <th>Estado</th>
+                <th>Fecha Creación</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="empresa : ${empresas}">
+                <td th:text="${empresa.id}"></td>
+                <td th:text="${empresa.nombre}"></td>
+                <td>
+                  <a
+                    th:href="'http://' + ${empresa.subdominio} + '.localhost:8080'"
+                    target="_blank"
+                    class="text-decoration-none"
+                  >
+                    [[${empresa.subdominio}]].localhost
+                  </a>
+                </td>
+                <td>
+                  <span
+                    th:class="${'badge bg-' + 
+                                    (empresa.plan == 'PREMIUM' ? 'warning' : 
+                                     empresa.plan == 'ENTERPRISE' ? 'dark' : 'secondary')}"
+                  >
+                    [[${empresa.plan}]]
+                  </span>
+                </td>
+                <td>
+                  <span
+                    th:class="${'badge bg-' + 
+        (empresa.estado == 'ACTIVA' ? 'success' : 'danger')}"
+                  >
+                    [[${empresa.estado ? 'ACTIVA' : 'INACTIVA'}]]
+                  </span>
+                </td>
+                <td
+                  th:text="${empresa.fechaCreacion}"
+                ></td>
+                <td>
+                  <a
+                    th:href="'http://' + ${empresa.subdominio} + '.localhost:8080'"
+                    target="_blank"
+                    class="btn btn-sm btn-success"
+                  >
+                    Acceder
+                  </a>
+                  <button class="btn btn-sm btn-warning">Editar</button>
+                  <button class="btn btn-sm btn-danger">Desactivar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="alert alert-info mt-3">
+        <strong>Total Empresas:</strong> [[${totalEmpresas}]] |
+        <strong>Activas:</strong> [[${empresasActivas}]] |
+        <strong>Inactivas:</strong> [[${empresasInactivas}]]
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
