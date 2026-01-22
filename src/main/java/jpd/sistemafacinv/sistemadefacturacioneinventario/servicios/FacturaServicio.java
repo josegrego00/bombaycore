@@ -7,6 +7,10 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -95,13 +99,10 @@ public class FacturaServicio {
             log.trace("Procesando producto: '{}' (ID: {}), Cantidad: {}",
                     producto.getNombre(), producto.getId(), detalle.getCantidad());
 
-            // Validar stock
-            if (!productoServicio.descontarStock(producto.getId(), detalle.getCantidad())) {
-                log.error(
-                        "Stock insuficiente para producto: '{}' (ID: {}), Stock disponible: {}, Cantidad requerida: {}",
-                        producto.getNombre(), producto.getId(),
-                        producto.isTieneReceta() ? "Verificar receta" : producto.getStock(),
-                        detalle.getCantidad());
+            // ✅ REEMPLAZA CON ESTA VALIDACIÓN SIMPLE (sin descontar):
+            if (producto.getStock() < detalle.getCantidad()) {
+                log.error("Stock insuficiente para producto: '{}'. Stock actual: {}, Cantidad requerida: {}",
+                        producto.getNombre(), producto.getStock(), detalle.getCantidad());
                 throw new RuntimeException("Stock insuficiente para: " + producto.getNombre());
             }
 
@@ -109,16 +110,18 @@ public class FacturaServicio {
 
             // Asignar precio unitario desde producto
             detalle.setPrecioUnitario(producto.getPrecioVenta());
-            detalle.setSubtotal(detalle.getCantidad() * detalle.getPrecioUnitario());
+            // No asignes subtotal aquí - lo hará @PrePersist en FacturaDetalle
             detalle.setFactura(factura);
-            totalFactura += detalle.getSubtotal();
 
-            log.trace("Detalle calculado - Producto: {}, Cantidad: {}, Precio unitario: {}, Subtotal: {}",
-                    producto.getNombre(), detalle.getCantidad(), detalle.getPrecioUnitario(), detalle.getSubtotal());
+            // Calcula subtotal para el total temporal
+            double subtotalDetalle = detalle.getCantidad() * detalle.getPrecioUnitario();
+            totalFactura += subtotalDetalle;
+
+            log.trace("Detalle preparado - Producto: {}, Cantidad: {}, Precio unitario: {}, Subtotal calculado: {}",
+                    producto.getNombre(), detalle.getCantidad(), detalle.getPrecioUnitario(), subtotalDetalle);
         }
 
         // Calcular totales
-        // Calcular totales de la factura
         double base = totalFactura / 1.19;
         double iva = base * 0.19;
 
@@ -131,7 +134,25 @@ public class FacturaServicio {
         empresa.setId(empresaId);
         factura.setEmpresa(empresa);
 
+        // Guardar la factura (se ejecutará @PrePersist de FacturaDetalle)
         Factura facturaCreada = facturaRepo.save(factura);
+
+        log.info("Factura guardada: {} (ID: {})",
+                facturaCreada.getNumeroFactura(), facturaCreada.getId());
+
+        // ✅ AHORA SÍ DESCONTAMOS STOCK - SOLO UNA VEZ
+        for (FacturaDetalle detalle : facturaCreada.getFacturaDetalle()) {
+            log.debug("Descontando stock final para producto ID: {}, Cantidad: {}",
+                    detalle.getProducto().getId(), detalle.getCantidad());
+
+            if (!productoServicio.descontarStock(detalle.getProducto().getId(), detalle.getCantidad())) {
+                // Esto no debería pasar porque ya validamos, pero por seguridad
+                log.error("ERROR CRÍTICO: Stock insuficiente después de guardar factura");
+                // Puedes revertir la factura o lanzar excepción
+                throw new RuntimeException("Error en descuento de stock para: " + detalle.getProducto().getNombre());
+            }
+        }
+
         log.info("Factura creada exitosamente: {} (ID: {}) para empresa ID: {}. Total: {}, Detalles: {}",
                 facturaCreada.getNumeroFactura(), facturaCreada.getId(), empresaId,
                 facturaCreada.getTotal(), totalDetalles);
@@ -143,7 +164,7 @@ public class FacturaServicio {
         long empresaId = TenantContext.getCurrentTenant();
         log.debug("Listando facturas para empresa ID: {}", empresaId);
 
-        List<Factura> facturas = facturaRepo.findByEmpresaId(empresaId);
+        List<Factura> facturas = facturaRepo.findByEmpresaIdWithDetalle(empresaId);
         log.debug("Encontradas {} facturas para empresa ID: {}", facturas.size(), empresaId);
 
         return facturas;
@@ -153,7 +174,7 @@ public class FacturaServicio {
         long empresaId = TenantContext.getCurrentTenant();
         log.debug("Buscando factura ID: {} para empresa ID: {}", id, empresaId);
 
-        return facturaRepo.findByIdAndEmpresaId(id.intValue(), empresaId)
+        return facturaRepo.findByIdWithDetalle(id, empresaId)
                 .orElseThrow(() -> {
                     log.error("Factura no encontrada ID: {} para empresa ID: {}", id, empresaId);
                     return new RuntimeException("Factura no encontrada");
@@ -266,4 +287,25 @@ public class FacturaServicio {
 
         return resumen;
     }
+
+    
+    public Page<Factura> obtenerFacturasPaginadas(
+            int pagina,
+            int tamanio,
+            String estado,
+            LocalDate fechaInicio,
+            LocalDate fechaFin) {
+
+        long empresaId = TenantContext.getCurrentTenant();
+        log.debug("Obteniendo facturas paginadas para empresa ID: {}", empresaId);
+
+        Pageable pageable = PageRequest.of(
+                pagina,
+                tamanio,
+                Sort.by("fecha").descending());
+
+        return facturaRepo.buscarConFiltros(
+                empresaId, estado, fechaInicio, fechaFin, pageable);
+    }
+
 }

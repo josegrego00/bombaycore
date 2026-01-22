@@ -14,41 +14,47 @@ import jpd.sistemafacinv.sistemadefacturacioneinventario.modelos.FacturaProveedo
 @Repository
 public interface FacturaProveedorRepositorio extends JpaRepository<FacturaProveedor, Long> {
 
-    List<FacturaProveedor> findByOrderByFechaDesc();
+        List<FacturaProveedor> findByOrderByFechaDesc();
 
-    FacturaProveedor findByNumeroFactura(String numeroFactura);
+        FacturaProveedor findByNumeroFactura(String numeroFactura);
 
-    // Listar todas las facturas de una empresa, ordenadas por fecha descendente
-    List<FacturaProveedor> findByEmpresaIdOrderByFechaDesc(Long empresaId);
+        // Listar todas las facturas de una empresa, ordenadas por fecha descendente
+        List<FacturaProveedor> findByEmpresaIdOrderByFechaDesc(Long empresaId);
 
-    // Buscar factura por ID y empresa
-    Optional<FacturaProveedor> findByIdAndEmpresaId(Integer id, Long empresaId);
+        // Buscar factura por ID y empresa
+        Optional<FacturaProveedor> findByIdAndEmpresaId(Integer id, Long empresaId);
 
-    // Buscar factura por número de factura y empresa
-    Optional<FacturaProveedor> findByNumeroFacturaAndEmpresaId(String numeroFactura, Long empresaId);
+        // Buscar factura por número de factura y empresa
+        Optional<FacturaProveedor> findByNumeroFacturaAndEmpresaId(String numeroFactura, Long empresaId);
 
-    // Listar facturas por proveedor específico dentro de una empresa
-    List<FacturaProveedor> findByProveedorIdAndEmpresaId(Integer proveedorId, Long empresaId);
+        // Listar facturas por proveedor específico dentro de una empresa
+        List<FacturaProveedor> findByProveedorIdAndEmpresaId(Integer proveedorId, Long empresaId);
 
-    // Listar facturas por rango de fechas y empresa
-    List<FacturaProveedor> findByFechaBetweenAndEmpresaId(LocalDate fechaInicio, LocalDate fechaFin, Long empresaId);
+        // Listar facturas por rango de fechas y empresa
+        List<FacturaProveedor> findByFechaBetweenAndEmpresaId(LocalDate fechaInicio, LocalDate fechaFin,
+                        Long empresaId);
 
-    // Verificar si existe número de factura en una empresa
-    boolean existsByNumeroFacturaAndEmpresaId(String numeroFactura, Long empresaId);
+        // Verificar si existe número de factura en una empresa
+        boolean existsByNumeroFacturaAndEmpresaId(String numeroFactura, Long empresaId);
 
-    // ===== MÉTODOS PARA REPORTES =====
+        // ===== MÉTODOS PARA REPORTES =====
 
-    // Calcular total de compras por mes y empresa
-    @Query("SELECT COALESCE(SUM(fp.total), 0) FROM FacturaProveedor fp " +
-            "WHERE YEAR(fp.fecha) = :year AND MONTH(fp.fecha) = :month " +
-            "AND fp.empresa.id = :empresaId")
-    Double calcularTotalComprasPorMes(
-            @Param("year") int year,
-            @Param("month") int month,
-            @Param("empresaId") Long empresaId);
+        // Calcular total de compras por mes y empresa
+        @Query("SELECT COALESCE(SUM(fp.total), 0) FROM FacturaProveedor fp " +
+                        "WHERE YEAR(fp.fecha) = :year AND MONTH(fp.fecha) = :month " +
+                        "AND fp.empresa.id = :empresaId")
+        Double calcularTotalComprasPorMes(
+                        @Param("year") int year,
+                        @Param("month") int month,
+                        @Param("empresaId") Long empresaId);
 
-    // Contar facturas por estado y empresa
-    Long countByEstadoAndEmpresaId(String estado, Long empresaId);
+        // Contar facturas por estado y empresa
+        Long countByEstadoAndEmpresaId(String estado, Long empresaId);
 
-    Long countByEmpresaId(Long empresaId);
+        Long countByEmpresaId(Long empresaId);
+
+        @Query("SELECT fp FROM FacturaProveedor fp " +
+                        "LEFT JOIN FETCH fp.detalles " +
+                        "WHERE fp.id = :id AND fp.empresa.id = :empresaId")
+        Optional<FacturaProveedor> findByIdWithDetalles(@Param("id") Long id, @Param("empresaId") Long empresaId);
 }

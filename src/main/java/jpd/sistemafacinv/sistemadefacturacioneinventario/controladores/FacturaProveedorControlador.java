@@ -89,7 +89,7 @@ public class FacturaProveedorControlador {
     }
 
     @GetMapping("/detalle/{id}")
-    public String verDetalle(@PathVariable Integer id, Model model) {
+    public String verDetalle(@PathVariable Long id, Model model) {
         log.info("👁️ GET /compras/detalle/{} - Viendo detalle de compra", id);
         
         FacturaProveedor compra = compraServicio.buscarFacturaProveedor(id);
@@ -101,7 +101,7 @@ public class FacturaProveedorControlador {
     }
 
     @GetMapping("/anular/{id}")
-    public String anularCompra(@PathVariable Integer id) {
+    public String anularCompra(@PathVariable Long id) {
         log.info("🔄 GET /compras/anular/{} - Anulando compra", id);
         
         try {

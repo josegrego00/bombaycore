@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +36,7 @@ import lombok.AllArgsConstructor;
 public class FacturaControlador {
 
     private static final Logger log = LoggerFactory.getLogger(FacturaControlador.class);
-    
+
     private final FacturaServicio facturaServicio;
     private final ClienteServicio clienteServicio;
     private final ProductoServicio productoServicio;
@@ -43,9 +45,25 @@ public class FacturaControlador {
     // ========== RUTAS ADMIN (Solo visualización) ==========
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','CAJERO')")
-    public String listarFacturas(Model modelo) {
-        log.info("📋 GET /facturas - Listando facturas (ADMIN/CAJERO)");
-        modelo.addAttribute("facturas", facturaServicio.listarFacturas());
+    public String listarFacturas(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanio,
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
+            Model modelo) {
+
+        log.info("Listando facturas - Página: {}, Tamaño: {}", pagina, tamanio);
+
+        Page<Factura> paginaFacturas = facturaServicio.obtenerFacturasPaginadas(
+                pagina, tamanio, estado, fechaInicio, fechaFin);
+
+        modelo.addAttribute("facturas", paginaFacturas.getContent());
+        modelo.addAttribute("paginaActual", pagina);
+        modelo.addAttribute("totalPaginas", paginaFacturas.getTotalPages());
+        modelo.addAttribute("totalElementos", paginaFacturas.getTotalElements());
+        modelo.addAttribute("tamanio", tamanio);
+
         return "facturas/lista";
     }
 
@@ -95,8 +113,8 @@ public class FacturaControlador {
         modelo.addAttribute("productos", productoServicio.listarProductos());
         modelo.addAttribute("fechaHoy", LocalDate.now());
 
-        log.debug("Punto de venta cargado - Clientes: {}, Productos: {}", 
-                 clienteServicio.listarClientes().size(), productoServicio.listarProductos().size());
+        log.debug("Punto de venta cargado - Clientes: {}, Productos: {}",
+                clienteServicio.listarClientes().size(), productoServicio.listarProductos().size());
         return "facturas/punto-venta";
     }
 
@@ -109,8 +127,8 @@ public class FacturaControlador {
             @RequestParam(value = "cantidades", required = false) List<Integer> cantidades) {
 
         log.info("💾 POST /facturas/guardar - Guardando nueva factura");
-        log.debug("Parámetros - Cliente ID: {}, Forma pago: {}, Productos: {}", 
-                 clienteId, formaPago, productoIds != null ? productoIds.size() : 0);
+        log.debug("Parámetros - Cliente ID: {}, Forma pago: {}, Productos: {}",
+                clienteId, formaPago, productoIds != null ? productoIds.size() : 0);
 
         // Construir factura
         Factura factura = new Factura();
@@ -142,8 +160,8 @@ public class FacturaControlador {
                             .build();
 
                     detalles.add(detalle);
-                    log.trace("Producto agregado a factura: {} (ID: {}), Cantidad: {}", 
-                             producto.getNombre(), productoIds.get(i), cantidades.get(i));
+                    log.trace("Producto agregado a factura: {} (ID: {}), Cantidad: {}",
+                            producto.getNombre(), productoIds.get(i), cantidades.get(i));
                 }
             }
         }
@@ -153,7 +171,7 @@ public class FacturaControlador {
 
         try { // Guardar factura
             Factura facturaCreada = facturaServicio.crearFactura(factura);
-            log.info("✅ Factura creada exitosamente: {} (ID: {})", 
+            log.info("✅ Factura creada exitosamente: {} (ID: {})",
                     facturaCreada.getNumeroFactura(), facturaCreada.getId());
 
             // Redirigir al detalle de la factura creada
@@ -175,9 +193,9 @@ public class FacturaControlador {
         log.info("📈 GET /facturas/ventas-hoy - Mostrando ventas del día");
         Map<String, Object> resumen = facturaServicio.obtenerResumenVentasHoy();
         model.addAllAttributes(resumen);
-        
-        log.debug("Resumen ventas hoy - Facturas: {}, Total: {}", 
-                 resumen.get("cantidadFacturas"), resumen.get("totalVentas"));
+
+        log.debug("Resumen ventas hoy - Facturas: {}, Total: {}",
+                resumen.get("cantidadFacturas"), resumen.get("totalVentas"));
         return "facturas/ventas-hoy";
     }
 

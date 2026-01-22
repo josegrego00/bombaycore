@@ -1,5 +1,8 @@
 package jpd.sistemafacinv.sistemadefacturacioneinventario.modelos;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -12,6 +15,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jpd.sistemafacinv.sistemadefacturacioneinventario.servicios.UsuarioServicio;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,10 +26,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "factura_id", "producto_id" })
-})
 public class FacturaDetalle {
+
+    private static final Logger log = LoggerFactory.getLogger(UsuarioServicio.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,8 +53,20 @@ public class FacturaDetalle {
     @PrePersist
     @PreUpdate
     private void calcularSubtotal() {
+        // AÑADE ESTO:
+        String metodo = "";
+        try {
+            metodo = new Throwable().getStackTrace()[1].getMethodName();
+        } catch (Exception e) {
+        }
+
+        log.warn("🚨 EJECUTANDO calcularSubtotal() - Desde: {}, FacturaDetalle ID: {}",
+                metodo, this.id);
+
         if (this.precioUnitario > 0 && this.cantidad > 0) {
             this.subtotal = this.cantidad * this.precioUnitario;
+            log.warn("Subtotal calculado: {} x {} = {}",
+                    this.cantidad, this.precioUnitario, this.subtotal);
         }
     }
 }

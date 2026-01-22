@@ -152,7 +152,7 @@ public class FacturaProveedorServicio {
     }
 
     // Anular factura de proveedor
-    public void anularFacturaProveedor(Integer id) {
+    public void anularFacturaProveedor(Long id) {
         Long empresaId = TenantContext.getCurrentTenant();
         log.info("Anulando factura de proveedor ID: {} para empresa ID: {}", id, empresaId);
 
@@ -212,11 +212,11 @@ public class FacturaProveedorServicio {
         return facturas;
     }
 
-    public FacturaProveedor buscarFacturaProveedor(Integer id) {
+    public FacturaProveedor buscarFacturaProveedor(Long id) {
         Long empresaId = TenantContext.getCurrentTenant();
         log.debug("Buscando factura de proveedor ID: {} para empresa ID: {}", id, empresaId);
         
-        return facturaRepo.findByIdAndEmpresaId(id, empresaId)
+        return facturaRepo.findByIdWithDetalles(id, empresaId)
                 .orElseThrow(() -> {
                     log.error("Factura de proveedor no encontrada ID: {} para empresa ID: {}", id, empresaId);
                     return new RuntimeException("Factura de proveedor no encontrada");

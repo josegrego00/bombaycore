@@ -47,7 +47,7 @@ public class RecetaServicio {
         long empresaId = TenantContext.getCurrentTenant();
         log.debug("Listando recetas para empresa ID: {}", empresaId);
         
-        List<Receta> recetas = repositorio.findByEmpresaId(empresaId);
+        List<Receta> recetas = repositorio.findByEmpresaIdWithIngredientes(empresaId);
         log.debug("Encontradas {} recetas para empresa ID: {}", recetas.size(), empresaId);
         
         return recetas;
@@ -57,7 +57,7 @@ public class RecetaServicio {
         long empresaId = TenantContext.getCurrentTenant();
         log.debug("Buscando receta ID: {} para empresa ID: {}", id, empresaId);
         
-        Receta receta = repositorio.findByIdAndEmpresaId(id, empresaId)
+        Receta receta = repositorio.findByIdWithIngredientes(id, empresaId)
                 .orElseThrow(() -> {
                     log.error("Receta no encontrada ID: {} para empresa ID: {}", id, empresaId);
                     return new RuntimeException("Receta no encontrada");
