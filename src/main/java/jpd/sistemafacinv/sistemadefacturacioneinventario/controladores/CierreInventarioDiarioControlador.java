@@ -16,6 +16,9 @@ import jpd.sistemafacinv.sistemadefacturacioneinventario.servicios.CierreInventa
 import jpd.sistemafacinv.sistemadefacturacioneinventario.servicios.UsuarioServicio;
 import lombok.AllArgsConstructor;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +30,7 @@ import java.util.Optional;
 public class CierreInventarioDiarioControlador {
 
     private static final Logger log = LoggerFactory.getLogger(CierreInventarioDiarioControlador.class);
-    
+
     private final CierreInventarioDiarioService cierreService;
     private final UsuarioServicio usuarioServicio;
 
@@ -41,20 +44,37 @@ public class CierreInventarioDiarioControlador {
         return "cierres/lista";
     }
 
-    // 2. INICIAR NUEVO CIERRE
-    @PostMapping("/iniciar")
-    public String iniciarNuevoCierre(Authentication authentication) {
-        String username = authentication.getName();
-        log.info("🚀 POST /cierres/iniciar - Iniciando nuevo cierre. Usuario: {}", username);
-        
-        Usuario usuario = usuarioServicio.buscarPorNombreUsuario(username);
-        cierreService.iniciarNuevoCierre(usuario);
-        
-        log.info("✅ Cierre iniciado por usuario: {}", username);
-        return "redirect:/cierres/en-proceso";
-    }
+    // 2. INICIAR NUEVO CIER
+    @GetMapping("/iniciar")
+    public String iniciarNuevoCierre(@RequestParam String fecha,
+            Authentication authentication,
+            Model model) { // ← Agregar Model
 
-    // 3. VISTA DETALLE CIERRE EN PROCESO
+        String username = authentication.getName();
+        log.info("🚀 GET /cierres/iniciar - Iniciando nuevo cierre. Usuario: {}, Fecha: {}",
+                username, fecha);
+
+        Usuario usuario = usuarioServicio.buscarPorNombreUsuario(username);
+
+        try {
+            // La fecha SIEMPRE es requerida cuando se viene del calendario
+            LocalDate fechaCierre = LocalDate.parse(fecha);
+            cierreService.iniciarCierreParaFecha(usuario, fechaCierre);
+
+            log.info("✅ Cierre iniciado para fecha específica: {} por usuario: {}",
+                    fecha, username);
+
+            return "redirect:/cierres/en-proceso";
+
+        } catch (Exception e) {
+            log.error("❌ Error al iniciar cierre. Usuario: {}, Fecha: {}, Error: {}",
+                    username, fecha, e.getMessage(), e);
+
+            // Usar flash attribute en lugar de parámetro URL
+            return "redirect:/cierres/obligatorio";
+        }
+    } // 3. VISTA DETALLE CIERRE EN PROCESO
+
     @GetMapping("/en-proceso")
     public String verCierreEnProceso(Model modelo) {
         log.info("🔍 GET /cierres/en-proceso - Viendo cierre en proceso");
@@ -77,8 +97,8 @@ public class CierreInventarioDiarioControlador {
                 .sum();
         modelo.addAttribute("totalDiferencia", totalDiferencia);
 
-        log.debug("Cierre en proceso ID: {}, Estado: {}, Detalles: {}, Total diferencia: {}", 
-                 cierre.getId(), cierre.getEstado(), detalles.size(), totalDiferencia);
+        log.debug("Cierre en proceso ID: {}, Estado: {}, Detalles: {}, Total diferencia: {}",
+                cierre.getId(), cierre.getEstado(), detalles.size(), totalDiferencia);
         return "cierres/proceso";
     }
 
@@ -97,8 +117,8 @@ public class CierreInventarioDiarioControlador {
                 .sum();
         model.addAttribute("totalDiferencia", totalDiferencia);
 
-        log.debug("Cierre ID: {}, Estado: {}, Detalles: {}, Diferencia total: {}", 
-                 id, cierre.getEstado(), detalles.size(), totalDiferencia);
+        log.debug("Cierre ID: {}, Estado: {}, Detalles: {}, Diferencia total: {}",
+                id, cierre.getEstado(), detalles.size(), totalDiferencia);
 
         // Si está PRE-COMPLETADO, mostrar la misma vista para editar
         if ("PRE-COMPLETADO".equals(cierre.getEstado())) {
@@ -119,12 +139,12 @@ public class CierreInventarioDiarioControlador {
             @RequestParam double desperdicio) {
 
         log.info("💾 POST /cierres/detalle/guardar - Guardando detalle ID: {}", detalleId);
-        log.debug("Detalle {} - Stock real: {}, Merma: {}, Desperdicio: {}", 
-                 detalleId, stockReal, merma, desperdicio);
-        
+        log.debug("Detalle {} - Stock real: {}, Merma: {}, Desperdicio: {}",
+                detalleId, stockReal, merma, desperdicio);
+
         cierreService.actualizarDetalle(detalleId, stockReal, merma, desperdicio);
         log.debug("Detalle {} guardado exitosamente", detalleId);
-        
+
         return ResponseEntity.ok().build();
     }
 
@@ -134,8 +154,8 @@ public class CierreInventarioDiarioControlador {
             @ModelAttribute DetallesCierreDTO request) {
 
         log.info("📝 POST /cierres/completar/{} - Completando cierre (PRE-COMPLETADO)", id);
-        log.debug("Recibidos {} detalles para guardar", 
-                 request.getDetalles() != null ? request.getDetalles().size() : 0);
+        log.debug("Recibidos {} detalles para guardar",
+                request.getDetalles() != null ? request.getDetalles().size() : 0);
 
         // Guardar todos los detalles
         if (request.getDetalles() != null) {
@@ -152,7 +172,7 @@ public class CierreInventarioDiarioControlador {
         // Solo pasa a PRE-COMPLETADO (NO ajusta inventario)
         cierreService.completarCierre(id);
         log.info("✅ Cierre marcado como PRE-COMPLETADO ID: {}", id);
-        
+
         return "redirect:/cierres";
     }
 
@@ -178,14 +198,14 @@ public class CierreInventarioDiarioControlador {
         // Pasa a COMPLETADO y ajusta inventario si se marca
         cierreService.completarCierreDefinitivo(id);
         log.info("✅ Cierre completado definitivamente ID: {}", id);
-        
+
         return "redirect:/cierres";
     }
 
     @GetMapping("/detalleCierre/{id}")
     public String verDetallesCierreDefinitivo(@PathVariable Long id, Model model) {
         log.info("📊 GET /cierres/detalleCierre/{} - Viendo detalles completos de cierre", id);
-        
+
         CierreInventarioDiario cierre = cierreService.buscarCierre(id);
         List<DetalleCierreInventarioDiario> detalles = cierreService.obtenerDetallesCierre(id);
 
@@ -197,7 +217,7 @@ public class CierreInventarioDiarioControlador {
                 .mapToDouble(DetalleCierreInventarioDiario::getDiferencia).sum();
         double totalValorDiferencia = detalles.stream()
                 .mapToDouble(DetalleCierreInventarioDiario::getValorDiferencia).sum();
-        
+
         // NUEVO: Calcular VALOR de merma y desperdicio
         double totalValorMerma = detalles.stream()
                 .mapToDouble(d -> d.getStockMerma() * d.getCostoUnitario()).sum();
@@ -209,14 +229,16 @@ public class CierreInventarioDiarioControlador {
         model.addAttribute("totalValorMerma", totalValorMerma);
         model.addAttribute("totalValorDesperdicio", totalValorDesperdicio);
 
-        log.debug("Cierre ID: {} - Diferencia: {}, Valor diferencia: {}, Valor merma: {}, Valor desperdicio: {}", 
-                 id, totalDiferencia, totalValorDiferencia, totalValorMerma, totalValorDesperdicio);
+        log.debug("Cierre ID: {} - Diferencia: {}, Valor diferencia: {}, Valor merma: {}, Valor desperdicio: {}",
+                id, totalDiferencia, totalValorDiferencia, totalValorMerma, totalValorDesperdicio);
 
         return "cierres/detalle-cierre";
     }
 
     @GetMapping("/obligatorio")
-    public String cierreObligatorio(@RequestParam(required = false) String fecha, Model model) {
+    public String cierreObligatorio(@RequestParam(required = false) String fecha,
+            @RequestParam(required = false) String error,
+            Model model) {
         LocalDateTime ahora = LocalDateTime.now();
         LocalDate hoy = ahora.toLocalDate();
         int horaActual = ahora.getHour();
@@ -241,6 +263,10 @@ public class CierreInventarioDiarioControlador {
         model.addAttribute("hoy", hoy);
         model.addAttribute("horaActual", String.format("%02d:00", horaActual));
         model.addAttribute("horaCambio", "05:00");
+        if (error != null) {
+            model.addAttribute("error", error);
+            log.warn("⚠️ Error recibido: {}", error);
+        }
 
         log.info("⚠️ Cierre obligatorio requerido para fecha: {}", fechaPendiente);
         return "cierres/obligatorio";

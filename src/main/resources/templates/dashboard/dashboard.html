@@ -25,11 +25,25 @@
         <!-- Sidebar - Menú izquierdo -->
         <div class="col-md-3 col-lg-2 bg-dark text-white h-100">
           <!-- Logo -->
-          <div class="p-3 border-bottom border-secondary">
-            <h5 class="mb-1">🍔 MozSoft</h5>
-            <small class="text-white">Sistema de Gestión</small>
+          <div class="p-3 border-bottom border-secondary text-center">
+            <h5 class="mb-1">
+              <!-- Ícono + Nombre de empresa dinámico -->
+              <i class="bi bi-shop me-1"></i>
+              <span th:text="${nombreEmpresa ?: 'Restaurante'}"
+                >Restaurante</span
+              >
+            </h5>
+            <small class="text-white">
+              <!-- Si hay subdominio, muéstralo -->
+              <span
+                th:if="${subdominioEmpresa}"
+                th:text="'(' + ${subdominioEmpresa} + ')'"
+                >(subdominio)</span
+              >
+              <!-- Si no hay subdominio, texto genérico -->
+              <span th:unless="${subdominioEmpresa}">Sistema de Gestión</span>
+            </small>
           </div>
-
           <!-- Menú simple -->
           <div class="p-3">
             <h6 class="text-white small mb-3">MENÚ PRINCIPAL</h6>

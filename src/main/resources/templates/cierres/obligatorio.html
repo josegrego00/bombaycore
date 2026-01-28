@@ -7,86 +7,317 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      .date-picker-container {
+        border: 2px solid #0d6efd;
+        border-radius: 10px;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        margin-bottom: 1.5rem;
+      }
+      .date-display {
+        background: #0d6efd;
+        color: white;
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+        margin-top: 1rem;
+      }
+      .quick-dates {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+      }
+      .quick-date-btn {
+        flex: 1;
+        min-width: 120px;
+      }
+      input[type="date"] {
+        font-size: 1.1rem;
+        padding: 0.75rem;
+        border: 2px solid #0d6efd;
+        border-radius: 8px;
+        width: 100%;
+        text-align: center;
+      }
+      .btn-action {
+        font-size: 1.1rem;
+        padding: 0.75rem;
+        font-weight: 500;
+      }
+    </style>
   </head>
   <body class="bg-light">
-    <div class="container mt-5">
-      <div class="card border-danger">
-        <div class="card-header bg-danger text-white">
-          <h4 class="mb-0">⚠️ CIERRE OBLIGATORIO</h4>
+    <div class="container mt-4">
+      <div class="card border-danger shadow">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">
+            <i class="bi bi-calendar-x me-2"></i>CIERRE OBLIGATORIO
+          </h4>
+          <span class="badge bg-light text-dark">
+            <i class="bi bi-clock me-1"></i>
+            <span th:text="${horaActual}">11:20</span>
+          </span>
         </div>
+        
         <div class="card-body">
+          <!-- Mensaje de alerta -->
           <div class="alert alert-warning">
-            <h5 class="alert-heading">No puedes usar el sistema</h5>
-            <p class="mb-0">
+            <h5 class="alert-heading">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              No puedes usar el sistema
+            </h5>
+            <p class="mb-2">
               <strong>Debes cerrar el día:</strong>
-              <span class="badge bg-dark" th:text="${fechaPendiente}"></span>
+              <span class="badge bg-dark fs-6" th:text="${fechaPendiente}">2026-01-21</span>
               <br />
-              Antes de poder operar el día de hoy:
-              <span class="badge bg-primary" th:text="${hoy}"></span>
+              <small class="text-muted">
+                Antes de poder operar el día de hoy:
+                <span class="badge bg-primary" th:text="${hoy}">2026-01-22</span>
+              </small>
             </p>
           </div>
 
+          <!-- SELECTOR DE FECHA SIMPLE -->
+          <div class="date-picker-container">
+            <h5 class="text-center mb-3">
+              <i class="bi bi-calendar-date me-2"></i>
+              Selecciona la fecha para realizar el cierre
+            </h5>
+            
+            <!-- Input de fecha -->
+            <div class="mb-3">
+              <label for="fechaCierre" class="form-label fw-bold">
+                <i class="bi bi-calendar-check me-1"></i>
+                Fecha del cierre:
+              </label>
+              <input 
+                type="date" 
+                class="form-control form-control-lg" 
+                id="fechaCierre" 
+                name="fechaCierre"
+                th:value="${fechaPendiente}"
+                min="2024-01-01"
+                max="[[${hoy}]]"
+              >
+              <div class="form-text">
+                Selecciona el día que deseas cerrar (máximo hasta hoy)
+              </div>
+            </div>
+
+            <!-- Botones rápidos -->
+            <div class="quick-dates">
+              <button type="button" class="btn btn-outline-primary quick-date-btn" onclick="setDate('today')">
+                <i class="bi bi-calendar-check me-1"></i>Hoy
+              </button>
+              <button type="button" class="btn btn-outline-secondary quick-date-btn" onclick="setDate('yesterday')">
+                <i class="bi bi-calendar-minus me-1"></i>Ayer
+              </button>
+              <button type="button" class="btn btn-outline-danger quick-date-btn" onclick="setDate('pending')">
+                <i class="bi bi-calendar-exclamation me-1"></i>Día Pendiente
+              </button>
+              <button type="button" class="btn btn-outline-info quick-date-btn" onclick="setDate('3days')">
+                <i class="bi bi-calendar-week me-1"></i>Hace 3 días
+              </button>
+            </div>
+
+            <!-- Fecha seleccionada -->
+            <div class="date-display mt-3">
+              <h6 class="mb-1">
+                <i class="bi bi-calendar-event me-2"></i>
+                Fecha seleccionada:
+              </h6>
+              <h4 id="selectedDateDisplay" class="mb-0" th:text="${fechaPendiente}">2026-01-21</h4>
+            </div>
+          </div>
+
+          <!-- Acciones -->
           <div class="row mt-4">
             <div class="col-md-6">
-              <div class="card">
-                <div class="card-body">
-                  <h5>📋 Paso 1: Conteo Físico</h5>
-                  <p>Realiza el conteo físico de todos los ingredientes.</p>
-                  <a th:href="@{/cierres}" class="btn btn-warning">
-                    Ir a Conteo Físico
-                  </a>
+              <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">
+                    <i class="bi bi-clipboard-check me-2"></i>Paso 1: Iniciar Conteo
+                  </h5>
+                  <p class="card-text flex-grow-1">
+                    Comienza el conteo físico de ingredientes y productos para la fecha seleccionada.
+                  </p>
+                  <button id="btnIniciarConteo" class="btn btn-warning btn-action" onclick="iniciarConteo()">
+                    <i class="bi bi-play-circle me-1"></i>
+                    Iniciar Conteo para <span id="fechaBtn">[[${fechaPendiente}]]</span>
+                  </button>
                 </div>
               </div>
             </div>
+            
             <div class="col-md-6">
-              <div class="card">
-                <div class="card-body">
-                  <h5>✅ Paso 2: Completar Cierre</h5>
-                  <p>Revisa y completa el cierre del día anterior.</p>
-                  <a th:href="@{/cierres}" class="btn btn-success">
-                    Ver Cierres Pendientes
+              <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">
+                    <i class="bi bi-list-check me-2"></i>Paso 2: Ver Historial
+                  </h5>
+                  <p class="card-text flex-grow-1">
+                    Revisa todos los cierres anteriores, completa pendientes o verifica cierres ya realizados.
+                  </p>
+                  <a th:href="@{/cierres}" class="btn btn-success btn-action">
+                    <i class="bi bi-clock-history me-1"></i>
+                    Ver Historial de Cierres
                   </a>
                 </div>
               </div>
             </div>
-            <!-- Agrega esta tarjeta -->
-            <div class="card border-info mt-3">
-              <div class="card-header bg-info text-white">
-                <i class="bi bi-clock me-2"></i> Regla del sistema
-              </div>
-              <div class="card-body">
-                <h6>¿Cómo funciona el cambio de día?</h6>
-                <ul class="mb-0">
-                  <li>
-                    <strong>Después de las 5:00 AM</strong> → Sistema valida
-                    CIERRE de <strong>AYER</strong>
-                  </li>
-                  <li>
-                    <strong>Antes de las 5:00 AM</strong> → Sistema valida
-                    CIERRE de <strong>ANTEAYER</strong>
-                  </li>
-                  <li>
-                    <strong>Ejemplo:</strong> Si hoy es 7 enero a las 4:00 AM,
-                    debes cerrar 5 enero
-                  </li>
-                  <li>
-                    <strong>Ejemplo:</strong> Si hoy es 7 enero a las 6:00 AM,
-                    debes cerrar 6 enero
-                  </li>
-                </ul>
+          </div>
+
+          <!-- Información del sistema -->
+          <div class="card border-info mt-4">
+            <div class="card-header bg-info text-white">
+              <i class="bi bi-info-circle me-2"></i> Información del sistema
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6><i class="bi bi-calendar-range me-2"></i>Reglas de cierre:</h6>
+                  <ul class="mb-0">
+                    <li><strong>Horario laboral:</strong> 5:00 AM - 10:00 PM</li>
+                    <li><strong>Después de 5:00 AM:</strong> Cerrar el día anterior</li>
+                    <li><strong>Antes de 5:00 AM:</strong> Cerrar anteayer</li>
+                    <li><strong>Cierre manual:</strong> Bloquea el sistema hasta el día siguiente</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <h6><i class="bi bi-graph-up me-2"></i>Estado actual:</h6>
+                  <ul class="mb-0">
+                    <li><strong>Fecha hoy:</strong> <span th:text="${hoy}">2026-01-22</span></li>
+                    <li><strong>Hora actual:</strong> <span th:text="${horaActual}">11:20</span></li>
+                    <li><strong>Día pendiente:</strong> <span th:text="${fechaPendiente}">2026-01-21</span></li>
+                    <li><strong>Sistema:</strong> <span class="text-danger">BLOQUEADO</span></li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="mt-4 text-center">
             <small class="text-muted">
-              <i class="bi bi-info-circle"></i>
-              Esta pantalla aparecerá cada día hasta que se complete el cierre
-              del día anterior.
+              <i class="bi bi-shield-check me-1"></i>
+              Selecciona la fecha y haz clic en "Iniciar Conteo" para comenzar el proceso de cierre.
             </small>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- JavaScript para el selector de fecha -->
+    <script>
+      // Fecha pendiente del backend
+      const fechaPendiente = "[[${fechaPendiente}]]";
+      const hoy = "[[${hoy}]]";
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        const fechaInput = document.getElementById('fechaCierre');
+        const fechaDisplay = document.getElementById('selectedDateDisplay');
+        const fechaBtn = document.getElementById('fechaBtn');
+        
+        // Actualizar display cuando cambia la fecha
+        fechaInput.addEventListener('change', function() {
+          const fechaSeleccionada = this.value;
+          fechaDisplay.textContent = fechaSeleccionada;
+          fechaBtn.textContent = fechaSeleccionada;
+        });
+        
+        // Formatear fecha para mostrar
+        function formatDate(dateString) {
+          if (!dateString) return '';
+          const date = new Date(dateString);
+          const options = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          };
+          return date.toLocaleDateString('es-ES', options);
+        }
+      });
+      
+      // Funciones para botones rápidos
+      function setDate(type) {
+        const fechaInput = document.getElementById('fechaCierre');
+        const hoy = new Date();
+        let fecha = new Date();
+        
+        switch(type) {
+          case 'today':
+            // Hoy
+            break;
+            
+          case 'yesterday':
+            // Ayer
+            fecha.setDate(fecha.getDate() - 1);
+            break;
+            
+          case 'pending':
+            // Día pendiente (del backend)
+            if (fechaPendiente) {
+              fecha = new Date(fechaPendiente);
+            } else {
+              fecha.setDate(fecha.getDate() - 1);
+            }
+            break;
+            
+          case '3days':
+            // Hace 3 días
+            fecha.setDate(fecha.getDate() - 3);
+            break;
+        }
+        
+        // Formatear a YYYY-MM-DD
+        const year = fecha.getFullYear();
+        const month = String(fecha.getMonth() + 1).padStart(2, '0');
+        const day = String(fecha.getDate()).padStart(2, '0');
+        const fechaFormateada = `${year}-${month}-${day}`;
+        
+        // Establecer en el input
+        fechaInput.value = fechaFormateada;
+        
+        // Disparar evento change
+        fechaInput.dispatchEvent(new Event('change'));
+      }
+      
+      // Iniciar conteo
+      function iniciarConteo() {
+        const fechaInput = document.getElementById('fechaCierre');
+        const fechaSeleccionada = fechaInput.value;
+        
+        if (!fechaSeleccionada) {
+          alert('Por favor, selecciona una fecha primero.');
+          return;
+        }
+        
+        // Validar que la fecha no sea futura
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        const fechaSeleccionadaObj = new Date(fechaSeleccionada);
+        
+        if (fechaSeleccionadaObj > hoy) {
+          alert('No puedes cerrar una fecha futura. Selecciona una fecha igual o anterior a hoy.');
+          return;
+        }
+        
+        // Redirigir a iniciar cierre con la fecha seleccionada
+        window.location.href = `/cierres/iniciar?fecha=${fechaSeleccionada}`;
+      }
+      
+      // También puedes permitir Enter en el input
+      document.getElementById('fechaCierre').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          iniciarConteo();
+        }
+      });
+    </script>
   </body>
 </html>

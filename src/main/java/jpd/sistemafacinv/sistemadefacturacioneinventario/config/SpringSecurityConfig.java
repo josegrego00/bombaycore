@@ -65,6 +65,7 @@ public class SpringSecurityConfig {
                                                 // 1. RECURSOS PÚBLICOS
                                                 .requestMatchers(
                                                                 "/",
+                                                                "/redirect-subdomain",
                                                                 "/login",
                                                                 "/acceso-denegado",
                                                                 "/css/**",

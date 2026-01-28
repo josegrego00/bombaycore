@@ -1,0 +1,390 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MiBombay - Sistema de Facturación para Restaurantes</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+    />
+    <style>
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        padding-top: 20px;
+      }
+      .landing-card {
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        border: none;
+      }
+      .brand-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 3rem 1rem;
+        margin-bottom: 2rem;
+        border-radius: 0 0 30% 30%;
+        text-align: center;
+      }
+      .brand-logo {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+      }
+      .brand-tagline {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+      .access-section {
+        max-width: 600px;
+        margin: 0 auto 3rem;
+      }
+      .subdomain-input {
+        border: 2px solid #667eea;
+        border-radius: 10px;
+        padding: 15px;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+      }
+      .subdomain-input:focus {
+        border-color: #764ba2;
+        box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+      }
+      .input-group-text {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        font-weight: bold;
+      }
+      .btn-access {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        font-weight: bold;
+        padding: 15px 40px;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+      }
+      .btn-access:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+      .feature-icon {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+      }
+      .feature-icon i {
+        font-size: 1.8rem;
+        color: white;
+      }
+      .feature-card {
+        border: none;
+        border-radius: 15px;
+        transition: transform 0.3s;
+        height: 100%;
+      }
+      .feature-card:hover {
+        transform: translateY(-5px);
+      }
+      .admin-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .admin-link:hover {
+        text-decoration: underline;
+      }
+      .error-message {
+        animation: fadeIn 0.3s ease-in;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Brand Header -->
+      <div class="brand-header">
+        <h1 class="brand-logo">🐈‍⬛ MiBombay</h1>
+        <p class="brand-tagline">
+          Sistema de Facturación e Inventario Inteligente para Restaurantes
+        </p>
+      </div>
+      <!-- Main Content -->
+      <div class="landing-card p-4 p-md-5">
+        <!-- Access Form -->
+        <div class="access-section">
+          <h2 class="text-center mb-4">🚀 Accede a tu Sistema</h2>
+          <p class="text-center text-muted mb-4">
+            Ingresa el nombre único de tu restaurante para comenzar
+          </p>
+
+          <!-- Error Message -->
+          <div
+            th:if="${param.error}"
+            class="alert alert-danger error-message text-center"
+          >
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <span
+              th:text="${param.error == 'empty' ? 'Por favor ingresa un nombre' : 
+                                  param.error == 'invalid' ? 'Nombre no válido. Usa solo letras, números y guiones' : 
+                                  'Error en el subdominio'}"
+            ></span>
+          </div>
+
+          <form
+            th:action="@{/redirect-subdomain}"
+            method="post"
+            id="accessForm"
+          >
+            <div class="input-group mb-4">
+              <input
+                type="text"
+                name="subdomain"
+                id="subdomainInput"
+                class="form-control form-control-lg subdomain-input"
+                placeholder="ej: mirestaurante"
+                aria-label="Nombre de tu restaurante"
+                th:value="${param.subdomain != null ? param.subdomain : ''}"
+                required
+                pattern="[a-zA-Z0-9\-]+"
+                title="Solo letras, números y guiones"
+              />
+              <span class="input-group-text input-group-text-lg"
+                >.mibombay.com</span
+              >
+            </div>
+
+            <!-- Mensajes de error mejorados -->
+            <div
+              th:if="${param.error}"
+              class="alert alert-danger error-message text-center"
+            >
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              <span th:switch="${param.error}">
+                <span th:case="'empty'"
+                  >⚠️ Por favor ingresa el nombre de tu restaurante</span
+                >
+                <span th:case="'invalid'"
+                  >❌ Nombre no válido. Usa solo letras, números y guiones</span
+                >
+                <span th:case="'reserved'"
+                  >⛔ Este nombre está reservado. Usa otro diferente</span
+                >
+                <span th:case="*">⚠️ Error al procesar el subdominio</span>
+              </span>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-access btn-lg">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Acceder al Sistema
+              </button>
+            </div>
+          </form>
+
+          <div class="text-center mt-3">
+            <small class="text-muted">
+              ¿No tienes una cuenta?
+              <a href="#" class="text-primary text-decoration-none"
+                >Contáctanos para crear tu restaurante</a
+              >
+            </small>
+          </div>
+        </div>
+
+        <!-- Features -->
+        <div class="row mt-5 g-4">
+          <div class="col-md-4">
+            <div class="card feature-card shadow-sm p-4">
+              <div class="feature-icon">
+                <i class="bi bi-cash-stack"></i>
+              </div>
+              <div class="card-body text-center">
+                <h5 class="card-title">Facturación Rápida</h5>
+                <p class="card-text text-muted">
+                  Emite facturas electrónicas con impuestos automáticos y
+                  múltiples formas de pago.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card feature-card shadow-sm p-4">
+              <div class="feature-icon">
+                <i class="bi bi-box-seam"></i>
+              </div>
+              <div class="card-body text-center">
+                <h5 class="card-title">Inventario Inteligente</h5>
+                <p class="card-text text-muted">
+                  Control de stock en tiempo real con alertas automáticas y
+                  cálculo de costos.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card feature-card shadow-sm p-4">
+              <div class="feature-icon">
+                <i class="bi bi-graph-up-arrow"></i>
+              </div>
+              <div class="card-body text-center">
+                <h5 class="card-title">Reportes Avanzados</h5>
+                <p class="card-text text-muted">
+                  Análisis detallado de ventas, consumos, mermas y rendimiento
+                  por período.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin Access -->
+        <div class="text-center mt-5 pt-4 border-top">
+          <p class="text-muted mb-0">
+            <small>
+              <i class="bi bi-shield-lock me-1"></i>
+              ¿Eres administrador del sistema?
+              <a href="/superadmin/login" class="admin-link"
+                >Accede al Panel de Control aquí</a
+              >
+            </small>
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="text-center mt-4">
+        <small class="text-white">
+          &copy; 2024 MiBombay - Sistema SAAS para Restaurantes
+          <span class="mx-2">•</span>
+          <a href="#" class="text-white text-decoration-none">Términos</a>
+          <span class="mx-2">•</span>
+          <a href="#" class="text-white text-decoration-none">Privacidad</a>
+          <span class="mx-2">•</span>
+          <a href="#" class="text-white text-decoration-none">Soporte</a>
+        </small>
+      </div>
+    </div>
+
+    <script>
+      // Form validation and feedback
+      document
+        .getElementById("accessForm")
+        .addEventListener("submit", function (e) {
+          const input = this.querySelector('input[name="subdomain"]');
+          const value = input.value.trim();
+
+          if (!value) {
+            e.preventDefault();
+            input.focus();
+            input.classList.add("is-invalid");
+            return;
+          }
+
+          // Clean input
+          const cleanValue = value.toLowerCase().replace(/[^a-z0-9\-]/g, "");
+          input.value = cleanValue;
+
+          // Show loading state
+          const btn = this.querySelector('button[type="submit"]');
+          btn.innerHTML =
+            '<i class="bi bi-hourglass-split me-2"></i>Redirigiendo...';
+          btn.disabled = true;
+        });
+
+      // Real-time input validation
+      document
+        .querySelector('input[name="subdomain"]')
+        .addEventListener("input", function (e) {
+          this.classList.remove("is-invalid");
+          let value = this.value.toLowerCase();
+          // Allow only letters, numbers, and hyphens
+          value = value.replace(/[^a-z0-9\-]/g, "");
+          this.value = value;
+        });
+    </script>
+
+    <!-- Script para validación en tiempo real -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("accessForm");
+        const input = document.getElementById("subdomainInput");
+        const errorDiv = document.querySelector(".alert.alert-danger");
+
+        // Validación en tiempo real
+        input.addEventListener("input", function () {
+          const value = this.value.trim();
+          const isValid = /^[a-zA-Z0-9\-]*$/.test(value);
+
+          if (!isValid && value !== "") {
+            this.classList.add("is-invalid");
+            if (errorDiv) errorDiv.classList.remove("d-none");
+          } else {
+            this.classList.remove("is-invalid");
+            if (errorDiv) errorDiv.classList.add("d-none");
+          }
+        });
+
+        // Validación antes de enviar
+        form.addEventListener("submit", function (e) {
+          const value = input.value.trim();
+
+          if (!value) {
+            e.preventDefault();
+            input.focus();
+            input.classList.add("is-invalid");
+            return;
+          }
+
+          if (!/^[a-zA-Z0-9\-]+$/.test(value)) {
+            e.preventDefault();
+            alert("Solo se permiten letras, números y guiones (-)");
+            input.focus();
+            input.select();
+            return;
+          }
+
+          // Mostrar loading
+          const btn = this.querySelector('button[type="submit"]');
+          const originalText = btn.innerHTML;
+          btn.innerHTML =
+            '<i class="bi bi-hourglass-split me-2"></i>Redirigiendo...';
+          btn.disabled = true;
+
+          // Restaurar después de 3 segundos por si hay error
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+          }, 3000);
+        });
+      });
+    </script>
+  </body>
+</html>

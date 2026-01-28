@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -59,8 +60,8 @@ public class DataInitializer implements CommandLineRunner {
         } else {
             log.info("⏭️  Configuración indica NO crear usuarios por defecto");
         }
-        crearCierreDiarioInicial(empresa);
-        
+       // crearCierreDiarioInicial(empresa);
+
         crearSuperAdminSiNoExiste();
 
         log.info("✅ CARGA DE DATOS INICIALES COMPLETADA EXITOSAMENTE");
@@ -188,34 +189,41 @@ public class DataInitializer implements CommandLineRunner {
      */
 
     private void crearCierreDiarioInicial(Empresa empresa) {
-        // Verificar si ya existe cierre para hoy para esta empresa
-        LocalDate ayer = LocalDate.now().minusDays(1);
-        boolean existeCierreHoy = cierreRepositorio.existsByFechaAndEmpresaId(ayer, empresa.getId());
+        log.info("📅 Verificando si se necesita crear cierre inicial para empresa: {}", empresa.getNombre());
 
-        if (!existeCierreHoy) {
-            // Obtener usuario admin para asociar al cierre
+        // VERIFICAR SI LA EMPRESA ES NUEVA (sin cierres)
+        List<CierreInventarioDiario> cierresExistentes = cierreRepositorio.findByEmpresaId(empresa.getId());
+
+        if (cierresExistentes.isEmpty()) {
+            log.info("🏢 Empresa NUEVA detectada. Creando cierre inicial PENDIENTE...");
+
+            // Usar fecha de HOY, no ayer
+            LocalDate fechaCierre = LocalDate.now();
+
+            // Obtener usuario admin
             Usuario usuarioAdmin = usuarioRepositorio.findByNombreUsuarioAndEmpresaId("admin", empresa.getId())
                     .orElse(null);
 
             if (usuarioAdmin == null) {
-                log.warn("⚠️ No se encontró usuario 'admin' para crear cierre diario. Se creará sin usuario.");
+                log.warn("⚠️ No se encontró usuario 'admin' para asociar al cierre inicial.");
             }
 
             CierreInventarioDiario cierre = new CierreInventarioDiario();
-            cierre.setFecha(ayer);
-            cierre.setEstado("COMPLETADO"); // O "PENDIENTE" según tu lógica
-            cierre.setObservaciones("Cierre inicial generado automáticamente");
+            cierre.setFecha(fechaCierre);
+            cierre.setEstado("PENDIENTE"); // ← CAMBIADO de "COMPLETADO" a "PENDIENTE"
+            cierre.setObservaciones("Cierre inicial - Pendiente de completar manualmente");
             cierre.setTotalVentas(0);
             cierre.setEmpresa(empresa);
             cierre.setUsuario(usuarioAdmin); // Puede ser null
             cierre.setCantidadFacturas(0);
 
             cierreRepositorio.save(cierre);
-            log.info("📅 Cierre diario inicial creado para fecha {} - Empresa: {}",
-                    ayer, empresa.getNombre());
+            log.info("📅 Cierre INICIAL creado en estado PENDIENTE para fecha {} - Empresa: {}",
+                    fechaCierre, empresa.getNombre());
+            log.info("   ⚠️  Este cierre debe ser completado MANUALMENTE por el usuario");
         } else {
-            log.info("✅ Ya existe cierre diario para hoy ({}) - Empresa: {}",
-                    ayer, empresa.getNombre());
+            log.info("✅ Empresa ya tiene {} cierres registrados. No se crea cierre inicial.",
+                    cierresExistentes.size());
         }
     }
 
@@ -231,8 +239,8 @@ public class DataInitializer implements CommandLineRunner {
 
             // Usuario SUPER_ADMIN (NO tiene empresa, es global)
             Usuario superAdmin = Usuario.builder()
-                    .nombreUsuario("josepino")
-                    .contrasenna(passwordEncoder.encode("123"))
+                    .nombreUsuario("adminmaster")
+                    .contrasenna(passwordEncoder.encode("adminmaster_30092612"))
                     .rol("SUPER_ADMIN")
                     .activo(true)
                     // ⚠️ IMPORTANTE: SUPER_ADMIN NO tiene empresa (null)

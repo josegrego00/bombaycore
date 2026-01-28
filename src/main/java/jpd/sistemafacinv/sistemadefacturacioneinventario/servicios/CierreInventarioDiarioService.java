@@ -343,4 +343,55 @@ public class CierreInventarioDiarioService {
         log.debug("Ventas calculadas: {} facturas, Total: {} para fecha: {}",
                 facturasDelDia.size(), totalVentas, fecha);
     }
+
+    // En CierreInventarioDiarioService.java
+public CierreInventarioDiario iniciarCierreParaFecha(Usuario usuario, LocalDate fechaCierre) {
+    Long empresaId = TenantContext.getCurrentTenant();
+    log.info("Iniciando cierre para fecha específica: {} para empresa ID: {}, Usuario: {}", 
+            fechaCierre, empresaId, usuario.getNombreUsuario());
+
+    Empresa empresa = empresaRepositorio.findById(empresaId)
+            .orElseThrow(() -> {
+                log.error("Empresa no encontrada ID: {}", empresaId);
+                return new RuntimeException("Empresa no encontrada: " + empresaId);
+            });
+
+    // Verificar si ya hay cierre para esta fecha
+    Optional<CierreInventarioDiario> cierreExistente = cierreRepository.findByFechaAndEmpresaId(fechaCierre,
+            empresaId);
+
+    if (cierreExistente.isPresent()) {
+        CierreInventarioDiario existente = cierreExistente.get();
+        log.warn("Ya existe un cierre para la fecha: {} - Estado: {}, ID: {}", 
+                fechaCierre, existente.getEstado(), existente.getId());
+        
+        if ("COMPLETADO".equals(existente.getEstado())) {
+            throw new RuntimeException("Ya existe un cierre COMPLETADO para la fecha: " + fechaCierre);
+        }
+        
+        // Si existe pero está EN_PROCESO o PRE-COMPLETADO, retornarlo
+        log.info("Retornando cierre existente: {}", existente.getId());
+        return existente;
+    }
+
+    log.debug("No hay cierre existente para fecha: {}", fechaCierre);
+
+    // Crear cabecera
+    CierreInventarioDiario cierre = CierreInventarioDiario.builder()
+            .fecha(fechaCierre)
+            .usuario(usuario)
+            .estado("EN_PROCESO")
+            .observaciones("Cierre para fecha específica " + fechaCierre)
+            .empresa(empresa)
+            .build();
+
+    cierre = cierreRepository.save(cierre);
+    log.info("✅ Cierre creado para fecha específica ID: {} - Fecha: {}, Usuario: {}", 
+            cierre.getId(), fechaCierre, usuario.getNombreUsuario());
+
+    // Precargar detalles con stock teórico
+    precargarDetallesCierre(cierre);
+
+    return cierre;
+}
 }

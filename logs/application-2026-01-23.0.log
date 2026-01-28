@@ -1,0 +1,294 @@
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG j.s.s.context.TenantFilter - 📌 TenantFilter - RUTA: /, Método: GET
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG j.s.s.context.TenantFilter - 🌐 Server Name: defecto.localhost
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG j.s.s.context.TenantFilter - 🔍 Subdominio extraído: defecto
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    select
+        e1_0.id,
+        e1_0.email_contacto,
+        e1_0.estado,
+        e1_0.fecha_creacion,
+        e1_0.nombre,
+        e1_0.plan,
+        e1_0.subdominio,
+        e1_0.telefono 
+    from
+        empresa e1_0 
+    where
+        e1_0.subdominio=?
+2026-01-23 13:00:22 [http-nio-8080-exec-10] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [defecto]
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG j.s.s.context.TenantContext - 🔧 TenantContext.setCurrentTenant(1) - Hilo: 50
+2026-01-23 13:00:22 [http-nio-8080-exec-10] INFO  j.s.s.context.TenantFilter - ✅ Empresa establecida desde subdominio: 1 (Subdominio: defecto)
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG j.s.s.config.CierreDiarioInterceptor - 🛡️ Interceptor ejecutando - Ruta: /, Empresa ID: 1
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG j.s.s.config.CierreDiarioInterceptor - 📅 Validación de cierre - Fecha: 2026-01-23, Hora: 13:00
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    select
+        case 
+            when count(cid1_0.id)>0 
+                then 1 
+            else 0 
+    end 
+from
+    cierre_inventario_diario cid1_0 
+where
+    cid1_0.fecha=? 
+    and cid1_0.estado=? 
+    and cid1_0.empresa_id=?
+2026-01-23 13:00:22 [http-nio-8080-exec-10] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:DATE) <- [2026-01-23]
+2026-01-23 13:00:22 [http-nio-8080-exec-10] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:VARCHAR) <- [COMPLETADO]
+2026-01-23 13:00:22 [http-nio-8080-exec-10] TRACE org.hibernate.orm.jdbc.bind - binding parameter (3:BIGINT) <- [1]
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG j.s.s.config.CierreDiarioInterceptor - ✅ Después de las 5:00 AM → Validar AYER: 2026-01-22
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG org.hibernate.SQL - 
+    select
+        case 
+            when count(cid1_0.id)>0 
+                then 1 
+            else 0 
+    end 
+from
+    cierre_inventario_diario cid1_0 
+where
+    cid1_0.fecha=? 
+    and cid1_0.estado=? 
+    and cid1_0.empresa_id=?
+2026-01-23 13:00:22 [http-nio-8080-exec-10] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:DATE) <- [2026-01-22]
+2026-01-23 13:00:22 [http-nio-8080-exec-10] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:VARCHAR) <- [COMPLETADO]
+2026-01-23 13:00:22 [http-nio-8080-exec-10] TRACE org.hibernate.orm.jdbc.bind - binding parameter (3:BIGINT) <- [1]
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG j.s.s.config.CierreDiarioInterceptor - ¿Día 2026-01-22 cerrado?: true (Empresa ID: 1)
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG j.s.s.config.CierreDiarioInterceptor - ✅ Acceso permitido - Día 2026-01-22 cerrado correctamente
+2026-01-23 13:00:22 [http-nio-8080-exec-10] INFO  j.s.s.controladores.InicioController - 🔀 GET / - Redirigiendo a /login
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG j.s.s.context.TenantContext - 🧹 TenantContext.clear() - Hilo: 50, Tenant anterior: 1
+2026-01-23 13:00:22 [http-nio-8080-exec-10] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 50, Request: /, Empresa ID anterior: 1
+2026-01-23 13:00:22 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /login
+2026-01-23 13:00:22 [http-nio-8080-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /login
+2026-01-23 13:00:22 [http-nio-8080-exec-1] DEBUG j.s.s.context.TenantFilter - 📌 TenantFilter - RUTA: /login, Método: GET
+2026-01-23 13:00:22 [http-nio-8080-exec-1] DEBUG j.s.s.context.TenantFilter - 🌐 Server Name: defecto.localhost
+2026-01-23 13:00:22 [http-nio-8080-exec-1] DEBUG j.s.s.context.TenantFilter - 🔍 Subdominio extraído: defecto
+2026-01-23 13:00:22 [http-nio-8080-exec-1] DEBUG org.hibernate.SQL - 
+    select
+        e1_0.id,
+        e1_0.email_contacto,
+        e1_0.estado,
+        e1_0.fecha_creacion,
+        e1_0.nombre,
+        e1_0.plan,
+        e1_0.subdominio,
+        e1_0.telefono 
+    from
+        empresa e1_0 
+    where
+        e1_0.subdominio=?
+2026-01-23 13:00:22 [http-nio-8080-exec-1] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [defecto]
+2026-01-23 13:00:22 [http-nio-8080-exec-1] DEBUG j.s.s.context.TenantContext - 🔧 TenantContext.setCurrentTenant(1) - Hilo: 41
+2026-01-23 13:00:22 [http-nio-8080-exec-1] INFO  j.s.s.context.TenantFilter - ✅ Empresa establecida desde subdominio: 1 (Subdominio: defecto)
+2026-01-23 13:00:22 [http-nio-8080-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2026-01-23 13:00:22 [http-nio-8080-exec-1] INFO  j.s.s.controladores.InicioController - 🔐 GET /login - Mostrando página de login
+2026-01-23 13:00:22 [http-nio-8080-exec-1] DEBUG j.s.s.context.TenantContext - 🧹 TenantContext.clear() - Hilo: 41, Tenant anterior: 1
+2026-01-23 13:00:22 [http-nio-8080-exec-1] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 41, Request: /login, Empresa ID anterior: 1
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing POST /login
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG j.s.s.servicios.UsuarioServicio - Autenticando usuario: admin para la empresa ID: null
+2026-01-23 13:00:27 [http-nio-8080-exec-2] INFO  j.s.s.servicios.UsuarioServicio - 🔐 Login - Usuario: admin | Subdominio: defecto
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        e1_0.id,
+        e1_0.email_contacto,
+        e1_0.estado,
+        e1_0.fecha_creacion,
+        e1_0.nombre,
+        e1_0.plan,
+        e1_0.subdominio,
+        e1_0.telefono 
+    from
+        empresa e1_0 
+    where
+        e1_0.subdominio=?
+2026-01-23 13:00:27 [http-nio-8080-exec-2] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [defecto]
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG j.s.s.servicios.UsuarioServicio - 🔐 Login - Usuario: admin | Subdominio: defecto | Empresa ID: 1 | Empresa Nombre: Sistema por Defecto
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.activo,
+        u1_0.contrasenna,
+        u1_0.empresa_id,
+        u1_0.nombre_usuario,
+        u1_0.rol,
+        u1_0.sucursal_id 
+    from
+        usuario u1_0 
+    where
+        u1_0.nombre_usuario=? 
+        and u1_0.empresa_id=?
+2026-01-23 13:00:27 [http-nio-8080-exec-2] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [admin]
+2026-01-23 13:00:27 [http-nio-8080-exec-2] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:BIGINT) <- [1]
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        e1_0.id,
+        e1_0.email_contacto,
+        e1_0.estado,
+        e1_0.fecha_creacion,
+        e1_0.nombre,
+        e1_0.plan,
+        e1_0.subdominio,
+        e1_0.telefono 
+    from
+        empresa e1_0 
+    where
+        e1_0.id=?
+2026-01-23 13:00:27 [http-nio-8080-exec-2] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-01-23 13:00:27 [http-nio-8080-exec-2] INFO  j.s.s.servicios.UsuarioServicio - 🔐 Encontrado usuario: admin
+2026-01-23 13:00:27 [http-nio-8080-exec-2] INFO  j.s.s.servicios.UsuarioServicio - 🔐 Rol: ADMIN
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG j.s.s.servicios.UsuarioServicio - 🔐 Activo: true
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG o.s.s.a.d.DaoAuthenticationProvider - Authenticated user
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG o.s.s.w.a.s.ChangeSessionIdAuthenticationStrategy - Changed session id from 83D712705D5F6F3D51AE121D66B6F9BE
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.CsrfAuthenticationStrategy - Replaced CSRF Token
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Stored SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=83D712705D5F6F3D51AE121D66B6F9BE], Granted Authorities=[ROLE_ADMIN]]] to HttpSession [org.apache.catalina.session.StandardSessionFacade@459ececc]
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG o.s.s.w.a.UsernamePasswordAuthenticationFilter - Set SecurityContextHolder to UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=83D712705D5F6F3D51AE121D66B6F9BE], Granted Authorities=[ROLE_ADMIN]]
+2026-01-23 13:00:27 [http-nio-8080-exec-2] DEBUG o.s.s.web.DefaultRedirectStrategy - Redirecting to /principal
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /principal
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=83D712705D5F6F3D51AE121D66B6F9BE], Granted Authorities=[ROLE_ADMIN]]]
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /principal
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.context.TenantFilter - 📌 TenantFilter - RUTA: /principal, Método: GET
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.context.TenantFilter - 🌐 Server Name: defecto.localhost
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.context.TenantFilter - 🔍 Subdominio extraído: defecto
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        e1_0.id,
+        e1_0.email_contacto,
+        e1_0.estado,
+        e1_0.fecha_creacion,
+        e1_0.nombre,
+        e1_0.plan,
+        e1_0.subdominio,
+        e1_0.telefono 
+    from
+        empresa e1_0 
+    where
+        e1_0.subdominio=?
+2026-01-23 13:00:27 [http-nio-8080-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [defecto]
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.context.TenantContext - 🔧 TenantContext.setCurrentTenant(1) - Hilo: 43
+2026-01-23 13:00:27 [http-nio-8080-exec-3] INFO  j.s.s.context.TenantFilter - ✅ Empresa establecida desde subdominio: 1 (Subdominio: defecto)
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.context.TenantFilter - 👤 Usuario autenticado en TenantFilter: admin
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.servicios.UsuarioServicio - Buscando usuario: admin en empresa ID: 1
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.activo,
+        u1_0.contrasenna,
+        u1_0.empresa_id,
+        u1_0.nombre_usuario,
+        u1_0.rol,
+        u1_0.sucursal_id 
+    from
+        usuario u1_0 
+    where
+        u1_0.nombre_usuario=? 
+        and u1_0.empresa_id=?
+2026-01-23 13:00:27 [http-nio-8080-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [admin]
+2026-01-23 13:00:27 [http-nio-8080-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:BIGINT) <- [1]
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        e1_0.id,
+        e1_0.email_contacto,
+        e1_0.estado,
+        e1_0.fecha_creacion,
+        e1_0.nombre,
+        e1_0.plan,
+        e1_0.subdominio,
+        e1_0.telefono 
+    from
+        empresa e1_0 
+    where
+        e1_0.id=?
+2026-01-23 13:00:27 [http-nio-8080-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.context.TenantFilter - ✅ Usuario admin validado para empresa 1
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.config.CierreDiarioInterceptor - 🛡️ Interceptor ejecutando - Ruta: /principal, Empresa ID: 1
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.config.CierreDiarioInterceptor - 📅 Validación de cierre - Fecha: 2026-01-23, Hora: 13:00
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        case 
+            when count(cid1_0.id)>0 
+                then 1 
+            else 0 
+    end 
+from
+    cierre_inventario_diario cid1_0 
+where
+    cid1_0.fecha=? 
+    and cid1_0.estado=? 
+    and cid1_0.empresa_id=?
+2026-01-23 13:00:27 [http-nio-8080-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:DATE) <- [2026-01-23]
+2026-01-23 13:00:27 [http-nio-8080-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:VARCHAR) <- [COMPLETADO]
+2026-01-23 13:00:27 [http-nio-8080-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (3:BIGINT) <- [1]
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.config.CierreDiarioInterceptor - ✅ Después de las 5:00 AM → Validar AYER: 2026-01-22
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        case 
+            when count(cid1_0.id)>0 
+                then 1 
+            else 0 
+    end 
+from
+    cierre_inventario_diario cid1_0 
+where
+    cid1_0.fecha=? 
+    and cid1_0.estado=? 
+    and cid1_0.empresa_id=?
+2026-01-23 13:00:27 [http-nio-8080-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:DATE) <- [2026-01-22]
+2026-01-23 13:00:27 [http-nio-8080-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:VARCHAR) <- [COMPLETADO]
+2026-01-23 13:00:27 [http-nio-8080-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (3:BIGINT) <- [1]
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.config.CierreDiarioInterceptor - ¿Día 2026-01-22 cerrado?: true (Empresa ID: 1)
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.config.CierreDiarioInterceptor - ✅ Acceso permitido - Día 2026-01-22 cerrado correctamente
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.c.DashboardControlador - 📅 Agregando estado del día: 2026-01-23
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - 
+    select
+        cid1_0.id,
+        cid1_0.cantidad_facturas,
+        cid1_0.empresa_id,
+        cid1_0.estado,
+        cid1_0.fecha,
+        cid1_0.observaciones,
+        cid1_0.total_ventas,
+        cid1_0.usuario_id 
+    from
+        cierre_inventario_diario cid1_0 
+    where
+        cid1_0.fecha=? 
+        and cid1_0.estado='COMPLETADO'
+2026-01-23 13:00:27 [http-nio-8080-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:DATE) <- [2026-01-23]
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.c.DashboardControlador - No hay cierre completado para hoy: 2026-01-23
+2026-01-23 13:00:27 [http-nio-8080-exec-3] INFO  j.s.s.c.DashboardControlador - 🏠 GET /principal - Accediendo al dashboard principal
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.context.TenantContext - 🧹 TenantContext.clear() - Hilo: 43, Tenant anterior: 1
+2026-01-23 13:00:27 [http-nio-8080-exec-3] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 43, Request: /principal, Empresa ID anterior: 1
+2026-01-23 13:00:34 [http-nio-8080-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing POST /logout
+2026-01-23 13:00:34 [http-nio-8080-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=83D712705D5F6F3D51AE121D66B6F9BE], Granted Authorities=[ROLE_ADMIN]]]
+2026-01-23 13:00:34 [http-nio-8080-exec-4] DEBUG o.s.s.w.a.logout.LogoutFilter - Logging out [UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=admin, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=83D712705D5F6F3D51AE121D66B6F9BE], Granted Authorities=[ROLE_ADMIN]]]
+2026-01-23 13:00:34 [http-nio-8080-exec-4] DEBUG o.s.s.w.a.l.SecurityContextLogoutHandler - Invalidated session 71F43C2A7D773C98F25171D16FD40061
+2026-01-23 13:00:34 [http-nio-8080-exec-4] DEBUG o.s.s.web.DefaultRedirectStrategy - Redirecting to /login?logout
+2026-01-23 13:00:34 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /login?logout
+2026-01-23 13:00:34 [http-nio-8080-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /login?logout
+2026-01-23 13:00:34 [http-nio-8080-exec-5] DEBUG j.s.s.context.TenantFilter - 📌 TenantFilter - RUTA: /login, Método: GET
+2026-01-23 13:00:34 [http-nio-8080-exec-5] DEBUG j.s.s.context.TenantFilter - 🌐 Server Name: defecto.localhost
+2026-01-23 13:00:34 [http-nio-8080-exec-5] DEBUG j.s.s.context.TenantFilter - 🔍 Subdominio extraído: defecto
+2026-01-23 13:00:34 [http-nio-8080-exec-5] DEBUG org.hibernate.SQL - 
+    select
+        e1_0.id,
+        e1_0.email_contacto,
+        e1_0.estado,
+        e1_0.fecha_creacion,
+        e1_0.nombre,
+        e1_0.plan,
+        e1_0.subdominio,
+        e1_0.telefono 
+    from
+        empresa e1_0 
+    where
+        e1_0.subdominio=?
+2026-01-23 13:00:34 [http-nio-8080-exec-5] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [defecto]
+2026-01-23 13:00:34 [http-nio-8080-exec-5] DEBUG j.s.s.context.TenantContext - 🔧 TenantContext.setCurrentTenant(1) - Hilo: 45
+2026-01-23 13:00:34 [http-nio-8080-exec-5] INFO  j.s.s.context.TenantFilter - ✅ Empresa establecida desde subdominio: 1 (Subdominio: defecto)
+2026-01-23 13:00:34 [http-nio-8080-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2026-01-23 13:00:34 [http-nio-8080-exec-5] INFO  j.s.s.controladores.InicioController - 🔐 GET /login - Mostrando página de login
+2026-01-23 13:00:34 [http-nio-8080-exec-5] DEBUG j.s.s.context.TenantContext - 🧹 TenantContext.clear() - Hilo: 45, Tenant anterior: 1
+2026-01-23 13:00:34 [http-nio-8080-exec-5] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 45, Request: /login, Empresa ID anterior: 1

@@ -99,7 +99,7 @@ public class UsuarioControlador {
     @PostMapping("/actualizar/{id}")
     public String actualizarUsuario(@PathVariable Long id,
             @ModelAttribute Usuario usuario,
-            @RequestParam(required = false) String nuevoPassword,
+            @RequestParam(required = false) String contrasenna,
             @RequestParam(required = false) String confirmarPassword,
             RedirectAttributes redirect) {
         
@@ -109,13 +109,13 @@ public class UsuarioControlador {
         log.debug("Usuario autenticado: {}, Roles: {}", auth.getName(), auth.getAuthorities());
 
         // Validar contraseñas si se van a cambiar
-        if (nuevoPassword != null && !nuevoPassword.isEmpty()) {
-            if (!nuevoPassword.equals(confirmarPassword)) {
+        if (contrasenna != null && !contrasenna.isEmpty()) {
+            if (!contrasenna.equals(confirmarPassword)) {
                 log.warn("❌ Contraseñas no coinciden al actualizar usuario ID: {}", id);
                 redirect.addFlashAttribute("error", "Las contraseñas no coinciden");
                 return "redirect:/admin/usuarios/editar/" + id;
             }
-            usuario.setContrasenna(nuevoPassword);
+            usuario.setContrasenna(contrasenna);
             log.debug("Contraseña actualizada para usuario ID: {}", id);
         } else {
             usuario.setContrasenna(null); // No cambiar password

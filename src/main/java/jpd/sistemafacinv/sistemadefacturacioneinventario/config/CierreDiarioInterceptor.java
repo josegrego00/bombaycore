@@ -52,7 +52,8 @@ public class CierreDiarioInterceptor implements HandlerInterceptor {
         if (ruta.contains("/cierres") ||
                 ruta.contains("/static") ||
                 ruta.contains("/error") ||
-                ruta.contains("/login")) {
+                ruta.contains("/login") ||
+                ruta.contains("/acceso-denegado")) {
             log.debug("🔓 Ruta permitida sin validación: {}", ruta);
             return true;
         }
@@ -103,6 +104,8 @@ public class CierreDiarioInterceptor implements HandlerInterceptor {
         }
 
         log.debug("✅ Acceso permitido - Día {} cerrado correctamente", fechaParaValidar);
+
+         
         return true;
     }
 }
