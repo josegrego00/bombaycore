@@ -5,29 +5,37 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-@RequestMapping("/")
 public class InicioController {
 
     private static final Logger log = LoggerFactory.getLogger(InicioController.class);
 
     // 1. Landing page principal (index.html) - PÚBLICA
-    
+    @GetMapping("/")
     public String mostrarLandingPage() {
         log.info("🏠 GET / - Mostrando landing page pública");
-        return "dashboard/index"; // Tu página con formulario de subdominios
+        return "index"; // Tu página con formulario de subdominios
     }
 
     // 2. Login multi-tenant (solo para subdominios) - PROTEGIDA por TenantFilter
     @GetMapping("/login")
-    public String mostrarLogin() {
-        log.info("🔐 GET /login - Mostrando página de login multi-tenant");
-        // IMPORTANTE: Esta ruta solo se usa cuando ya se accedió por subdominio
-        // Ejemplo: test.mibombay.com/login
-        return "login"; // El login normal para empresas
+    public String mostrarLogin(HttpServletRequest request) {
+        String serverName = request.getServerName();
+
+        // SOLO permitir login si viene de subdominio
+        if (!serverName.contains(".") || serverName.equals("mibombay.com")) {
+            log.warn("❌ Intento de acceso a /login desde dominio principal");
+            return "redirect:/"; // Redirige a la landing page
+        }
+
+        log.info("🔐 GET /login - Subdominio: {}", serverName);
+        return "login";
     }
 
     // 4. Procesar formulario de landing page - PÚBLICO

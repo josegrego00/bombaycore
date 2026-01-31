@@ -35,13 +35,24 @@ public class CierreDiarioInterceptor implements HandlerInterceptor {
         Long empresaId = TenantContext.getCurrentTenant();
 
         log.debug("🛡️ Interceptor ejecutando - Ruta: {}, Empresa ID: {}", ruta, empresaId);
-
-        // EXCLUDE SUPER_ADMIN paths completely
-        if (ruta != null && ruta.startsWith("/superadmin/")) {
-            log.debug("🔓 EXCLUYENDO ruta SUPER_ADMIN del interceptor: {}", ruta);
-            return true; // Skip ALL validation for SUPER_ADMIN
+        if (empresaId == null) {
+            log.debug("🔓 Acceso público sin empresa - Permitir: {}", ruta);
+            return true;
         }
 
+        // ⚠️ PRIMERO: Verificar si ruta es null
+        if (ruta == null) {
+            log.debug("🔓 Ruta null - Permitir acceso");
+            return true;
+        }
+
+        // ⚠️ SEGUNDO: Rutas públicas que NUNCA deben validar cierre
+        if (ruta.equals("/") ||
+                ruta.equals("/redirect-subdomain") ||
+                ruta.startsWith("/superadmin/")) {
+            log.debug("🔓 Ruta PÚBLICA excluida del interceptor: {}", ruta);
+            return true;
+        }
         // En preHandle(), al inicio:
         if (ruta.equals("/acceso-denegado")) {
             log.debug("🔓 Interceptando acceso-denegado - EMPRESA: {}", empresaId);
@@ -105,7 +116,6 @@ public class CierreDiarioInterceptor implements HandlerInterceptor {
 
         log.debug("✅ Acceso permitido - Día {} cerrado correctamente", fechaParaValidar);
 
-         
         return true;
     }
 }

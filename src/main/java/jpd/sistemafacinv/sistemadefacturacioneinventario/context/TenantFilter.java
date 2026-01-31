@@ -5,12 +5,12 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import jpd.sistemafacinv.sistemadefacturacioneinventario.context.TenantContext;
+
 import jpd.sistemafacinv.sistemadefacturacioneinventario.modelos.Empresa;
 import jpd.sistemafacinv.sistemadefacturacioneinventario.modelos.Usuario;
 import jpd.sistemafacinv.sistemadefacturacioneinventario.repositorios.EmpresaRepositorio;
@@ -18,6 +18,7 @@ import jpd.sistemafacinv.sistemadefacturacioneinventario.servicios.UsuarioServic
 import lombok.AllArgsConstructor;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Optional;
 
 /**
@@ -38,8 +39,33 @@ public class TenantFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-
         String requestURI = httpRequest.getRequestURI();
+        String serverName = httpRequest.getServerName();
+
+        log.info("🔍 DEBUG TenantFilter - serverName: {}, Host header: {}",
+                serverName, httpRequest.getHeader("Host"));
+
+        // Listar todos los headers para debug
+        Enumeration<String> headers = httpRequest.getHeaderNames();
+        while (headers.hasMoreElements()) {
+            String header = headers.nextElement();
+            log.debug("   {}: {}", header, httpRequest.getHeader(header));
+        }
+        if (serverName.equals("mibombay.com") ||
+                serverName.equals("www.mibombay.com")) {
+            log.debug("🌐 Dominio PRINCIPAL detectado - Mostrando landing page: {}", serverName);
+            // Solo redirigir a login si explícitamente piden /login de un subdominio válido
+            // (esto se manejará después del registro)
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // Después del if del dominio principal, pero ANTES de if
+        // (requestURI.startsWith("/superadmin/"))
+        log.info("🔍 DEBUG - Después de validar dominio principal");
+        log.info("🔍 DEBUG - serverName: '{}', requestURI: '{}'", serverName, requestURI);
+
+        // Luego la lógica continúa...
         if (requestURI.startsWith("/superadmin/")) {
             // Skip tenant lookup for superadmin
             log.debug("📌 SKIPPING tenant lookup for SUPER_ADMIN path: {}", requestURI);
@@ -47,14 +73,34 @@ public class TenantFilter implements Filter {
             return;
         }
 
+        log.info("🔍 DEBUG - Punto CRÍTICO 1 - serverName: '{}', URI: '{}'", serverName, requestURI);
+
         log.debug("📌 TenantFilter - RUTA: {}, Método: {}",
                 httpRequest.getRequestURI(), httpRequest.getMethod());
 
-        String serverName = httpRequest.getServerName(); // "centro.localhost"
         log.debug("🌐 Server Name: {}", serverName);
 
         String subdominio = extraerSubdominio(serverName);
         log.debug("🔍 Subdominio extraído: {}", subdominio);
+        // ⚠️ SI ES DOMINIO BASE (mibombay.com) → Landing page
+
+        // ⬇️ ⬇️ ⬇️ AGREGA ESTO ⬇️ ⬇️ ⬇️
+        log.info("🔍 DEBUG CRÍTICO - Subdominio: '{}'", subdominio);
+
+        if (subdominio == null) {
+            log.warn("🔍 DEBUG CRÍTICO - Subdominio es NULL! serverName: '{}'", serverName);
+            log.warn("🔍 DEBUG CRÍTICO - ¿serverName.endsWith('.mibombay.com')? {}",
+                    serverName.endsWith(".mibombay.com"));
+            chain.doFilter(request, response);
+            return;
+        }
+        // ⬆️ ⬆️ ⬆️ HASTA AQUÍ ⬆️ ⬆️ ⬆️
+
+        if (subdominio == null) {
+            log.debug("🌐 Sin subdominio - Mostrando landing page");
+            chain.doFilter(request, response);
+            return;
+        }
 
         Object statusCode = httpRequest.getAttribute("javax.servlet.error.status_code");
         if (statusCode != null) {
@@ -128,14 +174,66 @@ public class TenantFilter implements Filter {
         }
     }
 
+    // modificado para ver q pasa...
+
     public static String extraerSubdominio(String serverName) {
+        log.info("🔍 DEBUG extraerSubdominio INICIO - serverName: '{}'", serverName);
+
         if (serverName == null || serverName.isEmpty()) {
-            log.warn("ServerName es null o vacío, usando 'localhost'");
+            log.info("🔍 DEBUG extraerSubdominio: serverName es null o vacío");
+            return null;
+        }
+
+        log.info("🔍 DEBUG extraerSubdominio: ¿endsWith '.mibombay.com'? {}",
+                serverName.endsWith(".mibombay.com"));
+
+        // ⚠️ SI ES UNA IP → NO es subdominio
+        if (serverName.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
+            log.debug("🌐 Es una IP, no subdominio");
+            return null;
+        }
+
+        // ⚠️ SI ES EL DOMINIO BASE (mibombay.com) → NO es subdominio
+        if (serverName.equals("mibombay.com") ||
+                serverName.equals("www.mibombay.com")) {
+            log.debug("🌐 Es el dominio BASE");
+            return null;
+        }
+
+        // ⚠️ SI ES localhost → usar empresa por defecto
+        if (serverName.equals("localhost") || serverName.equals("127.0.0.1")) {
+            log.debug("🏠 Es localhost");
             return "localhost";
         }
-        String[] partes = serverName.split("\\.");
-        String subdominio = partes[0];
-        log.trace("ServerName: {}, Subdominio extraído: {}", serverName, subdominio);
-        return subdominio;
-    }
+
+        // Solo extraer si tiene formato: subdominio.mibombay.com
+        if (serverName.endsWith(".mibombay.com")) {
+            String subdominio = serverName.replace(".mibombay.com", "");
+            log.info("🔍 DEBUG extraerSubdominio: Reemplazado '{}' -> '{}'",
+                    serverName, subdominio);
+
+            // Evitar extraer "www" o vacío
+            if (!subdominio.isEmpty() && !subdominio.equals("www")) {
+                log.info("🔍 DEBUG extraerSubdominio: ✅ VÁLIDO: '{}'", subdominio);
+                return subdominio;
+            } else {
+                log.info("🔍 DEBUG extraerSubdominio: ❌ INVÁLIDO (vacío o www): '{}'", subdominio);
+                return null;
+            }
+        }
+
+        log.info("🔍 DEBUG extraerSubdominio: ❌ NO termina con .mibombay.com");
+        return null;
+    } /*
+       * public static String extraerSubdominio(String serverName) {
+       * if (serverName == null || serverName.isEmpty()) {
+       * log.warn("ServerName es null o vacío, usando 'localhost'");
+       * return "localhost";
+       * }
+       * String[] partes = serverName.split("\\.");
+       * String subdominio = partes[0];
+       * log.trace("ServerName: {}, Subdominio extraído: {}", serverName, subdominio);
+       * return subdominio;
+       * }
+       */
 }

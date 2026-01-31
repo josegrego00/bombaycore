@@ -8,6 +8,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -61,6 +62,7 @@ public class SpringSecurityConfig {
                 log.info("🛡️ Configurando SecurityFilterChain - Iniciando configuración de seguridad");
 
                 http
+                                .securityMatcher("/**")
                                 .authorizeHttpRequests(auth -> auth
                                                 // 1. RECURSOS PÚBLICOS
                                                 .requestMatchers(
@@ -101,6 +103,14 @@ public class SpringSecurityConfig {
                                                 .invalidateHttpSession(true)
                                                 .deleteCookies("JSESSIONID")
                                                 .permitAll())
+                                                //parte de secciones 
+                                .sessionManagement(session -> session
+                                                .sessionFixation().migrateSession() // Nueva sesión al login
+                                                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                                                .maximumSessions(1) // Solo 1 sesión por usuario
+                                                .maxSessionsPreventsLogin(false) // Permite nuevo login (cierra
+                                                                                 // anterior)
+                                                .expiredUrl("/login?logout"))
                                 .exceptionHandling(exception -> exception
                                                 .accessDeniedPage("/acceso-denegado"));
 
