@@ -1,0 +1,263 @@
+2026-02-03 04:19:10 [restartedMain] INFO  j.s.s.SistemadefacturacioneinventarioApplication - Starting SistemadefacturacioneinventarioApplication using Java 17.0.17 with PID 9178 (/home/josepino/Desktop/SistemaFacturaEInventario/sistemadefacturacioneinventario/target/classes started by josepino in /home/josepino/Desktop/SistemaFacturaEInventario/sistemadefacturacioneinventario)
+2026-02-03 04:19:10 [restartedMain] DEBUG j.s.s.SistemadefacturacioneinventarioApplication - Running with Spring Boot v3.5.8, Spring v6.2.14
+2026-02-03 04:19:10 [restartedMain] INFO  j.s.s.SistemadefacturacioneinventarioApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-03 04:19:10 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-02-03 04:19:10 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-02-03 04:19:11 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-03 04:19:11 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 62 ms. Found 14 JPA repository interfaces.
+2026-02-03 04:19:11 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8090 (http)
+2026-02-03 04:19:12 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-02-03 04:19:12 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.49]
+2026-02-03 04:19:12 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-02-03 04:19:12 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1181 ms
+2026-02-03 04:19:12 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-03 04:19:12 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.36.Final
+2026-02-03 04:19:12 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-02-03 04:19:12 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-03 04:19:12 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-02-03 04:19:12 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6803c704
+2026-02-03 04:19:12 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-02-03 04:19:12 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.45
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-02-03 04:19:13 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-03 04:19:13 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-03 04:19:13 [restartedMain] DEBUG o.h.s.internal.StatisticsInitiator - Statistics initialized [enabled=false]
+2026-02-03 04:19:14 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-02-03 04:19:14 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - 🔐 Configurando BCryptPasswordEncoder para encriptación de contraseñas
+2026-02-03 04:19:15 [restartedMain] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.WebConfig - ⚙️ Configurando interceptores de Spring MVC
+2026-02-03 04:19:15 [restartedMain] DEBUG j.s.s.config.WebConfig - Registrando CierreDiarioInterceptor
+2026-02-03 04:19:15 [restartedMain] DEBUG j.s.s.config.WebConfig - CierreDiarioInterceptor configurado. Patrones incluidos: /**
+2026-02-03 04:19:15 [restartedMain] DEBUG j.s.s.config.WebConfig - Patrones excluidos: /cierres/**, /login, /css/**, /js/**, /error
+2026-02-03 04:19:15 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name usuarioServicio
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - 🛡️ Configurando SecurityFilterChain para SUPERADMIN (Orden 1)
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - ✅ SecurityFilterChain SUPERADMIN configurado
+2026-02-03 04:19:15 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure Or [Mvc [pattern='/superadmin/**']] with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CsrfFilter, LogoutFilter, UsernamePasswordAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - 🛡️ Configurando SecurityFilterChain - Iniciando configuración de seguridad
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - ✅ SecurityFilterChain configurado exitosamente
+2026-02-03 04:19:15 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - Configuración de seguridad aplicada:
+2026-02-03 04:19:15 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Páginas públicas: /, /login, /acceso-denegado, /css/**, /js/**, /error
+2026-02-03 04:19:15 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Solo ADMIN: /compras/**, /proveedores/**
+2026-02-03 04:19:15 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - ADMIN o DEV: /productos/**, /ingredientes/**, /recetas/**, /reportes/**, /cierres/**
+2026-02-03 04:19:15 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Login: /login, Logout: /logout
+2026-02-03 04:19:15 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Página acceso denegado: /acceso-denegado
+2026-02-03 04:19:15 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure Or [Mvc [pattern='/**']] with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CsrfFilter, LogoutFilter, UsernamePasswordAuthenticationFilter, ConcurrentSessionFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2026-02-03 04:19:15 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-02-03 04:19:15 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8090 (http) with context path '/'
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.SistemadefacturacioneinventarioApplication - Started SistemadefacturacioneinventarioApplication in 5.287 seconds (process running for 5.702)
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.UsuarioInicial - 🔧 Iniciando carga de usuarios iniciales
+2026-02-03 04:19:15 [restartedMain] DEBUG org.hibernate.SQL - select count(*) from empresa e1_0
+2026-02-03 04:19:15 [restartedMain] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0
+2026-02-03 04:19:15 [restartedMain] DEBUG org.hibernate.SQL - select count(u1_0.id) from usuario u1_0 left join empresa e1_0 on e1_0.id=u1_0.empresa_id where e1_0.id=?
+2026-02-03 04:19:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-02-03 04:19:15 [restartedMain] DEBUG j.s.s.config.UsuarioInicial - Usuarios existentes en BD para empresa Sistema por Defecto: 3
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.UsuarioInicial - ✅ Ya existen usuarios para empresa Sistema por Defecto. No se crean nuevos.
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.DataInitializer - 🚀 INICIANDO CARGA DE DATOS INICIALES DEL SISTEMA
+2026-02-03 04:19:15 [restartedMain] DEBUG org.hibernate.SQL - select count(*) from empresa e1_0
+2026-02-03 04:19:15 [restartedMain] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ Empresa existente encontrada: Sistema por Defecto (ID: 1)
+2026-02-03 04:19:15 [restartedMain] DEBUG org.hibernate.SQL - select c1_0.id from cliente c1_0 left join empresa e1_0 on e1_0.id=c1_0.empresa_id where c1_0.nombre=? and e1_0.id=? limit ?
+2026-02-03 04:19:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [Consumidor Final]
+2026-02-03 04:19:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:BIGINT) <- [1]
+2026-02-03 04:19:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (3:INTEGER) <- [1]
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ Cliente 'Consumidor Final' ya existe para empresa Sistema por Defecto
+2026-02-03 04:19:15 [restartedMain] DEBUG org.hibernate.SQL - select count(u1_0.id) from usuario u1_0 left join empresa e1_0 on e1_0.id=u1_0.empresa_id where e1_0.id=?
+2026-02-03 04:19:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ Ya existen 3 usuarios para empresa Sistema por Defecto. No se crean nuevos.
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.DataInitializer - 👑 Verificando existencia de usuario SUPER_ADMIN
+2026-02-03 04:19:15 [restartedMain] DEBUG org.hibernate.SQL - select u1_0.id from usuario u1_0 where u1_0.rol=? limit ?
+2026-02-03 04:19:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [SUPER_ADMIN]
+2026-02-03 04:19:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:INTEGER) <- [1]
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ Usuario SUPER_ADMIN ya existe en el sistema
+2026-02-03 04:19:15 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ CARGA DE DATOS INICIALES COMPLETADA EXITOSAMENTE
+2026-02-03 04:19:41 [http-nio-8090-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-03 04:19:41 [http-nio-8090-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-02-03 04:19:41 [http-nio-8090-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /
+2026-02-03 04:19:41 [http-nio-8090-exec-1] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG TenantFilter - serverName: localhost, Host header: localhost:8090
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    host: localhost:8090
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    connection: keep-alive
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    sec-ch-ua: "Not(A:Brand";v="8", "Chromium";v="144", "Brave";v="144"
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    sec-ch-ua-mobile: ?0
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    sec-ch-ua-platform: "Linux"
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    upgrade-insecure-requests: 1
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    sec-gpc: 1
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    accept-language: en-US,en;q=0.5
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    sec-fetch-site: none
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    sec-fetch-mode: navigate
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    sec-fetch-user: ?1
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    sec-fetch-dest: document
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    accept-encoding: gzip, deflate, br, zstd
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter -    cookie: splunkweb_csrf_token_8000=5384569829649283902
+2026-02-03 04:19:41 [http-nio-8090-exec-1] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG - Después de validar dominio principal
+2026-02-03 04:19:41 [http-nio-8090-exec-1] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG - serverName: 'localhost', requestURI: '/'
+2026-02-03 04:19:41 [http-nio-8090-exec-1] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG - Punto CRÍTICO 1 - serverName: 'localhost', URI: '/'
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter - 📌 TenantFilter - RUTA: /, Método: GET
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter - 🌐 Server Name: localhost
+2026-02-03 04:19:41 [http-nio-8090-exec-1] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG extraerSubdominio INICIO - serverName: 'localhost'
+2026-02-03 04:19:41 [http-nio-8090-exec-1] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG extraerSubdominio: ¿endsWith '.mibombay.com'? false
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter - 🏠 Es localhost
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter - 🔍 Subdominio extraído: localhost
+2026-02-03 04:19:41 [http-nio-8090-exec-1] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG CRÍTICO - Subdominio: 'localhost'
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0 where e1_0.subdominio=?
+2026-02-03 04:19:41 [http-nio-8090-exec-1] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [localhost]
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG o.s.jdbc.datasource.DataSourceUtils - Setting JDBC Connection [HikariProxyConnection@1644862303 wrapping com.mysql.cj.jdbc.ConnectionImpl@6803c704] read-only
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0 where e1_0.id=?
+2026-02-03 04:19:41 [http-nio-8090-exec-1] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG o.s.jdbc.datasource.DataSourceUtils - Resetting read-only flag of JDBC Connection [HikariProxyConnection@1644862303 wrapping com.mysql.cj.jdbc.ConnectionImpl@6803c704]
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantContext - 🔧 TenantContext.setCurrentTenant(1) - Hilo: 42
+2026-02-03 04:19:41 [http-nio-8090-exec-1] INFO  j.s.s.context.TenantFilter - ⚠️ Usando empresa por defecto (localhost): 1 - Sistema por Defecto
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.config.CierreDiarioInterceptor - 🛡️ Interceptor ejecutando - Ruta: /, Empresa ID: 1
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.config.CierreDiarioInterceptor - 🔓 Ruta PÚBLICA excluida del interceptor: /
+2026-02-03 04:19:41 [http-nio-8090-exec-1] INFO  j.s.s.controladores.InicioController - 🏠 GET / - Mostrando landing page pública
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantContext - 🧹 TenantContext.clear() - Hilo: 42, Tenant anterior: 1
+2026-02-03 04:19:41 [http-nio-8090-exec-1] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 42, Request: /, Empresa ID anterior: 1
+2026-02-03 04:19:41 [http-nio-8090-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2026-02-03 04:19:41 [http-nio-8090-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2026-02-03 04:19:41 [http-nio-8090-exec-3] DEBUG o.s.s.web.DefaultRedirectStrategy - Redirecting to http://localhost:8090/login
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /login
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /login
+2026-02-03 04:19:41 [http-nio-8090-exec-2] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG TenantFilter - serverName: localhost, Host header: localhost:8090
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    host: localhost:8090
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    connection: keep-alive
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    sec-ch-ua-platform: "Linux"
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    sec-ch-ua: "Not(A:Brand";v="8", "Chromium";v="144", "Brave";v="144"
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    sec-ch-ua-mobile: ?0
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    sec-gpc: 1
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    accept-language: en-US,en;q=0.5
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    sec-fetch-site: same-origin
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    sec-fetch-mode: no-cors
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    sec-fetch-dest: image
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    referer: http://localhost:8090/
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    accept-encoding: gzip, deflate, br, zstd
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter -    cookie: splunkweb_csrf_token_8000=5384569829649283902; TENANT_SESSION=90D5B6B71787BF0CF2B3F8AB140F75C3
+2026-02-03 04:19:41 [http-nio-8090-exec-2] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG - Después de validar dominio principal
+2026-02-03 04:19:41 [http-nio-8090-exec-2] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG - serverName: 'localhost', requestURI: '/login'
+2026-02-03 04:19:41 [http-nio-8090-exec-2] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG - Punto CRÍTICO 1 - serverName: 'localhost', URI: '/login'
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter - 📌 TenantFilter - RUTA: /login, Método: GET
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter - 🌐 Server Name: localhost
+2026-02-03 04:19:41 [http-nio-8090-exec-2] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG extraerSubdominio INICIO - serverName: 'localhost'
+2026-02-03 04:19:41 [http-nio-8090-exec-2] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG extraerSubdominio: ¿endsWith '.mibombay.com'? false
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter - 🏠 Es localhost
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantFilter - 🔍 Subdominio extraído: localhost
+2026-02-03 04:19:41 [http-nio-8090-exec-2] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG CRÍTICO - Subdominio: 'localhost'
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0 where e1_0.subdominio=?
+2026-02-03 04:19:41 [http-nio-8090-exec-2] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [localhost]
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG o.s.jdbc.datasource.DataSourceUtils - Setting JDBC Connection [HikariProxyConnection@1615369610 wrapping com.mysql.cj.jdbc.ConnectionImpl@6803c704] read-only
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0 where e1_0.id=?
+2026-02-03 04:19:41 [http-nio-8090-exec-2] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG o.s.jdbc.datasource.DataSourceUtils - Resetting read-only flag of JDBC Connection [HikariProxyConnection@1615369610 wrapping com.mysql.cj.jdbc.ConnectionImpl@6803c704]
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantContext - 🔧 TenantContext.setCurrentTenant(1) - Hilo: 43
+2026-02-03 04:19:41 [http-nio-8090-exec-2] INFO  j.s.s.context.TenantFilter - ⚠️ Usando empresa por defecto (localhost): 1 - Sistema por Defecto
+2026-02-03 04:19:41 [http-nio-8090-exec-2] WARN  j.s.s.controladores.InicioController - ❌ Intento de acceso a /login desde dominio principal
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.context.TenantContext - 🧹 TenantContext.clear() - Hilo: 43, Tenant anterior: 1
+2026-02-03 04:19:41 [http-nio-8090-exec-2] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 43, Request: /login, Empresa ID anterior: 1
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /
+2026-02-03 04:19:41 [http-nio-8090-exec-4] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG TenantFilter - serverName: localhost, Host header: localhost:8090
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    host: localhost:8090
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    connection: keep-alive
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    sec-ch-ua-platform: "Linux"
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    sec-ch-ua: "Not(A:Brand";v="8", "Chromium";v="144", "Brave";v="144"
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    sec-ch-ua-mobile: ?0
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    sec-gpc: 1
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    accept-language: en-US,en;q=0.5
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    sec-fetch-site: same-origin
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    sec-fetch-mode: no-cors
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    sec-fetch-dest: image
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    referer: http://localhost:8090/
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    accept-encoding: gzip, deflate, br, zstd
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter -    cookie: splunkweb_csrf_token_8000=5384569829649283902; TENANT_SESSION=90D5B6B71787BF0CF2B3F8AB140F75C3
+2026-02-03 04:19:41 [http-nio-8090-exec-4] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG - Después de validar dominio principal
+2026-02-03 04:19:41 [http-nio-8090-exec-4] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG - serverName: 'localhost', requestURI: '/'
+2026-02-03 04:19:41 [http-nio-8090-exec-4] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG - Punto CRÍTICO 1 - serverName: 'localhost', URI: '/'
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter - 📌 TenantFilter - RUTA: /, Método: GET
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter - 🌐 Server Name: localhost
+2026-02-03 04:19:41 [http-nio-8090-exec-4] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG extraerSubdominio INICIO - serverName: 'localhost'
+2026-02-03 04:19:41 [http-nio-8090-exec-4] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG extraerSubdominio: ¿endsWith '.mibombay.com'? false
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter - 🏠 Es localhost
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantFilter - 🔍 Subdominio extraído: localhost
+2026-02-03 04:19:41 [http-nio-8090-exec-4] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG CRÍTICO - Subdominio: 'localhost'
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0 where e1_0.subdominio=?
+2026-02-03 04:19:41 [http-nio-8090-exec-4] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [localhost]
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG o.s.jdbc.datasource.DataSourceUtils - Setting JDBC Connection [HikariProxyConnection@1971630036 wrapping com.mysql.cj.jdbc.ConnectionImpl@6803c704] read-only
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0 where e1_0.id=?
+2026-02-03 04:19:41 [http-nio-8090-exec-4] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG o.s.jdbc.datasource.DataSourceUtils - Resetting read-only flag of JDBC Connection [HikariProxyConnection@1971630036 wrapping com.mysql.cj.jdbc.ConnectionImpl@6803c704]
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantContext - 🔧 TenantContext.setCurrentTenant(1) - Hilo: 45
+2026-02-03 04:19:41 [http-nio-8090-exec-4] INFO  j.s.s.context.TenantFilter - ⚠️ Usando empresa por defecto (localhost): 1 - Sistema por Defecto
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.config.CierreDiarioInterceptor - 🛡️ Interceptor ejecutando - Ruta: /, Empresa ID: 1
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.config.CierreDiarioInterceptor - 🔓 Ruta PÚBLICA excluida del interceptor: /
+2026-02-03 04:19:41 [http-nio-8090-exec-4] INFO  j.s.s.controladores.InicioController - 🏠 GET / - Mostrando landing page pública
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.context.TenantContext - 🧹 TenantContext.clear() - Hilo: 45, Tenant anterior: 1
+2026-02-03 04:19:41 [http-nio-8090-exec-4] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 45, Request: /, Empresa ID anterior: 1
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing POST /redirect-subdomain
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured POST /redirect-subdomain
+2026-02-03 04:19:47 [http-nio-8090-exec-5] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG TenantFilter - serverName: localhost, Host header: localhost:8090
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    host: localhost:8090
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    connection: keep-alive
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    content-length: 120
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    cache-control: max-age=0
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    sec-ch-ua: "Not(A:Brand";v="8", "Chromium";v="144", "Brave";v="144"
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    sec-ch-ua-mobile: ?0
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    sec-ch-ua-platform: "Linux"
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    origin: http://localhost:8090
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    content-type: application/x-www-form-urlencoded
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    upgrade-insecure-requests: 1
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    sec-gpc: 1
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    accept-language: en-US,en;q=0.5
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    sec-fetch-site: same-origin
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    sec-fetch-mode: navigate
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    sec-fetch-user: ?1
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    sec-fetch-dest: document
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    referer: http://localhost:8090/
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    accept-encoding: gzip, deflate, br, zstd
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter -    cookie: splunkweb_csrf_token_8000=5384569829649283902; TENANT_SESSION=90D5B6B71787BF0CF2B3F8AB140F75C3
+2026-02-03 04:19:47 [http-nio-8090-exec-5] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG - Después de validar dominio principal
+2026-02-03 04:19:47 [http-nio-8090-exec-5] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG - serverName: 'localhost', requestURI: '/redirect-subdomain'
+2026-02-03 04:19:47 [http-nio-8090-exec-5] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG - Punto CRÍTICO 1 - serverName: 'localhost', URI: '/redirect-subdomain'
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter - 📌 TenantFilter - RUTA: /redirect-subdomain, Método: POST
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter - 🌐 Server Name: localhost
+2026-02-03 04:19:47 [http-nio-8090-exec-5] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG extraerSubdominio INICIO - serverName: 'localhost'
+2026-02-03 04:19:47 [http-nio-8090-exec-5] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG extraerSubdominio: ¿endsWith '.mibombay.com'? false
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter - 🏠 Es localhost
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter - 🔍 Subdominio extraído: localhost
+2026-02-03 04:19:47 [http-nio-8090-exec-5] INFO  j.s.s.context.TenantFilter - 🔍 DEBUG CRÍTICO - Subdominio: 'localhost'
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0 where e1_0.subdominio=?
+2026-02-03 04:19:47 [http-nio-8090-exec-5] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [localhost]
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG o.s.jdbc.datasource.DataSourceUtils - Setting JDBC Connection [HikariProxyConnection@1023461297 wrapping com.mysql.cj.jdbc.ConnectionImpl@6803c704] read-only
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0 where e1_0.id=?
+2026-02-03 04:19:47 [http-nio-8090-exec-5] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG o.s.jdbc.datasource.DataSourceUtils - Resetting read-only flag of JDBC Connection [HikariProxyConnection@1023461297 wrapping com.mysql.cj.jdbc.ConnectionImpl@6803c704]
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantContext - 🔧 TenantContext.setCurrentTenant(1) - Hilo: 46
+2026-02-03 04:19:47 [http-nio-8090-exec-5] INFO  j.s.s.context.TenantFilter - ⚠️ Usando empresa por defecto (localhost): 1 - Sistema por Defecto
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.config.CierreDiarioInterceptor - 🛡️ Interceptor ejecutando - Ruta: /redirect-subdomain, Empresa ID: 1
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.config.CierreDiarioInterceptor - 🔓 Ruta PÚBLICA excluida del interceptor: /redirect-subdomain
+2026-02-03 04:19:47 [http-nio-8090-exec-5] INFO  j.s.s.controladores.InicioController - 🌐 POST /redirect-subdomain - Subdominio solicitado: defecto
+2026-02-03 04:19:47 [http-nio-8090-exec-5] INFO  j.s.s.controladores.InicioController - ✅ Redirigiendo a: https://defecto.mibombay.com/login
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantContext - 🧹 TenantContext.clear() - Hilo: 46, Tenant anterior: 1
+2026-02-03 04:19:47 [http-nio-8090-exec-5] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 46, Request: /redirect-subdomain, Empresa ID anterior: 1
+2026-02-03 04:29:14 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-02-03 04:29:14 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-02-03 04:29:14 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-03 04:29:14 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-02-03 04:29:14 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

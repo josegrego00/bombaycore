@@ -1,0 +1,338 @@
+2026-01-28 10:21:05 [restartedMain] INFO  j.s.s.SistemadefacturacioneinventarioApplication - Starting SistemadefacturacioneinventarioApplication using Java 17.0.17 with PID 13752 (/home/josepino/Desktop/SistemaFacturaEInventario/sistemadefacturacioneinventario/target/classes started by josepino in /home/josepino/Desktop/SistemaFacturaEInventario/sistemadefacturacioneinventario)
+2026-01-28 10:21:05 [restartedMain] DEBUG j.s.s.SistemadefacturacioneinventarioApplication - Running with Spring Boot v3.5.8, Spring v6.2.14
+2026-01-28 10:21:05 [restartedMain] INFO  j.s.s.SistemadefacturacioneinventarioApplication - No active profile set, falling back to 1 default profile: "default"
+2026-01-28 10:21:05 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-01-28 10:21:05 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-01-28 10:21:05 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-28 10:21:06 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 87 ms. Found 14 JPA repository interfaces.
+2026-01-28 10:21:06 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8090 (http)
+2026-01-28 10:21:06 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1275 ms
+2026-01-28 10:21:06 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-28 10:21:06 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.36.Final
+2026-01-28 10:21:06 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-01-28 10:21:07 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-28 10:21:07 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-28 10:21:07 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@61d2f2fe
+2026-01-28 10:21:07 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-28 10:21:07 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.44
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-28 10:21:08 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-28 10:21:08 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28 10:21:08 [restartedMain] DEBUG o.h.s.internal.StatisticsInitiator - Statistics initialized [enabled=false]
+2026-01-28 10:21:08 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-28 10:21:08 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - 🔐 Configurando BCryptPasswordEncoder para encriptación de contraseñas
+2026-01-28 10:21:09 [restartedMain] INFO  j.s.s.config.WebConfig - ⚙️ Configurando interceptores de Spring MVC
+2026-01-28 10:21:09 [restartedMain] DEBUG j.s.s.config.WebConfig - Registrando CierreDiarioInterceptor
+2026-01-28 10:21:09 [restartedMain] DEBUG j.s.s.config.WebConfig - CierreDiarioInterceptor configurado. Patrones incluidos: /**
+2026-01-28 10:21:09 [restartedMain] DEBUG j.s.s.config.WebConfig - Patrones excluidos: /cierres/**, /login, /css/**, /js/**, /error
+2026-01-28 10:21:09 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name usuarioServicio
+2026-01-28 10:21:09 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - 🛡️ Configurando SecurityFilterChain para SUPERADMIN (Orden 1)
+2026-01-28 10:21:09 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - ✅ SecurityFilterChain SUPERADMIN configurado
+2026-01-28 10:21:09 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure Or [Mvc [pattern='/superadmin/**']] with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CsrfFilter, LogoutFilter, UsernamePasswordAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2026-01-28 10:21:09 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - 🛡️ Configurando SecurityFilterChain - Iniciando configuración de seguridad
+2026-01-28 10:21:09 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - ✅ SecurityFilterChain configurado exitosamente
+2026-01-28 10:21:09 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - Configuración de seguridad aplicada:
+2026-01-28 10:21:09 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Páginas públicas: /, /login, /acceso-denegado, /css/**, /js/**, /error
+2026-01-28 10:21:09 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Solo ADMIN: /compras/**, /proveedores/**
+2026-01-28 10:21:09 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - ADMIN o DEV: /productos/**, /ingredientes/**, /recetas/**, /reportes/**, /cierres/**
+2026-01-28 10:21:09 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Login: /login, Logout: /logout
+2026-01-28 10:21:09 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Página acceso denegado: /acceso-denegado
+2026-01-28 10:21:09 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CsrfFilter, LogoutFilter, UsernamePasswordAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2026-01-28 10:21:10 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-01-28 10:21:10 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8090 (http) with context path '/'
+2026-01-28 10:21:10 [restartedMain] INFO  j.s.s.SistemadefacturacioneinventarioApplication - Started SistemadefacturacioneinventarioApplication in 5.235 seconds (process running for 5.645)
+2026-01-28 10:21:10 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-01-28 10:21:10 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-01-28 10:21:10 [restartedMain] INFO  j.s.s.config.DataInitializer - 🚀 INICIANDO CARGA DE DATOS INICIALES DEL SISTEMA
+2026-01-28 10:21:10 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28 10:21:10 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-28 10:21:10 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-01-28 10:21:10 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-28 10:21:11 [restartedMain] INFO  j.s.s.SistemadefacturacioneinventarioApplication - Starting SistemadefacturacioneinventarioApplication using Java 17.0.17 with PID 13912 (/home/josepino/Desktop/SistemaFacturaEInventario/sistemadefacturacioneinventario/target/classes started by josepino in /home/josepino/Desktop/SistemaFacturaEInventario/sistemadefacturacioneinventario)
+2026-01-28 10:21:11 [restartedMain] DEBUG j.s.s.SistemadefacturacioneinventarioApplication - Running with Spring Boot v3.5.8, Spring v6.2.14
+2026-01-28 10:21:11 [restartedMain] INFO  j.s.s.SistemadefacturacioneinventarioApplication - No active profile set, falling back to 1 default profile: "default"
+2026-01-28 10:21:11 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-01-28 10:21:11 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-01-28 10:21:11 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-28 10:21:11 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 58 ms. Found 14 JPA repository interfaces.
+2026-01-28 10:21:12 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8090 (http)
+2026-01-28 10:21:12 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-28 10:21:12 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.49]
+2026-01-28 10:21:12 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-01-28 10:21:12 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1095 ms
+2026-01-28 10:21:12 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-28 10:21:12 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.36.Final
+2026-01-28 10:21:12 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-01-28 10:21:12 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-28 10:21:12 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-28 10:21:13 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4b796810
+2026-01-28 10:21:13 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-28 10:21:13 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.44
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-28 10:21:13 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-28 10:21:13 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28 10:21:14 [restartedMain] DEBUG o.h.s.internal.StatisticsInitiator - Statistics initialized [enabled=false]
+2026-01-28 10:21:14 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-28 10:21:14 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - 🔐 Configurando BCryptPasswordEncoder para encriptación de contraseñas
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.WebConfig - ⚙️ Configurando interceptores de Spring MVC
+2026-01-28 10:21:15 [restartedMain] DEBUG j.s.s.config.WebConfig - Registrando CierreDiarioInterceptor
+2026-01-28 10:21:15 [restartedMain] DEBUG j.s.s.config.WebConfig - CierreDiarioInterceptor configurado. Patrones incluidos: /**
+2026-01-28 10:21:15 [restartedMain] DEBUG j.s.s.config.WebConfig - Patrones excluidos: /cierres/**, /login, /css/**, /js/**, /error
+2026-01-28 10:21:15 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name usuarioServicio
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - 🛡️ Configurando SecurityFilterChain para SUPERADMIN (Orden 1)
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - ✅ SecurityFilterChain SUPERADMIN configurado
+2026-01-28 10:21:15 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure Or [Mvc [pattern='/superadmin/**']] with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CsrfFilter, LogoutFilter, UsernamePasswordAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - 🛡️ Configurando SecurityFilterChain - Iniciando configuración de seguridad
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - ✅ SecurityFilterChain configurado exitosamente
+2026-01-28 10:21:15 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - Configuración de seguridad aplicada:
+2026-01-28 10:21:15 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Páginas públicas: /, /login, /acceso-denegado, /css/**, /js/**, /error
+2026-01-28 10:21:15 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Solo ADMIN: /compras/**, /proveedores/**
+2026-01-28 10:21:15 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - ADMIN o DEV: /productos/**, /ingredientes/**, /recetas/**, /reportes/**, /cierres/**
+2026-01-28 10:21:15 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Login: /login, Logout: /logout
+2026-01-28 10:21:15 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Página acceso denegado: /acceso-denegado
+2026-01-28 10:21:15 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CsrfFilter, LogoutFilter, UsernamePasswordAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2026-01-28 10:21:15 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-01-28 10:21:15 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8090 (http) with context path '/'
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.SistemadefacturacioneinventarioApplication - Started SistemadefacturacioneinventarioApplication in 4.86 seconds (process running for 5.193)
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.DataInitializer - 🚀 INICIANDO CARGA DE DATOS INICIALES DEL SISTEMA
+2026-01-28 10:21:15 [restartedMain] DEBUG org.hibernate.SQL - select count(*) from empresa e1_0
+2026-01-28 10:21:15 [restartedMain] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ Empresa existente encontrada: Sistema por Defecto (ID: 1)
+2026-01-28 10:21:15 [restartedMain] DEBUG org.hibernate.SQL - select c1_0.id from cliente c1_0 left join empresa e1_0 on e1_0.id=c1_0.empresa_id where c1_0.nombre=? and e1_0.id=? limit ?
+2026-01-28 10:21:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [Consumidor Final]
+2026-01-28 10:21:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:BIGINT) <- [1]
+2026-01-28 10:21:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (3:INTEGER) <- [1]
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ Cliente 'Consumidor Final' ya existe para empresa Sistema por Defecto
+2026-01-28 10:21:15 [restartedMain] DEBUG org.hibernate.SQL - select count(u1_0.id) from usuario u1_0 left join empresa e1_0 on e1_0.id=u1_0.empresa_id where e1_0.id=?
+2026-01-28 10:21:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ Ya existen 3 usuarios para empresa Sistema por Defecto. No se crean nuevos.
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.DataInitializer - 👑 Verificando existencia de usuario SUPER_ADMIN
+2026-01-28 10:21:15 [restartedMain] DEBUG org.hibernate.SQL - select u1_0.id from usuario u1_0 where u1_0.rol=? limit ?
+2026-01-28 10:21:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [SUPER_ADMIN]
+2026-01-28 10:21:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:INTEGER) <- [1]
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ Usuario SUPER_ADMIN ya existe en el sistema
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ CARGA DE DATOS INICIALES COMPLETADA EXITOSAMENTE
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.UsuarioInicial - 🔧 Iniciando carga de usuarios iniciales
+2026-01-28 10:21:15 [restartedMain] DEBUG org.hibernate.SQL - select count(*) from empresa e1_0
+2026-01-28 10:21:15 [restartedMain] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0
+2026-01-28 10:21:15 [restartedMain] DEBUG org.hibernate.SQL - select count(u1_0.id) from usuario u1_0 left join empresa e1_0 on e1_0.id=u1_0.empresa_id where e1_0.id=?
+2026-01-28 10:21:15 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-01-28 10:21:15 [restartedMain] DEBUG j.s.s.config.UsuarioInicial - Usuarios existentes en BD para empresa Sistema por Defecto: 3
+2026-01-28 10:21:15 [restartedMain] INFO  j.s.s.config.UsuarioInicial - ✅ Ya existen usuarios para empresa Sistema por Defecto. No se crean nuevos.
+2026-01-28 10:24:29 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-01-28 10:24:29 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-01-28 10:24:29 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28 10:24:29 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-28 10:24:29 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-01-28 10:24:30 [restartedMain] INFO  j.s.s.SistemadefacturacioneinventarioApplication - Starting SistemadefacturacioneinventarioApplication using Java 17.0.17 with PID 15071 (/home/josepino/Desktop/SistemaFacturaEInventario/sistemadefacturacioneinventario/target/classes started by josepino in /home/josepino/Desktop/SistemaFacturaEInventario/sistemadefacturacioneinventario)
+2026-01-28 10:24:30 [restartedMain] DEBUG j.s.s.SistemadefacturacioneinventarioApplication - Running with Spring Boot v3.5.8, Spring v6.2.14
+2026-01-28 10:24:30 [restartedMain] INFO  j.s.s.SistemadefacturacioneinventarioApplication - No active profile set, falling back to 1 default profile: "default"
+2026-01-28 10:24:30 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-01-28 10:24:30 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-01-28 10:24:31 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-28 10:24:31 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 70 ms. Found 14 JPA repository interfaces.
+2026-01-28 10:24:31 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8090 (http)
+2026-01-28 10:24:31 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-01-28 10:24:31 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.49]
+2026-01-28 10:24:31 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-01-28 10:24:31 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1188 ms
+2026-01-28 10:24:32 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-28 10:24:32 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.36.Final
+2026-01-28 10:24:32 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-01-28 10:24:32 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-28 10:24:32 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-01-28 10:24:32 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3cad7a26
+2026-01-28 10:24:32 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-01-28 10:24:32 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.44
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-01-28 10:24:33 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-28 10:24:33 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28 10:24:33 [restartedMain] DEBUG o.h.s.internal.StatisticsInitiator - Statistics initialized [enabled=false]
+2026-01-28 10:24:33 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-28 10:24:34 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - 🔐 Configurando BCryptPasswordEncoder para encriptación de contraseñas
+2026-01-28 10:24:34 [restartedMain] INFO  j.s.s.config.WebConfig - ⚙️ Configurando interceptores de Spring MVC
+2026-01-28 10:24:34 [restartedMain] DEBUG j.s.s.config.WebConfig - Registrando CierreDiarioInterceptor
+2026-01-28 10:24:34 [restartedMain] DEBUG j.s.s.config.WebConfig - CierreDiarioInterceptor configurado. Patrones incluidos: /**
+2026-01-28 10:24:34 [restartedMain] DEBUG j.s.s.config.WebConfig - Patrones excluidos: /cierres/**, /login, /css/**, /js/**, /error
+2026-01-28 10:24:35 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name usuarioServicio
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - 🛡️ Configurando SecurityFilterChain para SUPERADMIN (Orden 1)
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - ✅ SecurityFilterChain SUPERADMIN configurado
+2026-01-28 10:24:35 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure Or [Mvc [pattern='/superadmin/**']] with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CsrfFilter, LogoutFilter, UsernamePasswordAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - 🛡️ Configurando SecurityFilterChain - Iniciando configuración de seguridad
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.SpringSecurityConfig - ✅ SecurityFilterChain configurado exitosamente
+2026-01-28 10:24:35 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - Configuración de seguridad aplicada:
+2026-01-28 10:24:35 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Páginas públicas: /, /login, /acceso-denegado, /css/**, /js/**, /error
+2026-01-28 10:24:35 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Solo ADMIN: /compras/**, /proveedores/**
+2026-01-28 10:24:35 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - ADMIN o DEV: /productos/**, /ingredientes/**, /recetas/**, /reportes/**, /cierres/**
+2026-01-28 10:24:35 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Login: /login, Logout: /logout
+2026-01-28 10:24:35 [restartedMain] DEBUG j.s.s.config.SpringSecurityConfig - - Página acceso denegado: /acceso-denegado
+2026-01-28 10:24:35 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CsrfFilter, LogoutFilter, UsernamePasswordAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2026-01-28 10:24:35 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-01-28 10:24:35 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8090 (http) with context path '/'
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.SistemadefacturacioneinventarioApplication - Started SistemadefacturacioneinventarioApplication in 5.004 seconds (process running for 5.34)
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.DataInitializer - 🚀 INICIANDO CARGA DE DATOS INICIALES DEL SISTEMA
+2026-01-28 10:24:35 [restartedMain] DEBUG org.hibernate.SQL - select count(*) from empresa e1_0
+2026-01-28 10:24:35 [restartedMain] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ Empresa existente encontrada: Sistema por Defecto (ID: 1)
+2026-01-28 10:24:35 [restartedMain] DEBUG org.hibernate.SQL - select c1_0.id from cliente c1_0 left join empresa e1_0 on e1_0.id=c1_0.empresa_id where c1_0.nombre=? and e1_0.id=? limit ?
+2026-01-28 10:24:35 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [Consumidor Final]
+2026-01-28 10:24:35 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:BIGINT) <- [1]
+2026-01-28 10:24:35 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (3:INTEGER) <- [1]
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ Cliente 'Consumidor Final' ya existe para empresa Sistema por Defecto
+2026-01-28 10:24:35 [restartedMain] DEBUG org.hibernate.SQL - select count(u1_0.id) from usuario u1_0 left join empresa e1_0 on e1_0.id=u1_0.empresa_id where e1_0.id=?
+2026-01-28 10:24:35 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ Ya existen 3 usuarios para empresa Sistema por Defecto. No se crean nuevos.
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.DataInitializer - 👑 Verificando existencia de usuario SUPER_ADMIN
+2026-01-28 10:24:35 [restartedMain] DEBUG org.hibernate.SQL - select u1_0.id from usuario u1_0 where u1_0.rol=? limit ?
+2026-01-28 10:24:35 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [SUPER_ADMIN]
+2026-01-28 10:24:35 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:INTEGER) <- [1]
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ Usuario SUPER_ADMIN ya existe en el sistema
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.DataInitializer - ✅ CARGA DE DATOS INICIALES COMPLETADA EXITOSAMENTE
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.UsuarioInicial - 🔧 Iniciando carga de usuarios iniciales
+2026-01-28 10:24:35 [restartedMain] DEBUG org.hibernate.SQL - select count(*) from empresa e1_0
+2026-01-28 10:24:35 [restartedMain] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0
+2026-01-28 10:24:35 [restartedMain] DEBUG org.hibernate.SQL - select count(u1_0.id) from usuario u1_0 left join empresa e1_0 on e1_0.id=u1_0.empresa_id where e1_0.id=?
+2026-01-28 10:24:35 [restartedMain] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-01-28 10:24:35 [restartedMain] DEBUG j.s.s.config.UsuarioInicial - Usuarios existentes en BD para empresa Sistema por Defecto: 3
+2026-01-28 10:24:35 [restartedMain] INFO  j.s.s.config.UsuarioInicial - ✅ Ya existen usuarios para empresa Sistema por Defecto. No se crean nuevos.
+2026-01-28 10:24:49 [http-nio-8090-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-28 10:24:49 [http-nio-8090-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-01-28 10:24:49 [http-nio-8090-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-01-28 10:24:49 [http-nio-8090-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /superadmin/login
+2026-01-28 10:24:49 [http-nio-8090-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /superadmin/login
+2026-01-28 10:24:49 [http-nio-8090-exec-1] DEBUG j.s.s.context.TenantFilter - 📌 SKIPPING tenant lookup for SUPER_ADMIN path: /superadmin/login
+2026-01-28 10:24:49 [http-nio-8090-exec-1] DEBUG j.s.s.config.CierreDiarioInterceptor - 🛡️ Interceptor ejecutando - Ruta: /superadmin/login, Empresa ID: null
+2026-01-28 10:24:49 [http-nio-8090-exec-1] DEBUG j.s.s.config.CierreDiarioInterceptor - 🔓 EXCLUYENDO ruta SUPER_ADMIN del interceptor: /superadmin/login
+2026-01-28 10:24:49 [http-nio-8090-exec-1] INFO  j.s.s.c.SuperAdminController - 🔓 Mostrando página de login para SUPER_ADMIN
+2026-01-28 10:24:50 [http-nio-8090-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2026-01-28 10:24:50 [http-nio-8090-exec-1] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 41, Request: /superadmin/login, Empresa ID anterior: null
+2026-01-28 10:24:50 [http-nio-8090-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2026-01-28 10:24:50 [http-nio-8090-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2026-01-28 10:24:50 [http-nio-8090-exec-2] DEBUG o.s.s.web.DefaultRedirectStrategy - Redirecting to http://localhost:8090/login
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /login
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /login
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG j.s.s.context.TenantFilter - 📌 TenantFilter - RUTA: /login, Método: GET
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG j.s.s.context.TenantFilter - 🌐 Server Name: localhost
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG j.s.s.context.TenantFilter - 🔍 Subdominio extraído: localhost
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0 where e1_0.subdominio=?
+2026-01-28 10:24:50 [http-nio-8090-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [localhost]
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG o.s.jdbc.datasource.DataSourceUtils - Setting JDBC Connection [HikariProxyConnection@52922642 wrapping com.mysql.cj.jdbc.ConnectionImpl@3cad7a26] read-only
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0 where e1_0.id=?
+2026-01-28 10:24:50 [http-nio-8090-exec-3] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG o.s.jdbc.datasource.DataSourceUtils - Resetting read-only flag of JDBC Connection [HikariProxyConnection@52922642 wrapping com.mysql.cj.jdbc.ConnectionImpl@3cad7a26]
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG j.s.s.context.TenantContext - 🔧 TenantContext.setCurrentTenant(1) - Hilo: 43
+2026-01-28 10:24:50 [http-nio-8090-exec-3] INFO  j.s.s.context.TenantFilter - ⚠️ Usando empresa por defecto (localhost): 1 - Sistema por Defecto
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2026-01-28 10:24:50 [http-nio-8090-exec-3] INFO  j.s.s.controladores.InicioController - 🔐 GET /login - Mostrando página de login
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG j.s.s.context.TenantContext - 🧹 TenantContext.clear() - Hilo: 43, Tenant anterior: 1
+2026-01-28 10:24:50 [http-nio-8090-exec-3] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 43, Request: /login, Empresa ID anterior: 1
+2026-01-28 10:24:54 [http-nio-8090-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing POST /superadmin/login
+2026-01-28 10:24:54 [http-nio-8090-exec-4] DEBUG j.s.s.servicios.UsuarioServicio - Autenticando usuario: josepino para la empresa ID: null
+2026-01-28 10:24:54 [http-nio-8090-exec-4] INFO  j.s.s.servicios.UsuarioServicio - 🔐 Login - Usuario: josepino | Subdominio: localhost
+2026-01-28 10:24:54 [http-nio-8090-exec-4] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.activo,u1_0.contrasenna,u1_0.empresa_id,u1_0.nombre_usuario,u1_0.rol,u1_0.sucursal_id from usuario u1_0 where u1_0.nombre_usuario=?
+2026-01-28 10:24:54 [http-nio-8090-exec-4] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [josepino]
+2026-01-28 10:24:54 [http-nio-8090-exec-4] INFO  j.s.s.servicios.UsuarioServicio - ✅ SUPER_ADMIN cargado: josepino - Rol: SUPER_ADMIN
+2026-01-28 10:24:54 [http-nio-8090-exec-4] DEBUG o.s.s.a.d.DaoAuthenticationProvider - Authenticated user
+2026-01-28 10:24:54 [http-nio-8090-exec-4] DEBUG o.s.s.w.a.s.ChangeSessionIdAuthenticationStrategy - Changed session id from BFD33439A5AC564E853FAB73A502515C
+2026-01-28 10:24:54 [http-nio-8090-exec-4] DEBUG o.s.s.w.c.CsrfAuthenticationStrategy - Replaced CSRF Token
+2026-01-28 10:24:54 [http-nio-8090-exec-4] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Stored SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=josepino, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_SUPER_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=BFD33439A5AC564E853FAB73A502515C], Granted Authorities=[ROLE_SUPER_ADMIN]]] to HttpSession [org.apache.catalina.session.StandardSessionFacade@28fa2a69]
+2026-01-28 10:24:54 [http-nio-8090-exec-4] DEBUG o.s.s.w.a.UsernamePasswordAuthenticationFilter - Set SecurityContextHolder to UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=josepino, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_SUPER_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=BFD33439A5AC564E853FAB73A502515C], Granted Authorities=[ROLE_SUPER_ADMIN]]
+2026-01-28 10:24:54 [http-nio-8090-exec-4] DEBUG o.s.s.web.DefaultRedirectStrategy - Redirecting to /superadmin/dashboard
+2026-01-28 10:24:54 [http-nio-8090-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /superadmin/dashboard
+2026-01-28 10:24:54 [http-nio-8090-exec-5] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=josepino, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_SUPER_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=BFD33439A5AC564E853FAB73A502515C], Granted Authorities=[ROLE_SUPER_ADMIN]]]
+2026-01-28 10:24:54 [http-nio-8090-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /superadmin/dashboard
+2026-01-28 10:24:54 [http-nio-8090-exec-5] DEBUG j.s.s.context.TenantFilter - 📌 SKIPPING tenant lookup for SUPER_ADMIN path: /superadmin/dashboard
+2026-01-28 10:24:54 [http-nio-8090-exec-5] DEBUG j.s.s.config.CierreDiarioInterceptor - 🛡️ Interceptor ejecutando - Ruta: /superadmin/dashboard, Empresa ID: null
+2026-01-28 10:24:54 [http-nio-8090-exec-5] DEBUG j.s.s.config.CierreDiarioInterceptor - 🔓 EXCLUYENDO ruta SUPER_ADMIN del interceptor: /superadmin/dashboard
+2026-01-28 10:24:54 [http-nio-8090-exec-5] INFO  j.s.s.c.SuperAdminController - 📊 Accediendo al dashboard SUPER_ADMIN
+2026-01-28 10:24:54 [http-nio-8090-exec-5] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 45, Request: /superadmin/dashboard, Empresa ID anterior: null
+2026-01-28 10:24:54 [http-nio-8090-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /superadmin/empresas
+2026-01-28 10:24:54 [http-nio-8090-exec-6] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=josepino, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_SUPER_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=BFD33439A5AC564E853FAB73A502515C], Granted Authorities=[ROLE_SUPER_ADMIN]]]
+2026-01-28 10:24:54 [http-nio-8090-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /superadmin/empresas
+2026-01-28 10:24:54 [http-nio-8090-exec-6] DEBUG j.s.s.context.TenantFilter - 📌 SKIPPING tenant lookup for SUPER_ADMIN path: /superadmin/empresas
+2026-01-28 10:24:54 [http-nio-8090-exec-6] DEBUG j.s.s.config.CierreDiarioInterceptor - 🛡️ Interceptor ejecutando - Ruta: /superadmin/empresas, Empresa ID: null
+2026-01-28 10:24:54 [http-nio-8090-exec-6] DEBUG j.s.s.config.CierreDiarioInterceptor - 🔓 EXCLUYENDO ruta SUPER_ADMIN del interceptor: /superadmin/empresas
+2026-01-28 10:24:54 [http-nio-8090-exec-6] DEBUG o.s.jdbc.datasource.DataSourceUtils - Setting JDBC Connection [HikariProxyConnection@2040579566 wrapping com.mysql.cj.jdbc.ConnectionImpl@3cad7a26] read-only
+2026-01-28 10:24:54 [http-nio-8090-exec-6] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0
+2026-01-28 10:24:54 [http-nio-8090-exec-6] DEBUG o.s.jdbc.datasource.DataSourceUtils - Resetting read-only flag of JDBC Connection [HikariProxyConnection@2040579566 wrapping com.mysql.cj.jdbc.ConnectionImpl@3cad7a26]
+2026-01-28 10:24:54 [http-nio-8090-exec-6] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 46, Request: /superadmin/empresas, Empresa ID anterior: null
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /favicon.ico
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=josepino, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_SUPER_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=BFD33439A5AC564E853FAB73A502515C], Granted Authorities=[ROLE_SUPER_ADMIN]]]
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /favicon.ico
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG j.s.s.context.TenantFilter - 📌 TenantFilter - RUTA: /favicon.ico, Método: GET
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG j.s.s.context.TenantFilter - 🌐 Server Name: localhost
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG j.s.s.context.TenantFilter - 🔍 Subdominio extraído: localhost
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0 where e1_0.subdominio=?
+2026-01-28 10:24:54 [http-nio-8090-exec-7] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [localhost]
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG o.s.jdbc.datasource.DataSourceUtils - Setting JDBC Connection [HikariProxyConnection@1764218995 wrapping com.mysql.cj.jdbc.ConnectionImpl@3cad7a26] read-only
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG org.hibernate.SQL - select e1_0.id,e1_0.email_contacto,e1_0.estado,e1_0.fecha_creacion,e1_0.nombre,e1_0.plan,e1_0.subdominio,e1_0.telefono from empresa e1_0 where e1_0.id=?
+2026-01-28 10:24:54 [http-nio-8090-exec-7] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG o.s.jdbc.datasource.DataSourceUtils - Resetting read-only flag of JDBC Connection [HikariProxyConnection@1764218995 wrapping com.mysql.cj.jdbc.ConnectionImpl@3cad7a26]
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG j.s.s.context.TenantContext - 🔧 TenantContext.setCurrentTenant(1) - Hilo: 47
+2026-01-28 10:24:54 [http-nio-8090-exec-7] INFO  j.s.s.context.TenantFilter - ⚠️ Usando empresa por defecto (localhost): 1 - Sistema por Defecto
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG j.s.s.context.TenantFilter - 👤 Usuario autenticado en TenantFilter: josepino
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG j.s.s.servicios.UsuarioServicio - Buscando usuario: josepino en empresa ID: 1
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.activo,u1_0.contrasenna,u1_0.empresa_id,u1_0.nombre_usuario,u1_0.rol,u1_0.sucursal_id from usuario u1_0 where u1_0.nombre_usuario=? and u1_0.empresa_id=?
+2026-01-28 10:24:54 [http-nio-8090-exec-7] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [josepino]
+2026-01-28 10:24:54 [http-nio-8090-exec-7] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:BIGINT) <- [1]
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG j.s.s.config.CierreDiarioInterceptor - 🛡️ Interceptor ejecutando - Ruta: /favicon.ico, Empresa ID: 1
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG j.s.s.config.CierreDiarioInterceptor - 📅 Validación de cierre - Fecha: 2026-01-28, Hora: 10:00
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG org.hibernate.SQL - select case when count(cid1_0.id)>0 then 1 else 0 end from cierre_inventario_diario cid1_0 where cid1_0.fecha=? and cid1_0.estado=? and cid1_0.empresa_id=?
+2026-01-28 10:24:54 [http-nio-8090-exec-7] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:DATE) <- [2026-01-28]
+2026-01-28 10:24:54 [http-nio-8090-exec-7] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:VARCHAR) <- [COMPLETADO]
+2026-01-28 10:24:54 [http-nio-8090-exec-7] TRACE org.hibernate.orm.jdbc.bind - binding parameter (3:BIGINT) <- [1]
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG j.s.s.config.CierreDiarioInterceptor - ✅ Después de las 5:00 AM → Validar AYER: 2026-01-27
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG org.hibernate.SQL - select case when count(cid1_0.id)>0 then 1 else 0 end from cierre_inventario_diario cid1_0 where cid1_0.fecha=? and cid1_0.estado=? and cid1_0.empresa_id=?
+2026-01-28 10:24:54 [http-nio-8090-exec-7] TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:DATE) <- [2026-01-27]
+2026-01-28 10:24:54 [http-nio-8090-exec-7] TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:VARCHAR) <- [COMPLETADO]
+2026-01-28 10:24:54 [http-nio-8090-exec-7] TRACE org.hibernate.orm.jdbc.bind - binding parameter (3:BIGINT) <- [1]
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG j.s.s.config.CierreDiarioInterceptor - ¿Día 2026-01-27 cerrado?: false (Empresa ID: 1)
+2026-01-28 10:24:54 [http-nio-8090-exec-7] WARN  j.s.s.config.CierreDiarioInterceptor - 🚫 BLOQUEANDO acceso - Día 2026-01-27 no cerrado. Redirigiendo a /cierres/obligatorio
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG j.s.s.context.TenantContext - 🧹 TenantContext.clear() - Hilo: 47, Tenant anterior: 1
+2026-01-28 10:24:54 [http-nio-8090-exec-7] DEBUG j.s.s.c.TenantContextCleanupFilter - ✅ TenantContext limpiado - Hilo: 47, Request: /favicon.ico, Empresa ID anterior: 1
+2026-01-28 10:24:54 [http-nio-8090-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /cierres/obligatorio?fecha=2026-01-27
+2026-01-28 10:24:54 [http-nio-8090-exec-8] DEBUG o.s.s.w.c.HttpSessionSecurityContextRepository - Retrieved SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=josepino, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[ROLE_SUPER_ADMIN]], Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=BFD33439A5AC564E853FAB73A502515C], Granted Authorities=[ROLE_SUPER_ADMIN]]]
+2026-01-28 10:24:54 [http-nio-8090-exec-8] DEBUG o.s.s.w.a.AccessDeniedHandlerImpl - Forwarding to /acceso-denegado with status code 403
+2026-01-28 10:24:54 [http-nio-8090-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /acceso-denegado?fecha=2026-01-27
+2026-01-28 10:24:54 [http-nio-8090-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /acceso-denegado?fecha=2026-01-27
+2026-01-28 10:24:54 [http-nio-8090-exec-8] DEBUG j.s.s.config.CierreDiarioInterceptor - 🛡️ Interceptor ejecutando - Ruta: /acceso-denegado, Empresa ID: null
+2026-01-28 10:24:54 [http-nio-8090-exec-8] DEBUG j.s.s.config.CierreDiarioInterceptor - 🔓 Interceptando acceso-denegado - EMPRESA: null
+2026-01-28 10:24:54 [http-nio-8090-exec-8] WARN  j.s.s.controladores.InicioController - ⛔ GET /acceso-denigado - Mostrando página de acceso denegado
+2026-01-28 10:25:19 [http-nio-8090-exec-9] INFO  o.a.coyote.http11.Http11Processor - Error parsing HTTP request header
+ Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
+java.lang.IllegalArgumentException: Invalid character found in method name [0x160x030x010x070x1a0x010x000x070x160x030x030xe3D0x970x0a0xfbL\0x150xd70xe20x990xfa0xc4C0xc2l0xec0xdc0xea0xe80x800xbc0x830x880xe50xcc0xca0xcat0xfaT[ ]. HTTP method names must be tokens
+	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:402)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:272)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1774)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:973)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:491)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-01-28 10:30:13 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-01-28 10:30:13 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-01-28 10:30:13 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28 10:30:13 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-01-28 10:30:13 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

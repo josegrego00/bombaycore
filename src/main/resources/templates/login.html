@@ -2,74 +2,388 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Sistema Facturación</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema de Facturación MiBombay</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-light: rgba(102, 126, 234, 0.1);
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            max-width: 440px;
+            width: 100%;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .login-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            border: none;
+        }
+        
+        .brand-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-radius: 0 0 40% 40%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .brand-logo {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .brand-tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+        
+        .login-form {
+            padding: 2.5rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .input-group-text {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 10px 0 0 10px;
+        }
+        
+        .btn-login {
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .alert-custom {
+            border-radius: 10px;
+            border: none;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .alert-danger {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .alert-success {
+            background: rgba(25, 135, 84, 0.1);
+            color: #198754;
+            border-left: 4px solid #198754;
+        }
+        
+        .login-footer {
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid #eee;
+            background: #f8f9fa;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .back-home {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 1rem;
+        }
+        
+        .back-home:hover {
+            text-decoration: underline;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 576px) {
+            .login-form {
+                padding: 1.5rem;
+            }
+            
+            .brand-header {
+                padding: 2rem 1rem;
+            }
+            
+            .brand-logo {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0 text-center">
-                            <i class="bi bi-shop"></i> Mibombay
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <!-- Mensaje de error -->
-                        <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show">
-                            <strong>Error:</strong> Usuario o contraseña incorrectos
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Brand Header -->
+            <div class="brand-header">
+                <h1 class="brand-logo">🐈‍⬛ MiBombay</h1>
+                <p class="brand-tagline">Sistema de Gestión Empresarial</p>
+            </div>
+            
+            <!-- Login Form -->
+            <div class="login-form">
+                <!-- Error Message -->
+                <div th:if="${param.error}" class="alert alert-danger alert-custom">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-exclamation-triangle-fill me-3" style="font-size: 1.2rem;"></i>
+                        <div>
+                            <strong class="d-block mb-1">Credenciales incorrectas</strong>
+                            <small>Verifica tu usuario y contraseña e intenta nuevamente</small>
                         </div>
-                        
-                        <!-- Mensaje de logout -->
-                        <div th:if="${param.logout}" class="alert alert-success alert-dismissible fade show">
-                            Sesión cerrada exitosamente
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                        
-                        <!-- Formulario de login -->
-                        <form th:action="@{/login}" method="post">
-                            <div class="mb-3">
-                                <label for="username" class="form-label">
-                                    <i class="bi bi-person"></i> Usuario
-                                </label>
-                                <input type="text" 
-                                       class="form-control" 
-                                       id="username" 
-                                       name="username"
-                                       placeholder="Ingrese su usuario"
-                                       required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="password" class="form-label">
-                                    <i class="bi bi-lock"></i> Contraseña
-                                </label>
-                                <input type="password" 
-                                       class="form-control" 
-                                       id="password" 
-                                       name="password"
-                                       placeholder="Ingrese su contraseña"
-                                       required>
-                            </div>
-                            
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="card-footer text-center text-muted">
-                        <small>Sistema de Facturación e Inventario v1.0</small>
                     </div>
                 </div>
+                
+                <!-- Logout Message -->
+                <div th:if="${param.logout}" class="alert alert-success alert-custom">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill me-3" style="font-size: 1.2rem;"></i>
+                        <div>
+                            <strong class="d-block mb-1">Sesión cerrada exitosamente</strong>
+                            <small>Has salido del sistema correctamente</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Login Form -->
+                <form th:action="@{/login}" method="post" id="loginForm">
+                    <!-- Username -->
+                    <div class="mb-4">
+                        <label for="username" class="form-label">
+                            <i class="bi bi-person-circle me-2"></i>Usuario
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person"></i>
+                            </span>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="username" 
+                                   name="username"
+                                   placeholder="usuario@empresa.mibombay.com"
+                                   required
+                                   autocomplete="username"
+                                   autofocus>
+                        </div>
+                        <small class="text-muted mt-1">Ingresa tu usuario corporativo</small>
+                    </div>
+                    
+                    <!-- Password -->
+                    <div class="mb-4">
+                        <label for="password" class="form-label">
+                            <i class="bi bi-key me-2"></i>Contraseña
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-lock"></i>
+                            </span>
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="password" 
+                                   name="password"
+                                   placeholder="Ingresa tu contraseña"
+                                   required
+                                   autocomplete="current-password">
+                            <button type="button" class="btn password-toggle" id="togglePassword">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <small class="text-muted mt-1">Contraseña de acceso al sistema</small>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-login" id="loginButton">
+                            <span class="loading-spinner" id="loadingSpinner"></span>
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Iniciar Sesión
+                        </button>
+                    </div>
+                    
+                    <!-- Additional Links -->
+                    <div class="text-center">
+                        <a href="#" class="text-decoration-none text-primary d-block mb-2">
+                            <i class="bi bi-question-circle me-1"></i> ¿Problemas para acceder?
+                        </a>
+                        <small class="text-muted d-block">
+                            Contacta al administrador de tu empresa
+                        </small>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Footer -->
+            <div class="login-footer">
+                <small class="text-muted d-block">
+                    <i class="bi bi-shield-check me-1"></i> Sistema seguro - Todos los derechos reservados
+                </small>
+                <small class="text-muted d-block mt-1">
+                    MiBombay SAAS v2.0 | Gestión Empresarial Inteligente
+                </small>
+                <a href="/" class="back-home">
+                    <i class="bi bi-arrow-left"></i> Volver al inicio
+                </a>
             </div>
         </div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle password visibility
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = togglePassword.querySelector('i');
+            
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                eyeIcon.classList.toggle('bi-eye');
+                eyeIcon.classList.toggle('bi-eye-slash');
+            });
+            
+            // Form submission with loading state
+            const loginForm = document.getElementById('loginForm');
+            const loginButton = document.getElementById('loginButton');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            
+            loginForm.addEventListener('submit', function(e) {
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                
+                if (!username || !password) {
+                    e.preventDefault();
+                    if (!username) {
+                        document.getElementById('username').classList.add('is-invalid');
+                    }
+                    if (!password) {
+                        document.getElementById('password').classList.add('is-invalid');
+                    }
+                    return;
+                }
+                
+                // Show loading state
+                loginButton.disabled = true;
+                loadingSpinner.style.display = 'inline-block';
+                loginButton.querySelector('i').style.display = 'none';
+                loginButton.innerHTML = '<span class="loading-spinner" id="loadingSpinner"></span> Iniciando sesión...';
+                
+                // Re-enable after 5 seconds in case of error
+                setTimeout(() => {
+                    loginButton.disabled = false;
+                    loadingSpinner.style.display = 'none';
+                    loginButton.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i> Iniciar Sesión';
+                }, 5000);
+            });
+            
+            // Remove invalid class on input
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    this.classList.remove('is-invalid');
+                });
+            });
+            
+            // Auto-focus username field
+            document.getElementById('username').focus();
+        });
+    </script>
 </body>
 </html>

@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MiBombay - Sistema de Facturación para Restaurantes</title>
+    <meta name="viewport" content="width=device-width, initial.0" />
+    <title>MiBombay - Saas de Facturación</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -114,6 +114,120 @@
       .error-message {
         animation: fadeIn 0.3s ease-in;
       }
+
+      /* Estilos para la sección de clientes */
+      .clients-section {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 4rem 0;
+        margin-top: 4rem;
+      }
+      .client-logo {
+        height: 80px;
+        width: auto;
+        filter: grayscale(100%);
+        opacity: 0.7;
+        transition: all 0.3s ease;
+        object-fit: contain;
+      }
+      .client-logo:hover {
+        filter: grayscale(0%);
+        opacity: 1;
+        transform: scale(1.05);
+      }
+      .client-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+      }
+      .client-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+      }
+
+      /* Estilos para planes de precios */
+      .pricing-card {
+        border: 2px solid #e0e0e0;
+        border-radius: 20px;
+        padding: 2.5rem;
+        transition: all 0.3s ease;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+      }
+      .pricing-card:hover {
+        border-color: #667eea;
+        transform: translateY(-10px);
+      }
+      .pricing-card.premium {
+        border: 3px solid #764ba2;
+        box-shadow: 0 20px 40px rgba(118, 75, 162, 0.15);
+      }
+      .pricing-card.premium:hover {
+        border-color: #764ba2;
+      }
+      .price-badge {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.5rem 2rem;
+        border-radius: 0 0 20px 20px;
+        position: absolute;
+        top: 0;
+        right: 30px;
+        font-weight: bold;
+        font-size: 0.9rem;
+      }
+      .price-amount {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: #667eea;
+        line-height: 1;
+      }
+      .price-period {
+        color: #666;
+        font-size: 1rem;
+      }
+      .feature-check {
+        color: #198754;
+      }
+      .feature-uncheck {
+        color: #dc3545;
+      }
+
+      /* Estilos para la sección del desarrollador */
+      .developer-section {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.05) 0%,
+          rgba(118, 75, 162, 0.05) 100%
+        );
+        border-radius: 20px;
+        padding: 3rem;
+        margin-top: 4rem;
+      }
+      .developer-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 5px solid white;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        object-fit: cover;
+      }
+      .developer-tech-badge {
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        margin: 0.3rem;
+        display: inline-block;
+      }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -132,16 +246,17 @@
       <div class="brand-header">
         <h1 class="brand-logo">🐈‍⬛ MiBombay</h1>
         <p class="brand-tagline">
-          Sistema de Facturación e Inventario Inteligente para Restaurantes
+          Saas para Facturación y Gestion de Inventario
         </p>
       </div>
+
       <!-- Main Content -->
       <div class="landing-card p-4 p-md-5">
         <!-- Access Form -->
         <div class="access-section">
           <h2 class="text-center mb-4">🚀 Accede a tu Sistema</h2>
           <p class="text-center text-muted mb-4">
-            Ingresa el nombre único de tu restaurante para comenzar
+            Ingresa el nombre único de tu Empresa para comenzar
           </p>
 
           <!-- Error Message -->
@@ -180,7 +295,6 @@
               >
             </div>
 
-            <!-- Mensajes de error mejorados -->
             <div
               th:if="${param.error}"
               class="alert alert-danger error-message text-center"
@@ -188,7 +302,7 @@
               <i class="bi bi-exclamation-triangle me-2"></i>
               <span th:switch="${param.error}">
                 <span th:case="'empty'"
-                  >⚠️ Por favor ingresa el nombre de tu restaurante</span
+                  >⚠️ Por favor ingresa el nombre de tu Empresa</span
                 >
                 <span th:case="'invalid'"
                   >❌ Nombre no válido. Usa solo letras, números y guiones</span
@@ -210,8 +324,8 @@
           <div class="text-center mt-3">
             <small class="text-muted">
               ¿No tienes una cuenta?
-              <a href="#" class="text-primary text-decoration-none"
-                >Contáctanos para crear tu restaurante</a
+              <a href="#pricing" class="text-primary text-decoration-none"
+                >Mira nuestros planes y comienza hoy</a
               >
             </small>
           </div>
@@ -226,10 +340,7 @@
               </div>
               <div class="card-body text-center">
                 <h5 class="card-title">Facturación Rápida</h5>
-                <p class="card-text text-muted">
-                  Emite facturas electrónicas con impuestos automáticos y
-                  múltiples formas de pago.
-                </p>
+                <p class="card-text text-muted">Emicion de facturas.</p>
               </div>
             </div>
           </div>
@@ -265,6 +376,352 @@
           </div>
         </div>
 
+        <!-- ======= Sección Clientes ======= -->
+        <section class="clients-section mt-5">
+          <div class="container">
+            <div class="row mb-5">
+              <div class="col-12 text-center">
+                <h2 class="display-5 fw-bold mb-3">
+                  🏆 Clientes que Confían en Nosotros
+                </h2>
+                <p class="lead text-muted">
+                  Empresas que ya están usando MiBombay para optimizar su
+                  gestión
+                </p>
+              </div>
+            </div>
+
+            <div class="row g-4 mb-5">
+              <!-- Cliente 1 -->
+              <div class="col-md-4">
+                <div class="client-card">
+                  <div class="mb-4">
+                    <div class="feature-icon" style="width: 60px; height: 60px">
+                      <i class="bi bi-egg-fried"></i>
+                    </div>
+                  </div>
+                  <h4 class="fw-bold mb-3">Licoreria Europa</h4>
+                  <p class="text-muted mb-4">
+                    "Con MiBombay redujimos el tiempo de facturación en 60% y
+                    mejoramos el control de inventario significativamente."
+                  </p>
+                  <div class="text-primary fw-bold">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cliente 2 -->
+              <div class="col-md-4">
+                <div class="client-card">
+                  <div class="mb-4">
+                    <div class="feature-icon" style="width: 60px; height: 60px">
+                      <i class="bi bi-cup-hot"></i>
+                    </div>
+                  </div>
+                  <h4 class="fw-bold mb-3">Café Bombay</h4>
+                  <p class="text-muted mb-4">
+                    "El sistema multi-tenant nos permitió gestionar nuestras 3
+                    sucursales desde una sola plataforma. ¡Increíble!"
+                  </p>
+                  <div class="text-primary fw-bold">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cliente 3 -->
+              <div class="col-md-4">
+                <div class="client-card">
+                  <div class="mb-4">
+                    <div class="feature-icon" style="width: 60px; height: 60px">
+                      <i class="bi bi-basket"></i>
+                    </div>
+                  </div>
+                  <h4 class="fw-bold mb-3">Sushi Master</h4>
+                  <p class="text-muted mb-4">
+                    "Las alertas automáticas de inventario nos ahorran miles
+                    mensualmente en productos que antes se vencían."
+                  </p>
+                  <div class="text-primary fw-bold">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Logos de clientes -->
+            <div class="row g-4 justify-content-center align-items-center">
+              <div class="col-6 col-md-2 text-center">
+                <div
+                  class="feature-icon"
+                  style="width: 50px; height: 50px; margin: 0 auto"
+                >
+                  <i class="bi bi-shop"></i>
+                </div>
+                <p class="mt-2 small fw-bold">+2 Restaurantes</p>
+              </div>
+              <div class="col-6 col-md-2 text-center">
+                <div
+                  class="feature-icon"
+                  style="
+                    width: 50px;
+                    height: 50px;
+                    margin: 0 auto;
+                    background: linear-gradient(
+                      135deg,
+                      #20c997 0%,
+                      #198754 100%
+                    );
+                  "
+                >
+                  <i class="bi bi-cash-coin"></i>
+                </div>
+                <p class="mt-2 small fw-bold">+100 Facturados</p>
+              </div>
+              <div class="col-6 col-md-2 text-center">
+                <div
+                  class="feature-icon"
+                  style="
+                    width: 50px;
+                    height: 50px;
+                    margin: 0 auto;
+                    background: linear-gradient(
+                      135deg,
+                      #fd7e14 0%,
+                      #dc3545 100%
+                    );
+                  "
+                >
+                  <i class="bi bi-people"></i>
+                </div>
+                <p class="mt-2 small fw-bold">+3 Usuarios Activos</p>
+              </div>
+              <div class="col-6 col-md-2 text-center">
+                <div
+                  class="feature-icon"
+                  style="
+                    width: 50px;
+                    height: 50px;
+                    margin: 0 auto;
+                    background: linear-gradient(
+                      135deg,
+                      #6f42c1 0%,
+                      #d63384 100%
+                    );
+                  "
+                >
+                  <i class="bi bi-graph-up"></i>
+                </div>
+                <p class="mt-2 small fw-bold">99.8% Disponibilidad</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======= Sección Planes SAAS ======= -->
+        <section id="pricing" class="mt-5 pt-5 border-top">
+          <div class="container">
+            <div class="row mb-5">
+              <div class="col-12 text-center">
+                <h2 class="display-5 fw-bold mb-3">💎 Planes SAAS</h2>
+                <p class="lead text-muted">
+                  Elige el plan perfecto para tu Empresa
+                </p>
+              </div>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+              <!-- Plan Básico -->
+              <div class="col-lg-5">
+                <div class="pricing-card">
+                  <div class="text-center mb-4">
+                    <h3 class="fw-bold mb-3">Plan Básico</h3>
+                    <div class="price-amount mb-2">
+                      Gratis<span class="price-period">/mes</span>
+                    </div>
+                    <p class="text-muted">
+                      Ideal para pequeños restaurantes y food trucks
+                    </p>
+                  </div>
+
+                  <ul class="list-unstyled mb-4">
+                    <li class="mb-3">
+                      <i class="bi bi-check-circle-fill feature-check me-2"></i
+                      >Facturación ilimitada
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-check-circle-fill feature-check me-2"></i
+                      >Control de inventario básico
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-check-circle-fill feature-check me-2"></i
+                      >Reportes de ventas diarias
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-check-circle-fill feature-check me-2"></i
+                      >Soporte por whatsapp
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-x-circle-fill feature-uncheck me-2"></i
+                      >Multi-sucursal
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-x-circle-fill feature-uncheck me-2"></i
+                      >Reportes avanzados analíticos
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-x-circle-fill feature-uncheck me-2"></i
+                      >API de integración
+                    </li>
+                  </ul>
+
+                  <div class="text-center">
+                    <a
+                      href="#contacto"
+                      class="btn btn-outline-primary btn-lg w-100"
+                    >
+                      <i class="bi bi-cart-plus me-2"></i>Empezar
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Plan Premium -->
+              <div class="col-lg-5">
+                <div class="pricing-card premium">
+                  <div class="price-badge">MÁS POPULAR</div>
+                  <div class="text-center mb-4">
+                    <h3 class="fw-bold mb-3">Plan Premium</h3>
+                    <div class="price-amount mb-2">
+                      $50.000<span class="price-period">/mes</span>
+                    </div>
+                    <p class="text-muted">
+                      Para Empresas en crecimiento y cadenas
+                    </p>
+                  </div>
+
+                  <ul class="list-unstyled mb-4">
+                    <li class="mb-3">
+                      <i class="bi bi-check-circle-fill feature-check me-2"></i
+                      >Todas las características del Plan Básico
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-check-circle-fill feature-check me-2"></i
+                      >Multi-sucursal (hasta 2 locales)
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-check-circle-fill feature-check me-2"></i
+                      >Reportes analíticos avanzados
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-check-circle-fill feature-check me-2"></i
+                      >API de integración completa
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-check-circle-fill feature-check me-2"></i
+                      >Soporte prioritario 24/7
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-check-circle-fill feature-check me-2"></i
+                      >Backup automático diario
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-check-circle-fill feature-check me-2"></i
+                      >Capacitación personalizada
+                    </li>
+                  </ul>
+
+                  <div class="text-center">
+                    <a href="#contacto" class="btn btn-access btn-lg w-100">
+                      <i class="bi bi-rocket-takeoff me-2"></i>Empezar
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-12 text-center">
+                <p class="text-muted">
+                  <i class="bi bi-info-circle me-1"></i>
+                  Todos los planes incluyen actualizaciones gratuitas y
+                  seguridad garantizada.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======= Sección del Desarrollador ======= -->
+        <section class="developer-section mt-5">
+          <div class="container">
+            <div class="row align-items-center">
+              <div class="col-md-4 text-center mb-4 mb-md-0">
+                <img
+                  src="https://ui-avatars.com/api/?name=Jose+Pino&background=667eea&color=fff&size=200"
+                  alt="Jose Pino"
+                  class="developer-avatar"
+                />
+                <h4 class="fw-bold mt-3">Jose Pino</h4>
+                <p class="text-muted mb-0">Desarrollador FullStack</p>
+              </div>
+
+              <div class="col-md-8">
+                <h3 class="fw-bold mb-4">Detrás de MiBombay</h3>
+                <p class="lead text-muted mb-4">
+                  Soy <strong>Jose Pino</strong>, desarrollador backend
+                  especializado en Java Spring Boot con pasión por crear
+                  sistemas robustos, APIs REST eficientes y arquitecturas
+                  escalables como MiBombay.
+                </p>
+
+                <div class="mb-4">
+                  <h5 class="fw-bold mb-3">Stack Tecnológico Principal</h5>
+                  <div class="mb-3">
+                    <span class="developer-tech-badge">Java 17</span>
+                    <span class="developer-tech-badge">Spring Boot 3</span>
+                    <span class="developer-tech-badge">Spring Security</span>
+                    <span class="developer-tech-badge">MySQL</span>
+                    <span class="developer-tech-badge">Spring Data JPA</span>
+                    <span class="developer-tech-badge">Docker</span>
+                    <span class="developer-tech-badge">Thymeleaf</span>
+                  </div>
+                </div>
+
+                <p class="text-muted">
+                  Mi enfoque es desarrollar soluciones que resuelvan problemas
+                  reales, priorizando la seguridad, performance y escalabilidad.
+                  Cada línea de código en MiBombay está escrita con la máxima
+                  atención al detalle y mejores prácticas.
+                </p>
+
+                <div class="mt-4">
+                  <a
+                    href="http://84.247.142.4:8083/"
+                    class="btn btn-outline-primary me-3"
+                    target="_blank"
+                  >
+                    <i class="bi bi-person-workspace me-2"></i>Ver mi Portfolio
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- Admin Access -->
         <div class="text-center mt-5 pt-4 border-top">
           <p class="text-muted mb-0">
@@ -288,7 +745,16 @@
           <span class="mx-2">•</span>
           <a href="#" class="text-white text-decoration-none">Privacidad</a>
           <span class="mx-2">•</span>
-          <a href="#" class="text-white text-decoration-none">Soporte</a>
+          <a href="#contacto" class="text-white text-decoration-none"
+            >Soporte</a
+          >
+          <span class="mx-2">•</span>
+          <a
+            href="http://84.247.142.4:8083/"
+            target="_blank"
+            class="text-white text-decoration-none"
+            >Portfolio del Desarrollador</a
+          >
         </small>
       </div>
     </div>
@@ -331,7 +797,6 @@
         });
     </script>
 
-    <!-- Script para validación en tiempo real -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("accessForm");

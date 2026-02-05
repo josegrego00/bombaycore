@@ -37,7 +37,7 @@ public class InicioController {
         log.info("🔐 GET /login - Subdominio: {}", serverName);
         return "login";
     }
-
+//este es un comentario
     // 4. Procesar formulario de landing page - PÚBLICO
     @PostMapping("/redirect-subdomain")
     public String redirectToSubdomain(@RequestParam String subdomain) {
