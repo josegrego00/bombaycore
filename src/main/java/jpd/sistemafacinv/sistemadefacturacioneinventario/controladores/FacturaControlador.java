@@ -212,7 +212,7 @@ public class FacturaControlador {
     }
 
     @GetMapping("/ventas-hoy")
-    @PreAuthorize("hasRole('CAJERO')")
+    @PreAuthorize("hasAnyRole('ADMIN','CAJERO')")
     public String ventasHoy(Model model) {
         log.info("📈 GET /facturas/ventas-hoy - Mostrando ventas del día");
         Map<String, Object> resumen = facturaServicio.obtenerResumenVentasHoy();
