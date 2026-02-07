@@ -22,5 +22,11 @@ public interface IngredienteRepositorio extends JpaRepository<Ingrediente, Long>
         // Mantén métodos existentes pero agrega filtro empresa
         List<Ingrediente> findByNombreContainingIgnoreCaseAndEmpresaId(String nombre, Long empresaId);
 
+        //metodo para crear
+        boolean existsByNombreAndEmpresa_Id(String nombre, Long empresaId);
+        
+        //metodo para editar
+        boolean existsByNombreAndEmpresa_IdAndIdNot(String nombre, Long empresaId, Long id);
+
 
 }

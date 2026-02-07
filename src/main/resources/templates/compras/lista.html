@@ -1,105 +1,263 @@
 <!DOCTYPE html>
+<!-- Módulo: Compras a Proveedores - Estilo MiBombay -->
+<!-- VARIABLES PRESERVADAS: compras, totalPagadas, totalAnuladas, totalValor -->
+<!-- RUTAS PRESERVADAS -->
+
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Compras a Proveedores</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Compras a Proveedores</title>
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --negro: #0a0a0f;
+      --morado: #667eea;
+      --morado-oscuro: #764ba2;
+      --verde: #06d6a0;
+      --amarillo: #ffd166;
+      --rojo: #ef476f;
+      --gris-fondo: #f8fafc;
+      --gris-borde: #e2e8f0;
+      --blanco: #ffffff;
+    }
+
+    body {
+      background-color: var(--gris-fondo);
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    h1 {
+      font-weight: 700;
+      color: var(--negro);
+    }
+
+    /* Cards */
+    .card {
+      border: 2px solid var(--gris-borde);
+      border-radius: 14px;
+      box-shadow: 0 6px 16px rgba(10, 10, 15, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background-color: var(--morado);
+    }
+
+    .card-header {
+      background-color: var(--blanco);
+      border-bottom: 2px solid var(--gris-borde);
+      font-weight: 600;
+    }
+
+    /* Tabla */
+    table {
+      border: 2px solid var(--gris-borde);
+    }
+
+    thead {
+      background-color: var(--gris-fondo);
+    }
+
+    th {
+      font-weight: 600;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f1f5f9;
+    }
+
+    /* Badges */
+    .badge {
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 0.45em 0.7em;
+      font-size: 0.85rem;
+    }
+
+    .bg-success {
+      background-color: var(--verde) !important;
+      color: #000;
+    }
+
+    .bg-warning {
+      background-color: var(--amarillo) !important;
+      color: #000;
+    }
+
+    .bg-danger {
+      background-color: var(--rojo) !important;
+    }
+
+    .bg-info {
+      background-color: var(--morado) !important;
+      color: #fff;
+    }
+
+    /* Botones */
+    .btn {
+      font-weight: 600;
+      border-radius: 10px;
+    }
+
+    .btn-primary {
+      background-color: var(--morado);
+      border: 2px solid var(--morado-oscuro);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--morado-oscuro);
+    }
+
+    .btn-info {
+      background-color: var(--morado);
+      border: 2px solid var(--morado-oscuro);
+      color: #fff;
+    }
+
+    .btn-info:hover {
+      background-color: var(--morado-oscuro);
+      color: #fff;
+    }
+
+    /* Resumen */
+    .summary-card .card-header {
+      background-color: var(--morado);
+      color: #fff;
+      border-bottom: 2px solid var(--morado-oscuro);
+    }
+  </style>
 </head>
+
 <body>
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>📦 Compras a Proveedores</h1>
-        <div>
-            <a th:href="@{/principal}" class="btn btn-secondary">← Volver</a>
-            <a th:href="@{/compras/nueva}" class="btn btn-primary ms-2">➕ Nueva Compra</a>
-        </div>
-    </div>
+<div class="container mt-4 mb-5">
 
-    <div class="card">
-        <div class="card-body">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Factura</th>
-                        <th>Fecha</th>
-                        <th>Proveedor</th>
-                        <th>Subtotal</th>
-                        <th>IVA</th>
-                        <th>Total</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="compra : ${compras}">
-                        <td>
-                            <span th:text="${compra.numeroFactura}" class="fw-bold"></span>
-                        </td>
-                        <td>
-                            <span th:text="${#temporals.format(compra.fecha, 'dd/MM/yyyy HH:mm')}"></span>
-                        </td>
-                        <td>
-                            <span th:text="${compra.proveedor.nombre}"></span>
-                            <br>
-                            <small class="text-muted" th:text="${compra.proveedor.identificacion}"></small>
-                        </td>
-                        <td>
-                            <span th:text="${'$' + #numbers.formatDecimal(compra.subtotal, 1, 2)}"></span>
-                        </td>
-                        <td>
-                            <span th:text="${'$' + #numbers.formatDecimal(compra.iva, 1, 2)}"></span>
-                        </td>
-                        <td class="fw-bold">
-                            <span th:text="${'$' + #numbers.formatDecimal(compra.total, 1, 2)}"></span>
-                        </td>
-                        <td>
-                            <span th:if="${compra.estado == 'PAGADA'}" class="badge bg-success">PAGADA</span>
-                            <span th:if="${compra.estado == 'PENDIENTE'}" class="badge bg-warning">PENDIENTE</span>
-                            <span th:if="${compra.estado == 'ANULADA'}" class="badge bg-danger">ANULADA</span>
-                        </td>
-                        <td>
-                            <a th:href="@{/compras/detalle/{id}(id=${compra.id})}" 
-                               class="btn btn-sm btn-info">👁️ Ver</a>
-                        </td>
-                    </tr>
-                    <tr th:if="${#lists.isEmpty(compras)}">
-                        <td colspan="8" class="text-center text-muted py-4">
-                            No hay compras registradas
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-box-seam me-2"></i>Compras a Proveedores</h1>
+    <div>
+      <a th:href="@{/principal}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Volver
+      </a>
+      <a th:href="@{/compras/nueva}" class="btn btn-primary ms-2">
+        <i class="bi bi-plus-circle"></i> Nueva Compra
+      </a>
     </div>
+  </div>
 
-  <div class="row mt-4">
+  <!-- Tabla -->
+  <div class="card mb-4">
+    <div class="card-body">
+
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>Factura</th>
+            <th>Fecha</th>
+            <th>Proveedor</th>
+            <th>Subtotal</th>
+            <th>IVA</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr th:each="compra : ${compras}">
+            <td class="fw-bold" th:text="${compra.numeroFactura}"></td>
+
+            <td th:text="${#temporals.format(compra.fecha, 'dd/MM/yyyy HH:mm')}"></td>
+
+            <td>
+              <span th:text="${compra.proveedor.nombre}"></span><br>
+              <small class="text-muted" th:text="${compra.proveedor.identificacion}"></small>
+            </td>
+
+            <td th:text="${'$' + #numbers.formatDecimal(compra.subtotal, 1, 2)}"></td>
+
+            <td th:text="${'$' + #numbers.formatDecimal(compra.iva, 1, 2)}"></td>
+
+            <td class="fw-bold"
+                th:text="${'$' + #numbers.formatDecimal(compra.total, 1, 2)}">
+            </td>
+
+            <td>
+              <span th:if="${compra.estado == 'PAGADA'}" class="badge bg-success">PAGADA</span>
+              <span th:if="${compra.estado == 'PENDIENTE'}" class="badge bg-warning">PENDIENTE</span>
+              <span th:if="${compra.estado == 'ANULADA'}" class="badge bg-danger">ANULADA</span>
+            </td>
+
+            <td>
+              <a th:href="@{/compras/detalle/{id}(id=${compra.id})}"
+                 class="btn btn-sm btn-info">
+                <i class="bi bi-eye"></i> Ver
+              </a>
+            </td>
+          </tr>
+
+          <tr th:if="${#lists.isEmpty(compras)}">
+            <td colspan="8" class="text-center text-muted py-4">
+              No hay compras registradas
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- Resumen -->
+  <div class="row">
     <div class="col-md-4">
-        <div class="card">
-            <div class="card-header bg-info text-white">
-                <h6 class="mb-0">Resumen</h6>
-            </div>
-            <div class="card-body">
-                <div class="mb-2">
-                    <strong>Total Compras:</strong>
-                    <span class="float-end" th:text="${compras.size()}"></span>
-                </div>
-                <div class="mb-2">
-                    <strong>Pagadas:</strong>
-                    <span class="float-end badge bg-success" th:text="${totalPagadas}"></span>
-                </div>
-                <div class="mb-2">
-                    <strong>Anuladas:</strong>
-                    <span class="float-end badge bg-danger" th:text="${totalAnuladas}"></span>
-                </div>
-                <div class="mb-2">
-                    <strong>Total Valor:</strong>
-                    <span class="float-end fw-bold" th:text="${'$' + #numbers.formatDecimal(totalValor, 1, 2)}"></span>
-                </div>
-            </div>
+      <div class="card summary-card">
+        <div class="card-header">
+          <i class="bi bi-clipboard-data me-2"></i>Resumen
         </div>
+        <div class="card-body">
+          <div class="mb-2">
+            <strong>Total Compras:</strong>
+            <span class="float-end" th:text="${compras.size()}"></span>
+          </div>
+          <div class="mb-2">
+            <strong>Pagadas:</strong>
+            <span class="float-end badge bg-success" th:text="${totalPagadas}"></span>
+          </div>
+          <div class="mb-2">
+            <strong>Anuladas:</strong>
+            <span class="float-end badge bg-danger" th:text="${totalAnuladas}"></span>
+          </div>
+          <div class="mb-2">
+            <strong>Total Valor:</strong>
+            <span class="float-end fw-bold"
+                  th:text="${'$' + #numbers.formatDecimal(totalValor, 1, 2)}">
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

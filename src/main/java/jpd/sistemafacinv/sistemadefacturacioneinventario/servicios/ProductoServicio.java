@@ -24,7 +24,7 @@ import lombok.*;
 public class ProductoServicio {
 
     private static final Logger log = LoggerFactory.getLogger(ProductoServicio.class);
-    
+
     private final ProductoRepositorio productoRepo;
     private final RecetaRepositorio recetaRepo;
     private final IngredienteRepositorio ingredienteRepo;
@@ -32,13 +32,14 @@ public class ProductoServicio {
     public Producto crearProducto(Producto producto) {
         Long empresaId = TenantContext.getCurrentTenant();
         log.debug("Creando producto '{}' para empresa ID: {}", producto.getNombre(), empresaId);
-        
         validarProducto(producto);
-        Empresa empresa = new Empresa();
+        if (productoRepo.existsByNombreAndEmpresa_Id(producto.getNombre(), empresaId)) {
+            log.warn("Intento de Crear 2 productos con el mismo nombre");
+            throw new RuntimeException("Ya existe un producto con ese nombre");
+        }
+                Empresa empresa = new Empresa();
         empresa.setId(empresaId);
         producto.setEmpresa(empresa);
-
-        validarProducto(producto);
 
         if (producto.isTieneReceta()) {
             log.debug("Producto con receta, validando receta asociada");
@@ -50,8 +51,8 @@ public class ProductoServicio {
             // Asegurar que la receta existe en BD
             Receta receta = recetaRepo.findByIdAndEmpresaId(producto.getReceta().getId(), empresaId)
                     .orElseThrow(() -> {
-                        log.error("Receta no encontrada ID: {} para empresa ID: {}", 
-                                 producto.getReceta().getId(), empresaId);
+                        log.error("Receta no encontrada ID: {} para empresa ID: {}",
+                                producto.getReceta().getId(), empresaId);
                         return new RuntimeException("Receta no encontrada");
                     });
             producto.setReceta(receta);
@@ -62,28 +63,28 @@ public class ProductoServicio {
         } else {
             log.debug("Producto sin receta creado: '{}'", producto.getNombre());
         }
-        
+
         Producto productoCreado = productoRepo.save(producto);
-        log.info("Producto creado exitosamente: '{}' (ID: {}) para empresa ID: {}", 
+        log.info("Producto creado exitosamente: '{}' (ID: {}) para empresa ID: {}",
                 productoCreado.getNombre(), productoCreado.getId(), empresaId);
-        
+
         return productoCreado;
     }
 
     public List<Producto> listarProductos() {
         Long empresaId = TenantContext.getCurrentTenant();
         log.debug("Listando productos para empresa ID: {}", empresaId);
-        
+
         List<Producto> productos = productoRepo.findByEmpresaId(empresaId);
         log.debug("Encontrados {} productos para empresa ID: {}", productos.size(), empresaId);
-        
+
         return productos;
     }
 
     public Producto buscarProducto(long id) {
         Long empresaId = TenantContext.getCurrentTenant();
         log.debug("Buscando producto ID: {} para empresa ID: {}", id, empresaId);
-        
+
         return productoRepo.findByIdAndEmpresaId(id, empresaId)
                 .orElseThrow(() -> {
                     log.error("Producto no encontrado ID: {} para empresa ID: {}", id, empresaId);
@@ -94,10 +95,10 @@ public class ProductoServicio {
     public Producto actualizarProducto(int id, Producto productoActualizado) {
         Long empresaId = TenantContext.getCurrentTenant();
         log.debug("Actualizando producto ID: {} para empresa ID: {}", id, empresaId);
-        
+
         Producto producto = buscarProducto(id);
         log.debug("Producto encontrado para actualizar: '{}' (ID: {})", producto.getNombre(), id);
-        
+
         producto.setNombre(productoActualizado.getNombre());
         producto.setTieneReceta(productoActualizado.isTieneReceta());
         producto.setPrecioVenta(productoActualizado.getPrecioVenta());
@@ -115,8 +116,8 @@ public class ProductoServicio {
             // Actualizar receta (traer de BD)
             Receta receta = recetaRepo.findByIdAndEmpresaId(productoActualizado.getReceta().getId(), empresaId)
                     .orElseThrow(() -> {
-                        log.error("Receta no encontrada ID: {} para empresa ID: {}", 
-                                 productoActualizado.getReceta().getId(), empresaId);
+                        log.error("Receta no encontrada ID: {} para empresa ID: {}",
+                                productoActualizado.getReceta().getId(), empresaId);
                         return new RuntimeException("Receta no encontrada");
                     });
             producto.setReceta(receta);
@@ -131,25 +132,25 @@ public class ProductoServicio {
         }
 
         Producto productoActualizadoObj = productoRepo.save(producto);
-        log.info("Producto actualizado exitosamente: '{}' (ID: {}) para empresa ID: {}", 
+        log.info("Producto actualizado exitosamente: '{}' (ID: {}) para empresa ID: {}",
                 productoActualizadoObj.getNombre(), id, empresaId);
-        
+
         return productoActualizadoObj;
     }
 
     public void eliminarProducto(long id) {
         log.debug("Eliminando producto ID: {}", id);
-        
+
         Producto producto = buscarProducto(id);
         productoRepo.delete(producto);
-        
+
         log.info("Producto eliminado: '{}' (ID: {})", producto.getNombre(), id);
     }
 
     // Método para descontar stock cuando se vende
     public boolean descontarStock(long idProducto, int cantidad) {
         log.debug("Descontando stock - Producto ID: {}, Cantidad: {}", idProducto, cantidad);
-        
+
         Producto producto = buscarProducto(idProducto);
 
         if (producto.isTieneReceta()) {
@@ -162,11 +163,11 @@ public class ProductoServicio {
             if (producto.getStock() >= cantidad) {
                 producto.setStock(producto.getStock() - cantidad);
                 productoRepo.save(producto);
-                log.info("Stock descontado exitosamente. Producto: '{}', Cantidad: {}, Stock restante: {}", 
+                log.info("Stock descontado exitosamente. Producto: '{}', Cantidad: {}, Stock restante: {}",
                         producto.getNombre(), cantidad, producto.getStock());
                 return true;
             }
-            log.warn("Stock insuficiente. Producto: '{}', Stock actual: {}, Cantidad requerida: {}", 
+            log.warn("Stock insuficiente. Producto: '{}', Stock actual: {}, Cantidad requerida: {}",
                     producto.getNombre(), producto.getStock(), cantidad);
             return false;
         }
@@ -193,27 +194,27 @@ public class ProductoServicio {
 
             int maxPorIngrediente = (int) (stockDisponible / cantidadPorUnidad);
             maximoPosible = Math.min(maximoPosible, maxPorIngrediente);
-            
-            log.trace("Ingrediente: '{}' - Stock: {}, Por unidad: {}, Máx posible: {}", 
-                     ingrediente.getNombre(), stockDisponible, cantidadPorUnidad, maxPorIngrediente);
+
+            log.trace("Ingrediente: '{}' - Stock: {}, Por unidad: {}, Máx posible: {}",
+                    ingrediente.getNombre(), stockDisponible, cantidadPorUnidad, maxPorIngrediente);
         }
 
         int resultado = maximoPosible == Integer.MAX_VALUE ? 0 : maximoPosible;
         log.debug("Stock posible calculado para producto '{}': {}", producto.getNombre(), resultado);
-        
+
         return resultado;
     }
 
     private boolean descontarIngredientesReceta(Receta receta, int cantidad) {
         log.debug("Descontando ingredientes de receta '{}', cantidad: {}", receta.getNombre(), cantidad);
-        
+
         // Primero validar que hay suficiente stock
         for (RecetaDetalle detalle : receta.getIngredientes()) {
             Ingrediente ing = detalle.getIngrediente();
             double cantidadNecesaria = detalle.getCantidadIngrediente() * cantidad;
 
             if (ing.getStockActual() < cantidadNecesaria) {
-                log.warn("Stock insuficiente en ingrediente '{}'. Stock actual: {}, Necesario: {}", 
+                log.warn("Stock insuficiente en ingrediente '{}'. Stock actual: {}, Necesario: {}",
                         ing.getNombre(), ing.getStockActual(), cantidadNecesaria);
                 return false; // No hay suficiente ingrediente
             }
@@ -225,15 +226,15 @@ public class ProductoServicio {
             Ingrediente ing = detalle.getIngrediente();
             double cantidadNecesaria = detalle.getCantidadIngrediente() * cantidad;
             double stockAnterior = ing.getStockActual();
-            
+
             ing.setStockActual(stockAnterior - cantidadNecesaria);
             ingredienteRepo.save(ing);
-            
-            log.trace("Ingrediente '{}' descontado: {}, Stock anterior: {}, Stock nuevo: {}", 
-                     ing.getNombre(), cantidadNecesaria, stockAnterior, ing.getStockActual());
+
+            log.trace("Ingrediente '{}' descontado: {}, Stock anterior: {}, Stock nuevo: {}",
+                    ing.getNombre(), cantidadNecesaria, stockAnterior, ing.getStockActual());
         }
 
-        log.info("Ingredientes descontados exitosamente de receta '{}' para {} unidades", 
+        log.info("Ingredientes descontados exitosamente de receta '{}' para {} unidades",
                 receta.getNombre(), cantidad);
         return true;
     }
@@ -249,7 +250,7 @@ public class ProductoServicio {
             log.error("Validación fallida: Stock negativo para producto sin receta");
             throw new RuntimeException("Stock no puede ser negativo");
         }
-        
+
         log.debug("Validación de producto exitosa");
     }
 

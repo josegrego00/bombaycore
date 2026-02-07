@@ -96,12 +96,6 @@ public class TenantFilter implements Filter {
         }
         // ⬆️ ⬆️ ⬆️ HASTA AQUÍ ⬆️ ⬆️ ⬆️
 
-        if (subdominio == null) {
-            log.debug("🌐 Sin subdominio - Mostrando landing page");
-            chain.doFilter(request, response);
-            return;
-        }
-
         Object statusCode = httpRequest.getAttribute("javax.servlet.error.status_code");
         if (statusCode != null) {
             log.debug("📌 TenantFilter - STATUS: {}", statusCode);
@@ -193,17 +187,17 @@ public class TenantFilter implements Filter {
             return null;
         }
 
+        // defecto.localhost → defecto
+        if (serverName.endsWith(".localhost")) {
+            String subdominio = serverName.replace(".localhost", "");
+            log.info("🏠 Subdominio DEV detectado: {}", subdominio);
+            return subdominio;
+        }
         // ⚠️ SI ES EL DOMINIO BASE (mibombay.com) → NO es subdominio
         if (serverName.equals("mibombay.com") ||
                 serverName.equals("www.mibombay.com")) {
             log.debug("🌐 Es el dominio BASE");
             return null;
-        }
-
-        // ⚠️ SI ES localhost → usar empresa por defecto
-        if (serverName.equals("localhost") || serverName.equals("127.0.0.1")) {
-            log.debug("🏠 Es localhost");
-            return "localhost";
         }
 
         // Solo extraer si tiene formato: subdominio.mibombay.com

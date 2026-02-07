@@ -26,17 +26,17 @@ import lombok.AllArgsConstructor;
 public class ProductoControlador {
 
     private static final Logger log = LoggerFactory.getLogger(ProductoControlador.class);
-    
+
     private final ProductoServicio productoServicio;
     private final RecetaServicio recetaServicio;
 
     @GetMapping
     public String listarProductos(Model modelo) {
         log.info("📋 GET /productos - Listando productos");
-        
+
         List<Producto> productos = productoServicio.listarProductos();
         log.debug("Encontrados {} productos", productos.size());
-        
+
         // Mapa: productoId -> stockPosible
         Map<Long, Integer> stockPosibleMap = new HashMap<>();
         Map<Integer, String> ingredienteLimitanteMap = new HashMap<>();
@@ -45,8 +45,8 @@ public class ProductoControlador {
             if (producto.isTieneReceta()) {
                 int stockPosible = productoServicio.calcularStockPosible(producto.getId());
                 stockPosibleMap.put(producto.getId(), stockPosible);
-                log.trace("Producto con receta: {} (ID: {}), Stock posible: {}", 
-                         producto.getNombre(), producto.getId(), stockPosible);
+                log.trace("Producto con receta: {} (ID: {}), Stock posible: {}",
+                        producto.getNombre(), producto.getId(), stockPosible);
             }
         }
 
@@ -72,10 +72,10 @@ public class ProductoControlador {
         Producto producto = productoServicio.buscarProducto(id);
         modelo.addAttribute("producto", producto);
         modelo.addAttribute("recetas", recetaServicio.listaRecetas());
-        
-        log.debug("Producto encontrado: '{}', Tiene receta: {}, Receta ID: {}", 
-                 producto.getNombre(), producto.isTieneReceta(), 
-                 producto.getReceta() != null ? producto.getReceta().getId() : "null");
+
+        log.debug("Producto encontrado: '{}', Tiene receta: {}, Receta ID: {}",
+                producto.getNombre(), producto.isTieneReceta(),
+                producto.getReceta() != null ? producto.getReceta().getId() : "null");
         return "productos/formulario";
     }
 
@@ -85,57 +85,76 @@ public class ProductoControlador {
             @RequestParam String nombre,
             @RequestParam(required = false) Boolean tieneReceta,
             @RequestParam(required = false) Integer recetaId, // ID de receta, no objeto
-            @RequestParam double precioVenta,
-            @RequestParam double stock,
-            @RequestParam String unidadMedidaVenta) {
+            @RequestParam(required = false) Double precioVenta,
+            @RequestParam(required = false) Double stock,
+            @RequestParam(required = false) String unidadMedidaVenta,
+            Model model) {
 
         log.info("💾 POST /productos/guardar - Guardando producto. ID: {}, Nombre: {}", id, nombre);
-        log.debug("Parámetros - Tiene receta: {}, Receta ID: {}, Precio: {}, Stock: {}", 
-                 tieneReceta, recetaId, precioVenta, stock);
-
+        log.debug("Parámetros - Tiene receta: {}, Receta ID: {}, Precio: {}, Stock: {}",
+                tieneReceta, recetaId, precioVenta, stock);
+        double stockFinal = (stock == null) ? 0.0 : stock;
+        String unidadFinal = (unidadMedidaVenta.isEmpty()) ? "Unidad" : unidadMedidaVenta;
         boolean esConReceta = tieneReceta != null ? tieneReceta : false;
+        try {
+            Producto producto;
+            if (id != null && id > 0) {
+                log.debug("Actualizando producto existente ID: {}", id);
+                producto = productoServicio.buscarProducto(id);
+                producto.setNombre(nombre);
+                producto.setTieneReceta(esConReceta);
+                producto.setPrecioVenta(precioVenta);
+                producto.setStock(stockFinal);
+                producto.setUnidadMedidaVenta(unidadFinal);
+            } else {
+                log.debug("Creando nuevo producto");
+                producto = Producto.builder()
+                        .nombre(nombre)
+                        .tieneReceta(esConReceta)
+                        .precioVenta(precioVenta)
+                        .stock(stockFinal)
+                        .unidadMedidaVenta(unidadFinal)
+                        .activo(true)
+                        .build();
+            }
 
-        Producto producto;
-        if (id != null && id > 0) {
-            log.debug("Actualizando producto existente ID: {}", id);
-            producto = productoServicio.buscarProducto(id);
+            // Manejar receta si aplica
+            if (esConReceta && recetaId != null) {
+                log.debug("Asignando receta ID: {} al producto", recetaId);
+                Receta receta = recetaServicio.buscarReceta(recetaId);
+                producto.setReceta(receta);
+            } else {
+                log.debug("Producto sin receta o receta no especificada");
+                producto.setReceta(null);
+            }
+
+            if (id != null && id > 0) {
+                productoServicio.actualizarProducto(id, producto);
+                log.info("✅ Producto actualizado exitosamente: {} (ID: {})", producto.getNombre(), id);
+            } else {
+                Producto productoCreado = productoServicio.crearProducto(producto);
+                log.info("✅ Producto creado exitosamente: {} (ID: {})",
+                        productoCreado.getNombre(), productoCreado.getId());
+            }
+
+            return "redirect:/productos";
+        } catch (RuntimeException e) {
+            log.warn("Error al guardar producto: {}", e.getMessage());
+            // Devolver los datos al formulario
+            Producto producto = new Producto();
+            producto.setId(id);
             producto.setNombre(nombre);
-            producto.setTieneReceta(esConReceta);
             producto.setPrecioVenta(precioVenta);
-            producto.setStock(stock);
-            producto.setUnidadMedidaVenta(unidadMedidaVenta);
-        } else {
-            log.debug("Creando nuevo producto");
-            producto = Producto.builder()
-                    .nombre(nombre)
-                    .tieneReceta(esConReceta)
-                    .precioVenta(precioVenta)
-                    .stock(stock)
-                    .unidadMedidaVenta(unidadMedidaVenta)
-                    .activo(true)
-                    .build();
-        }
+            producto.setStock(stockFinal);
+            producto.setUnidadMedidaVenta(unidadFinal);
+            producto.setTieneReceta(esConReceta);
 
-        // Manejar receta si aplica
-        if (esConReceta && recetaId != null) {
-            log.debug("Asignando receta ID: {} al producto", recetaId);
-            Receta receta = recetaServicio.buscarReceta(recetaId);
-            producto.setReceta(receta);
-        } else {
-            log.debug("Producto sin receta o receta no especificada");
-            producto.setReceta(null);
-        }
+            model.addAttribute("producto", producto);
+            model.addAttribute("recetas", recetaServicio.listaRecetas());
+            model.addAttribute("error", e.getMessage());
 
-        if (id != null && id > 0) {
-            productoServicio.actualizarProducto(id, producto);
-            log.info("✅ Producto actualizado exitosamente: {} (ID: {})", producto.getNombre(), id);
-        } else {
-            Producto productoCreado = productoServicio.crearProducto(producto);
-            log.info("✅ Producto creado exitosamente: {} (ID: {})", 
-                    productoCreado.getNombre(), productoCreado.getId());
+            return "productos/formulario";
         }
-
-        return "redirect:/productos";
     }
 
     @GetMapping("/eliminar/{id}")

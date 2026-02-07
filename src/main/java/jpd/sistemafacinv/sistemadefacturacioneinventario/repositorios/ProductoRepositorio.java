@@ -14,6 +14,7 @@ import jpd.sistemafacinv.sistemadefacturacioneinventario.modelos.Producto;
 @Repository
 public interface ProductoRepositorio extends JpaRepository<Producto, Long> {
 
+    
     // Buscar productos SIN receta
     List<Producto> findByTieneRecetaFalse();
 
@@ -22,6 +23,8 @@ public interface ProductoRepositorio extends JpaRepository<Producto, Long> {
 
     // NUEVOS métodos con filtro empresa_id
     List<Producto> findByEmpresaId(Long empresaId);
+    
+    boolean existsByNombreAndEmpresa_Id(String nombre, Long empresaId);
 
     List<Producto> findByEmpresaIdAndTieneRecetaFalse(Long empresaId);
 

@@ -100,10 +100,30 @@ public class FacturaServicio {
                     producto.getNombre(), producto.getId(), detalle.getCantidad());
 
             // ✅ REEMPLAZA CON ESTA VALIDACIÓN SIMPLE (sin descontar):
-            if (producto.getStock() < detalle.getCantidad()) {
-                log.error("Stock insuficiente para producto: '{}'. Stock actual: {}, Cantidad requerida: {}",
-                        producto.getNombre(), producto.getStock(), detalle.getCantidad());
-                throw new RuntimeException("Stock insuficiente para: " + producto.getNombre());
+            if (producto.isTieneReceta()) {
+
+                int stockPosible = productoServicio.calcularStockPosible(producto.getId());
+
+                log.debug("Stock posible calculado para '{}': {}",
+                        producto.getNombre(), stockPosible);
+
+                if (detalle.getCantidad() > stockPosible) {
+                    log.error("Stock insuficiente por receta para '{}'. Stock posible: {}, Cantidad solicitada: {}",
+                            producto.getNombre(), stockPosible, detalle.getCantidad());
+
+                    throw new RuntimeException(
+                            "Stock insuficiente para: " + producto.getNombre());
+                }
+
+            } else {
+
+                if (producto.getStock() < detalle.getCantidad()) {
+                    log.error("Stock insuficiente para producto '{}'. Stock: {}, Cantidad: {}",
+                            producto.getNombre(), producto.getStock(), detalle.getCantidad());
+
+                    throw new RuntimeException(
+                            "Stock insuficiente para: " + producto.getNombre());
+                }
             }
 
             log.debug("Stock validado exitosamente para producto: '{}'", producto.getNombre());
@@ -288,7 +308,6 @@ public class FacturaServicio {
         return resumen;
     }
 
-    
     public Page<Factura> obtenerFacturasPaginadas(
             int pagina,
             int tamanio,

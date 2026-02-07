@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 public class IngredienteControlador {
 
     private static final Logger log = LoggerFactory.getLogger(IngredienteControlador.class);
-    
+
     private final IngredienteServicio ingredienteServicio;
 
     @GetMapping
@@ -39,11 +39,24 @@ public class IngredienteControlador {
     }
 
     @PostMapping("/guardar")
-    public String guardarIngrediente(@ModelAttribute Ingrediente ingrediente) {
+    public String guardarIngrediente(@ModelAttribute Ingrediente ingrediente, Model model) {
         log.info("💾 POST /ingredientes/guardar - Guardando ingrediente: {}", ingrediente.getNombre());
-        ingredienteServicio.crearIngrediente(ingrediente);
-        log.info("✅ Ingrediente guardado exitosamente: {} (ID: {})", ingrediente.getNombre(), ingrediente.getId());
-        return "redirect:/ingredientes";
+
+        try {
+
+            ingredienteServicio.crearIngrediente(ingrediente);
+            log.info("✅ Ingrediente guardado exitosamente: {} (ID: {})", ingrediente.getNombre(), ingrediente.getId());
+            return "redirect:/ingredientes";
+
+        } catch (RuntimeException e) {
+            log.warn("Error al guardar ingrediente: {}", e.getMessage());
+
+            // Mantener los datos ingresados para que el usuario no tenga que reescribir
+            model.addAttribute("ingrediente", ingrediente);
+            model.addAttribute("error", e.getMessage());
+
+            return "ingredientes/formulario"; // vuelve al formulario
+        }
     }
 
     @GetMapping("/editar/{id}")

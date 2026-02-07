@@ -1,618 +1,848 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Punto de Venta</title>
-    
+
     <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+
     <style>
-        body {
-            background-color: #f5f5f5;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 20px;
-        }
-        
-        .container-fluid {
-            padding: 0;
-        }
-        
-        .main-card {
-            background: white;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-        }
-        
-        .card-header {
-            background-color: #2c3e50;
-            color: white;
-            border-bottom: 1px solid #dee2e6;
-            padding: 1rem 1.5rem;
-        }
-        
-        .card-body {
-            padding: 1.5rem;
-        }
-        
-        .form-select, .form-control {
-            border-radius: 6px;
-            border: 1px solid #ced4da;
-        }
-        
-        .btn {
-            border-radius: 6px;
-        }
-        
-        .btn-success {
-            background-color: #28a745;
-            border-color: #28a745;
-        }
-        
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-        
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
-        
-        .table {
-            margin-bottom: 0;
-        }
-        
-        .table thead th {
-            background-color: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
-            font-weight: 600;
-        }
-        
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .quantity-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 4px;
-            border: 1px solid #ced4da;
-            background: white;
-            cursor: pointer;
-        }
-        
-        .payment-display {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            padding: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .section-title {
-            color: #2c3e50;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 8px;
-            margin-bottom: 1rem;
-        }
-        
-        .alert {
-            border-radius: 6px;
-        }
+      :root {
+        --negro: #0a0a0f;
+        --morado: #667eea;
+        --morado-oscuro: #764ba2;
+        --verde: #06d6a0;
+        --amarillo: #ffd166;
+        --rojo: #ef476f;
+        --blanco: #ffffff;
+        --gris-fondo: #f8fafc;
+        --gris-borde: #e2e8f0;
+      }
+
+      body {
+        background-color: var(--gris-fondo);
+        font-family: "Segoe UI", system-ui, sans-serif;
+        padding: 20px;
+      }
+
+      /* CARD PRINCIPAL */
+      .main-card {
+        background: var(--blanco);
+        border: 2px solid var(--gris-borde);
+        border-radius: 14px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .main-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 5px;
+        background: var(--morado);
+      }
+
+      /* HEADER */
+      .card-header {
+        background: var(--negro);
+        color: var(--blanco);
+        padding: 1.3rem 1.6rem;
+        border-bottom: 2px solid var(--morado);
+      }
+
+      /* BODY */
+      .card-body {
+        padding: 2rem;
+      }
+
+      /* SECCIONES */
+      .section-title {
+        color: var(--negro);
+        font-weight: 700;
+        border-bottom: 2px solid var(--morado);
+        padding-bottom: 6px;
+        margin-bottom: 1.2rem;
+      }
+
+      /* FORMULARIOS */
+      .form-control,
+      .form-select {
+        padding: 0.65rem 0.75rem;
+        border-radius: 8px;
+        border: 2px solid var(--gris-borde);
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--morado);
+        box-shadow: none;
+      }
+
+      /* BOTONES */
+      .btn {
+        border-radius: 10px;
+        font-weight: 600;
+      }
+
+      .btn-success {
+        background: var(--verde);
+        border: 2px solid var(--verde);
+        color: var(--negro);
+      }
+
+      .btn-success:hover {
+        background: #04c18e;
+      }
+
+      .btn-primary {
+        background: var(--morado);
+        border: 2px solid var(--morado-oscuro);
+      }
+
+      .btn-primary:hover {
+        background: var(--morado-oscuro);
+      }
+
+      .btn-danger {
+        background: var(--rojo);
+        border: 2px solid var(--rojo);
+      }
+
+      /* TABLAS */
+      .table {
+        border: 2px solid var(--gris-borde);
+      }
+
+      .table thead th {
+        background: var(--gris-fondo);
+        border-bottom: 2px solid var(--gris-borde);
+        font-weight: 700;
+      }
+
+      .table tbody tr:nth-child(even) {
+        background: #f9fafb;
+      }
+
+      /* BADGES */
+      .badge.bg-primary {
+        background: var(--morado) !important;
+      }
+
+      .badge.bg-success {
+        background: var(--verde) !important;
+        color: var(--negro);
+      }
+
+      /* PAYMENT BOX */
+      .payment-display {
+        background: var(--blanco);
+        border: 2px solid var(--gris-borde);
+        border-radius: 12px;
+        padding: 1.2rem;
+        margin-top: 1rem;
+      }
+
+      /* CANTIDAD */
+      .quantity-btn {
+        border: 2px solid var(--gris-borde);
+        background: var(--blanco);
+      }
+      /* Contenedor de cantidad */
+      .quantity-control {
+        display: flex;
+        align-items: center;
+      }
+
+      .quantity-btn:hover {
+        border-color: var(--morado);
+      }
+
+      .quantity-btn {
+        width: 36px;
+        height: 38px;
+        font-weight: bold;
+        background: #667eea;
+        color: #fff;
+        border: 2px solid #667eea;
+      }
+
+      .quantity-btn:hover {
+        background: #764ba2;
+        border-color: #764ba2;
+      }
+      #inputCantidad {
+        width: 55px;
+        height: 38px;
+        padding: 0;
+        margin: 0 4px;
+        text-align: center;
+        font-weight: 600;
+        border: 2px solid #667eea;
+        border-radius: 6px;
+      }
+
+      /* Quitar spinners del number */
+      #inputCantidad::-webkit-outer-spin-button,
+      #inputCantidad::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      #inputCantidad {
+        -moz-appearance: textfield;
+      }
+
+      /* Botones + y - */
+      .quantity-btn {
+        width: 38px;
+        height: 38px;
+        border: 2px solid #667eea;
+        background: #667eea;
+        color: #fff;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+      }
+
+      /* Hover */
+      .quantity-btn:hover {
+        background: #764ba2;
+        border-color: #764ba2;
+      }
+
+      /* Estado inválido */
+      #inputCantidad.is-invalid {
+        border-color: #ef476f;
+      }
     </style>
-</head>
-<body>
+  </head>
+
+  <body>
     <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="main-card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">
-                                <i class="bi bi-cart-check me-2"></i>Punto de Venta
-                            </h4>
-                            <div>
-                                <span class="badge bg-light text-dark me-2">
-                                    <i class="bi bi-shop me-1"></i>Restaurante
-                                </span>
-                                <span class="badge bg-success">
-                                    <i class="bi bi-person me-1"></i>Cajero
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card-body">
-                        <form th:action="@{/facturas/guardar}" method="post" id="formFactura">
-                            <!-- Cliente y Forma de Pago -->
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <h6 class="section-title">
-                                        <i class="bi bi-person me-1"></i>Cliente
-                                    </h6>
-                                    <select name="clienteId" class="form-select">
-                                        <option value="">Consumidor Final</option>
-                                        <option th:each="cliente : ${clientes}"
-                                                th:value="${cliente.id}"
-                                                th:text="${cliente.nombre}"></option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <h6 class="section-title">
-                                        <i class="bi bi-credit-card me-1"></i>Forma de Pago *
-                                    </h6>
-                                    <select name="formaPago" class="form-select" id="formaPago" required>
-                                        <option value="EFECTIVO">Efectivo</option>
-                                        <option value="TARJETA">Tarjeta</option>
-                                        <option value="TRANSFERENCIA">Transferencia</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <!-- Agregar Producto -->
-                            <div class="mb-4">
-                                <h6 class="section-title">
-                                    <i class="bi bi-plus-circle me-1"></i>Agregar Producto
-                                </h6>
-                                <div class="row g-3">
-                                    <div class="col-md-5">
-                                        <label class="form-label">Producto</label>
-                                        <select class="form-select" id="selectProducto">
-                                            <option value="">-- Seleccionar --</option>
-                                            <option th:each="producto : ${productos}"
-                                                    th:value="${producto.id}"
-                                                    th:text="${producto.nombre + ' - $' + #numbers.formatDecimal(producto.precioVenta, 1, 2)}"
-                                                    th:data-precio="${producto.precioVenta}"
-                                                    th:data-stock="${producto.stock}"></option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">Cantidad</label>
-                                        <div class="quantity-control">
-                                            <button type="button" class="quantity-btn" id="btnDecrement">
-                                                <i class="bi bi-dash"></i>
-                                            </button>
-                                            <input type="number" id="inputCantidad" class="form-control text-center" value="1" min="1">
-                                            <button type="button" class="quantity-btn" id="btnIncrement">
-                                                <i class="bi bi-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label class="form-label">Stock</label>
-                                        <div class="form-control text-center bg-light" id="stockDisponible">
-                                            0
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label class="form-label">&nbsp;</label>
-                                        <button type="button" id="btnAgregar" class="btn btn-success w-100">
-                                            <i class="bi bi-cart-plus me-1"></i>Agregar
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Productos en la Factura -->
-                            <div class="mb-4">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="section-title mb-0">
-                                        <i class="bi bi-receipt me-1"></i>Productos a Facturar
-                                    </h6>
-                                    <span class="badge bg-primary" id="contadorProductos">
-                                        <i class="bi bi-box me-1"></i><span>0</span> productos
-                                    </span>
-                                </div>
-                                
-                                <div class="table-responsive">
-                                    <table class="table table-hover" id="tablaProductos">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Producto</th>
-                                                <th width="100">Cantidad</th>
-                                                <th width="120">Precio</th>
-                                                <th width="120">Subtotal</th>
-                                                <th width="50"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbodyProductos">
-                                            <tr id="emptyRow">
-                                                <td colspan="5" class="text-center py-4 text-muted">
-                                                    <i class="bi bi-cart-x display-6 d-block mb-2"></i>
-                                                    No hay productos agregados
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            
-                            <!-- Totales y Pago -->
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="payment-display">
-                                        <div class="row mb-2">
-                                            <div class="col-md-6">
-                                                <label class="form-label">Total a Pagar</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text">$</span>
-                                                    <input type="text" id="totalPagar" class="form-control fw-bold" 
-                                                           readonly value="0.00">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">Monto Recibido</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text">$</span>
-                                                    <input type="number" id="recibido" class="form-control" 
-                                                           min="0" step="0.01" placeholder="0.00">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label class="form-label">Cambio</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text">$</span>
-                                                    <input type="text" id="cambio" class="form-control fw-bold text-success" 
-                                                           readonly value="0.00">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">&nbsp;</label>
-                                                <div class="d-grid gap-2">
-                                                    <button type="button" id="btnCalcularCambio" class="btn btn-primary">
-                                                        <i class="bi bi-calculator me-1"></i>Calcular Cambio
-                                                    </button>
-                                                    <button type="button" id="btnPagarExacto" class="btn btn-outline-success">
-                                                        <i class="bi bi-currency-dollar me-1"></i>Pago Exacto
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="payment-display">
-                                        <div class="row mb-2">
-                                            <div class="col">
-                                                <small>Subtotal:</small>
-                                            </div>
-                                            <div class="col text-end">
-                                                <span id="subtotalTotal">$0.00</span>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <div class="col">
-                                                <small>IVA (19%):</small>
-                                            </div>
-                                            <div class="col text-end">
-                                                <span id="ivaTotal">$0.00</span>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col">
-                                                <h5 class="mb-0">TOTAL:</h5>
-                                            </div>
-                                            <div class="col text-end">
-                                                <h4 class="mb-0 fw-bold text-primary" id="totalFinal">$0.00</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                           
-                            
-                            <!-- Botones -->
-                            <div class="d-flex justify-content-between mt-4">
-                              <button type="button" id="btnCancelar" class="btn btn-danger" 
-                                    onclick="if(confirm('¿Cancelar esta venta?')) window.location.href='/principal'">
-                                    <i class="bi bi-x-circle me-1"></i>Cancelar
-                                </button>
-                                <button type="submit" id="btnFacturar" class="btn btn-success btn-lg px-5" disabled>
-                                    <i class="bi bi-check-circle me-1"></i>Facturar
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="main-card">
+            <div class="card-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">
+                  <i class="bi bi-cart-check me-2"></i>Punto de Venta
+                </h4>
+                <div>
+                  <span class="badge bg-light text-dark me-2">
+                    <i class="bi bi-shop me-1"></i>Restaurante
+                  </span>
+                  <span class="badge bg-success">
+                    <i class="bi bi-person me-1"></i>Cajero
+                  </span>
                 </div>
+              </div>
             </div>
+
+            <div class="card-body">
+              <form
+                th:action="@{/facturas/guardar}"
+                method="post"
+                id="formFactura"
+              >
+                <!-- Cliente y Forma de Pago -->
+                <div class="row mb-4">
+                  <div class="col-md-6">
+                    <h6 class="section-title">
+                      <i class="bi bi-person me-1"></i>Cliente
+                    </h6>
+                    <select name="clienteId" class="form-select">
+                      <option value="">Consumidor Final</option>
+                      <option
+                        th:each="cliente : ${clientes}"
+                        th:value="${cliente.id}"
+                        th:text="${cliente.nombre}"
+                      ></option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <h6 class="section-title">
+                      <i class="bi bi-credit-card me-1"></i>Forma de Pago *
+                    </h6>
+                    <select
+                      name="formaPago"
+                      class="form-select"
+                      id="formaPago"
+                      required
+                    >
+                      <option value="EFECTIVO">Efectivo</option>
+                      <option value="TARJETA">Tarjeta</option>
+                      <option value="TRANSFERENCIA">Transferencia</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Agregar Producto -->
+                <div class="mb-4">
+                  <h6 class="section-title">
+                    <i class="bi bi-plus-circle me-1"></i>Agregar Producto
+                  </h6>
+                  <div class="row g-3">
+                    <div class="col-md-5">
+                      <label class="form-label">Producto</label>
+                      <select class="form-select" id="selectProducto">
+                        <option value="">-- Seleccionar --</option>
+                        <option
+                          th:each="producto : ${productos}"
+                          th:value="${producto.id}"
+                          th:text="${producto.nombre + ' - $' + #numbers.formatDecimal(producto.precio, 1, 2)}"
+                          th:data-precio="${producto.precio}"
+                          th:data-stock="${producto.stockPosible}"
+                        ></option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">Cantidad</label>
+                      <div class="quantity-control">
+                        <button
+                          type="button"
+                          class="quantity-btn"
+                          id="btnDecrement"
+                        >
+                          <i class="bi bi-dash"></i>
+                        </button>
+                        <input
+                          type="number"
+                          id="inputCantidad"
+                          class="form-control text-center"
+                          value="1"
+                          min="1"
+                        />
+                        <button
+                          type="button"
+                          class="quantity-btn"
+                          id="btnIncrement"
+                        >
+                          <i class="bi bi-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">Stock</label>
+                      <div
+                        class="form-control text-center bg-light"
+                        id="stockDisponible"
+                      >
+                        0
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label">&nbsp;</label>
+                      <button
+                        type="button"
+                        id="btnAgregar"
+                        class="btn btn-success w-100"
+                      >
+                        <i class="bi bi-cart-plus me-1"></i>Agregar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Productos en la Factura -->
+                <div class="mb-4">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-3"
+                  >
+                    <h6 class="section-title mb-0">
+                      <i class="bi bi-receipt me-1"></i>Productos a Facturar
+                    </h6>
+                    <span class="badge bg-primary" id="contadorProductos">
+                      <i class="bi bi-box me-1"></i><span>0</span> productos
+                    </span>
+                  </div>
+
+                  <div class="table-responsive">
+                    <table class="table table-hover" id="tablaProductos">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Producto</th>
+                          <th width="100">Cantidad</th>
+                          <th width="120">Precio</th>
+                          <th width="120">Subtotal</th>
+                          <th width="50"></th>
+                        </tr>
+                      </thead>
+                      <tbody id="tbodyProductos">
+                        <tr id="emptyRow">
+                          <td colspan="5" class="text-center py-4 text-muted">
+                            <i class="bi bi-cart-x display-6 d-block mb-2"></i>
+                            No hay productos agregados
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Totales y Pago -->
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="payment-display">
+                      <div class="row mb-2">
+                        <div class="col-md-6">
+                          <label class="form-label">Total a Pagar</label>
+                          <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input
+                              type="text"
+                              id="totalPagar"
+                              class="form-control fw-bold"
+                              readonly
+                              value="0.00"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label">Monto Recibido</label>
+                          <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input
+                              type="number"
+                              id="recibido"
+                              class="form-control"
+                              min="0"
+                              step="0.01"
+                              placeholder="0.00"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label class="form-label">Cambio</label>
+                          <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input
+                              type="text"
+                              id="cambio"
+                              class="form-control fw-bold text-success"
+                              readonly
+                              value="0.00"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label">&nbsp;</label>
+                          <div class="d-grid gap-2">
+                            <button
+                              type="button"
+                              id="btnCalcularCambio"
+                              class="btn btn-primary"
+                            >
+                              <i class="bi bi-calculator me-1"></i>Calcular
+                              Cambio
+                            </button>
+                            <button
+                              type="button"
+                              id="btnPagarExacto"
+                              class="btn btn-outline-success"
+                            >
+                              <i class="bi bi-currency-dollar me-1"></i>Pago
+                              Exacto
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="payment-display">
+                      <div class="row mb-2">
+                        <div class="col">
+                          <small>Subtotal:</small>
+                        </div>
+                        <div class="col text-end">
+                          <span id="subtotalTotal">$0.00</span>
+                        </div>
+                      </div>
+                      <div class="row mb-2">
+                        <div class="col">
+                          <small>IVA (19%):</small>
+                        </div>
+                        <div class="col text-end">
+                          <span id="ivaTotal">$0.00</span>
+                        </div>
+                      </div>
+                      <hr />
+                      <div class="row">
+                        <div class="col">
+                          <h5 class="mb-0">TOTAL:</h5>
+                        </div>
+                        <div class="col text-end">
+                          <h4 class="mb-0 fw-bold text-primary" id="totalFinal">
+                            $0.00
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="d-flex justify-content-between mt-4">
+                  <button
+                    type="button"
+                    id="btnCancelar"
+                    class="btn btn-danger"
+                    onclick="
+                      if (confirm('¿Cancelar esta venta?'))
+                        window.location.href = '/principal';
+                    "
+                  >
+                    <i class="bi bi-x-circle me-1"></i>Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    id="btnFacturar"
+                    class="btn btn-success btn-lg px-5"
+                    disabled
+                  >
+                    <i class="bi bi-check-circle me-1"></i>Facturar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Template para fila de producto -->
     <template id="plantillaProducto">
-        <tr class="product-row">
-            <td>
-                <span class="nombreProducto"></span>
-                <input type="hidden" name="productoIds" class="inputProductoId" />
-            </td>
-            <td>
-                <div class="quantity-control">
-                    <button type="button" class="quantity-btn btn-decrease">
-                        <i class="bi bi-dash"></i>
-                    </button>
-                    <input type="number" name="cantidades" class="form-control form-control-sm inputCantidad text-center" min="1" value="1" style="width: 60px;">
-                    <button type="button" class="quantity-btn btn-increase">
-                        <i class="bi bi-plus"></i>
-                    </button>
-                </div>
-            </td>
-            <td class="precioUnitario">$0.00</td>
-            <td class="subtotalFila fw-bold">$0.00</td>
-            <td>
-                <button type="button" class="btn btn-sm btn-danger btnQuitar">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </td>
-        </tr>
+      <tr class="product-row">
+        <td>
+          <span class="nombreProducto"></span>
+          <input type="hidden" name="productoIds" class="inputProductoId" />
+        </td>
+        <td>
+          <div class="quantity-control">
+            <button type="button" class="quantity-btn btn-decrease">
+              <i class="bi bi-dash"></i>
+            </button>
+            <input
+              type="number"
+              name="cantidades"
+              class="form-control form-control-sm inputCantidad text-center"
+              min="1"
+              value="1"
+              style="width: 60px"
+            />
+            <button type="button" class="quantity-btn btn-increase">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </td>
+        <td class="precioUnitario">$0.00</td>
+        <td class="subtotalFila fw-bold">$0.00</td>
+        <td>
+          <button type="button" class="btn btn-sm btn-danger btnQuitar">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
     </template>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
-        $(document).ready(function () {
-            let productosAgregados = [];
-            
-            // Control cantidad
-            $('#btnIncrement').click(function() {
-                const input = $('#inputCantidad');
-                let value = parseInt(input.val()) || 0;
-                input.val(value + 1);
-                checkStock();
-            });
-            
-            $('#btnDecrement').click(function() {
-                const input = $('#inputCantidad');
-                let value = parseInt(input.val()) || 0;
-                if (value > 1) {
-                    input.val(value - 1);
-                    checkStock();
-                }
-            });
-            
-            // Info producto seleccionado
-            $('#selectProducto').change(function() {
-                const option = $(this).find('option:selected');
-                const stock = parseInt(option.data('stock')) || 0;
-                $('#stockDisponible').text(stock);
-                checkStock();
-            });
-            
-            function checkStock() {
-                const select = $('#selectProducto');
-                const option = select.find('option:selected');
-                const stock = parseInt(option.data('stock')) || 0;
-                const cantidad = parseInt($('#inputCantidad').val()) || 0;
-                
-                if (cantidad > stock) {
-                    $('#inputCantidad').addClass('is-invalid');
-                    $('#btnAgregar').prop('disabled', true);
-                } else {
-                    $('#inputCantidad').removeClass('is-invalid');
-                    $('#btnAgregar').prop('disabled', false);
-                }
-            }
-            
-            $('#inputCantidad').on('input', checkStock);
-            
-            // Agregar producto
-            $("#btnAgregar").click(function () {
-                const select = $("#selectProducto");
-                const productoId = select.val();
-                const productoNombre = select.find("option:selected").text();
-                const precio = parseFloat(select.find("option:selected").data("precio")) || 0;
-                const stock = parseInt(select.find("option:selected").data("stock")) || 0;
-                let cantidad = parseInt($("#inputCantidad").val()) || 1;
-                
-                if (!productoId) {
-                    alert("Selecciona un producto");
-                    return;
-                }
-                
-                if (cantidad < 1) {
-                    alert("Cantidad mínima: 1");
-                    return;
-                }
-                
-                if (cantidad > stock) {
-                    alert("Stock insuficiente. Disponible: " + stock);
-                    return;
-                }
-                
-                // Verificar si ya existe
-                const indexExistente = productosAgregados.findIndex(p => p.id == productoId);
-                if (indexExistente !== -1) {
-                    productosAgregados[indexExistente].cantidad += cantidad;
-                } else {
-                    productosAgregados.push({
-                        id: productoId,
-                        nombre: productoNombre.split(" - ")[0],
-                        precio: precio,
-                        cantidad: cantidad,
-                        stock: stock
-                    });
-                }
-                
-                actualizarTabla();
-                
-                // Resetear inputs
-                select.val("");
-                $("#inputCantidad").val(1);
-                $("#stockDisponible").text("0");
-            });
-            
-            // Pago exacto
-            $("#btnPagarExacto").click(function() {
-                const total = parseFloat($("#totalPagar").val()) || 0;
-                $("#recibido").val(total.toFixed(2)).trigger("input");
-            });
-            
-            // Calcular cambio
-            $("#btnCalcularCambio").click(function() {
-                const total = parseFloat($("#totalFinal").text().replace('$', '')) || 0;
-                const recibido = parseFloat($("#recibido").val()) || 0;
-                
-                if (recibido < total) {
-                    $("#cambio").removeClass("text-success").addClass("text-danger");
-                    $("#cambio").val("-$" + Math.abs(total - recibido).toFixed(2));
-                    return;
-                }
-                
-                const cambio = recibido - total;
-                $("#cambio").removeClass("text-danger").addClass("text-success");
-                $("#cambio").val("$" + cambio.toFixed(2));
-            });
-            
-            // Calcular automáticamente
-            $("#recibido").on("input", function() {
-                $("#btnCalcularCambio").click();
-            });
-            
-            // Actualizar tabla
-            function actualizarTabla() {
-                const tbody = $("#tbodyProductos");
-                const hiddenInputs = $("#hiddenInputs");
-                tbody.empty();
-                hiddenInputs.empty();
-                
-                if (productosAgregados.length === 0) {
-                    tbody.append('<tr id="emptyRow"><td colspan="5" class="text-center py-4 text-muted"><i class="bi bi-cart-x display-6 d-block mb-2"></i>No hay productos agregados</td></tr>');
-                }
-                
-                let subtotal = 0;
-                
-                productosAgregados.forEach((producto, index) => {
-                    const template = $("#plantillaProducto").html();
-                    const $fila = $(template);
-                    
-                    // Llenar datos
-                    $fila.find(".nombreProducto").text(producto.nombre);
-                    $fila.find(".inputProductoId").val(producto.id);
-                    $fila.find(".inputCantidad").val(producto.cantidad);
-                    $fila.find(".precioUnitario").text("$" + producto.precio.toFixed(2));
-                    
-                    const subtotalFila = producto.precio * producto.cantidad;
-                    $fila.find(".subtotalFila").text("$" + subtotalFila.toFixed(2));
-                    subtotal += subtotalFila;
-                    
-                    // Botones de cantidad
-                    $fila.find(".btn-increase").click(function() {
-                        productosAgregados[index].cantidad++;
-                        actualizarTabla();
-                    });
-                    
-                    $fila.find(".btn-decrease").click(function() {
-                        if (productosAgregados[index].cantidad > 1) {
-                            productosAgregados[index].cantidad--;
-                            actualizarTabla();
-                        }
-                    });
-                    
-                    // Cambiar cantidad
-                    $fila.find(".inputCantidad").change(function() {
-                        const nuevaCantidad = parseInt($(this).val()) || 1;
-                        if (nuevaCantidad <= producto.stock) {
-                            productosAgregados[index].cantidad = nuevaCantidad;
-                            actualizarTabla();
-                        } else {
-                            alert("Stock insuficiente");
-                            $(this).val(producto.cantidad);
-                        }
-                    });
-                    
-                    // Quitar producto
-                    $fila.find(".btnQuitar").click(function() {
-                        productosAgregados.splice(index, 1);
-                        actualizarTabla();
-                    });
-                    
-                    tbody.append($fila);
-                    
-                 
-                });
-                
-                // Calcular totales
-                const totalConIva = subtotal;
-                const base = totalConIva / 1.19;
-                const iva = base * 0.19;
-                
-                $("#subtotalTotal").text("$" + base.toFixed(2));
-                $("#ivaTotal").text("$" + iva.toFixed(2));
-                $("#totalFinal").text("$" + totalConIva.toFixed(2));
-                
-                // Actualizar panel de pago
-                $("#totalPagar").val(totalConIva.toFixed(2));
-                
-                // Actualizar contador
-                $("#contadorProductos span").text(productosAgregados.length);
-                
-                // Habilitar/deshabilitar botón facturar
-                $("#btnFacturar").prop("disabled", productosAgregados.length === 0);
-                
-                // Calcular cambio si hay monto
-                if ($("#recibido").val() > 0) {
-                    $("#btnCalcularCambio").click();
-                }
-            }
-            
-            // Cancelar venta
-            $("#btnCancelar").click(function() {
-                if (productosAgregados.length > 0) {
-                    if (confirm("¿Cancelar esta venta?")) {
-                        productosAgregados = [];
-                        actualizarTabla();
-                        $("#selectProducto").val("");
-                        $("#inputCantidad").val(1);
-                        $("#recibido").val("");
-                        $("#cambio").val("0.00");
-                    }
-                }
-            });
-            
-            // Validar antes de enviar
-            $("#formFactura").submit(function(e) {
-                if (productosAgregados.length === 0) {
-                    e.preventDefault();
-                    alert("Agrega al menos un producto");
-                    return false;
-                }
-                
-                // Validar stock
-                let stockValido = true;
-                let mensajeError = "";
-                
-                productosAgregados.forEach((producto) => {
-                    if (producto.cantidad > producto.stock) {
-                        stockValido = false;
-                        mensajeError += `${producto.nombre}: Stock disponible ${producto.stock}, solicitado ${producto.cantidad}\n`;
-                    }
-                });
-                
-                if (!stockValido) {
-                    e.preventDefault();
-                    alert("Error de stock:\n" + mensajeError);
-                    return false;
-                }
-                
-                return confirm("¿Confirmar facturación?");
-            });
-            
-            // Inicializar
-            actualizarTabla();
+      $(document).ready(function () {
+        let productosAgregados = [];
+
+        // Control cantidad
+        $("#btnIncrement").click(function () {
+          const input = $("#inputCantidad");
+          let value = parseInt(input.val()) || 0;
+          input.val(value + 1);
+          checkStock();
         });
+
+        $("#btnDecrement").click(function () {
+          const input = $("#inputCantidad");
+          let value = parseInt(input.val()) || 0;
+          if (value > 1) {
+            input.val(value - 1);
+            checkStock();
+          }
+        });
+
+        // Info producto seleccionado
+
+        $("#selectProducto").change(function () {
+          const option = $(this).find("option:selected");
+          const stock = parseInt(option.data("stock")) || 0;
+
+          $("#stockDisponible").text(stock === 0 ? "Sin stock" : stock);
+          checkStock();
+        });
+
+        function checkStock() {
+          const select = $("#selectProducto");
+          const option = select.find("option:selected");
+
+          // Si no hay producto seleccionado, no validar
+          if (!option.val()) {
+            $("#inputCantidad").removeClass("is-invalid");
+            $("#btnAgregar").prop("disabled", true);
+            return;
+          }
+
+          const stock = parseInt(option.data("stock"));
+          const cantidad = parseInt($("#inputCantidad").val()) || 1;
+
+          // Si el producto no tiene stock
+          if (stock === 0) {
+            $("#inputCantidad").removeClass("is-invalid");
+            $("#btnAgregar").prop("disabled", true);
+            return;
+          }
+
+          // Validación normal
+          if (cantidad > stock) {
+            $("#inputCantidad").addClass("is-invalid");
+            $("#btnAgregar").prop("disabled", true);
+          } else {
+            $("#inputCantidad").removeClass("is-invalid");
+            $("#btnAgregar").prop("disabled", false);
+          }
+        }
+
+        $("#inputCantidad").on("input", checkStock);
+
+        // Agregar producto
+        $("#btnAgregar").click(function () {
+          const select = $("#selectProducto");
+          const productoId = select.val();
+          const productoNombre = select.find("option:selected").text();
+          const precio =
+            parseFloat(select.find("option:selected").data("precio")) || 0;
+          const stock =
+            parseInt(select.find("option:selected").data("stock")) || 0;
+          let cantidad = parseInt($("#inputCantidad").val()) || 1;
+
+          if (!productoId) {
+            alert("Selecciona un producto");
+            return;
+          }
+
+          if (cantidad < 1) {
+            alert("Cantidad mínima: 1");
+            return;
+          }
+
+          if (cantidad > stock) {
+            alert("Stock insuficiente. Disponible: " + stock);
+            return;
+          }
+
+          // Verificar si ya existe
+          const indexExistente = productosAgregados.findIndex(
+            (p) => p.id == productoId,
+          );
+          if (indexExistente !== -1) {
+            productosAgregados[indexExistente].cantidad += cantidad;
+          } else {
+            productosAgregados.push({
+              id: productoId,
+              nombre: productoNombre.split(" - ")[0],
+              precio: precio,
+              cantidad: cantidad,
+              stock: stock,
+            });
+          }
+
+          actualizarTabla();
+
+          // Resetear inputs
+          select.val("");
+          $("#inputCantidad").val(1);
+          $("#stockDisponible").text("0");
+        });
+
+        // Pago exacto
+        $("#btnPagarExacto").click(function () {
+          const total = parseFloat($("#totalPagar").val()) || 0;
+          $("#recibido").val(total.toFixed(2)).trigger("input");
+        });
+
+        // Calcular cambio
+        $("#btnCalcularCambio").click(function () {
+          const total =
+            parseFloat($("#totalFinal").text().replace("$", "")) || 0;
+          const recibido = parseFloat($("#recibido").val()) || 0;
+
+          if (recibido < total) {
+            $("#cambio").removeClass("text-success").addClass("text-danger");
+            $("#cambio").val("-$" + Math.abs(total - recibido).toFixed(2));
+            return;
+          }
+
+          const cambio = recibido - total;
+          $("#cambio").removeClass("text-danger").addClass("text-success");
+          $("#cambio").val("$" + cambio.toFixed(2));
+        });
+
+        // Calcular automáticamente
+        $("#recibido").on("input", function () {
+          $("#btnCalcularCambio").click();
+        });
+
+        // Actualizar tabla
+        function actualizarTabla() {
+          const tbody = $("#tbodyProductos");
+          const hiddenInputs = $("#hiddenInputs");
+          tbody.empty();
+          hiddenInputs.empty();
+
+          if (productosAgregados.length === 0) {
+            tbody.append(
+              '<tr id="emptyRow"><td colspan="5" class="text-center py-4 text-muted"><i class="bi bi-cart-x display-6 d-block mb-2"></i>No hay productos agregados</td></tr>',
+            );
+          }
+
+          let subtotal = 0;
+
+          productosAgregados.forEach((producto, index) => {
+            const template = $("#plantillaProducto").html();
+            const $fila = $(template);
+
+            // Llenar datos
+            $fila.find(".nombreProducto").text(producto.nombre);
+            $fila.find(".inputProductoId").val(producto.id);
+            $fila.find(".inputCantidad").val(producto.cantidad);
+            $fila
+              .find(".precioUnitario")
+              .text("$" + producto.precio.toFixed(2));
+
+            const subtotalFila = producto.precio * producto.cantidad;
+            $fila.find(".subtotalFila").text("$" + subtotalFila.toFixed(2));
+            subtotal += subtotalFila;
+
+            // Botones de cantidad
+            $fila.find(".btn-increase").click(function () {
+              productosAgregados[index].cantidad++;
+              actualizarTabla();
+            });
+
+            $fila.find(".btn-decrease").click(function () {
+              if (productosAgregados[index].cantidad > 1) {
+                productosAgregados[index].cantidad--;
+                actualizarTabla();
+              }
+            });
+
+            // Cambiar cantidad
+            $fila.find(".inputCantidad").change(function () {
+              const nuevaCantidad = parseInt($(this).val()) || 1;
+              if (nuevaCantidad <= producto.stock) {
+                productosAgregados[index].cantidad = nuevaCantidad;
+                actualizarTabla();
+              } else {
+                alert("Stock insuficiente");
+                $(this).val(producto.cantidad);
+              }
+            });
+
+            // Quitar producto
+            $fila.find(".btnQuitar").click(function () {
+              productosAgregados.splice(index, 1);
+              actualizarTabla();
+            });
+
+            tbody.append($fila);
+          });
+
+          // Calcular totales
+          const totalConIva = subtotal;
+          const base = totalConIva / 1.19;
+          const iva = base * 0.19;
+
+          $("#subtotalTotal").text("$" + base.toFixed(2));
+          $("#ivaTotal").text("$" + iva.toFixed(2));
+          $("#totalFinal").text("$" + totalConIva.toFixed(2));
+
+          // Actualizar panel de pago
+          $("#totalPagar").val(totalConIva.toFixed(2));
+
+          // Actualizar contador
+          $("#contadorProductos span").text(productosAgregados.length);
+
+          // Habilitar/deshabilitar botón facturar
+          $("#btnFacturar").prop("disabled", productosAgregados.length === 0);
+
+          // Calcular cambio si hay monto
+          if ($("#recibido").val() > 0) {
+            $("#btnCalcularCambio").click();
+          }
+        }
+
+        // Cancelar venta
+        $("#btnCancelar").click(function () {
+          if (productosAgregados.length > 0) {
+            if (confirm("¿Cancelar esta venta?")) {
+              productosAgregados = [];
+              actualizarTabla();
+              $("#selectProducto").val("");
+              $("#inputCantidad").val(1);
+              $("#recibido").val("");
+              $("#cambio").val("0.00");
+            }
+          }
+        });
+
+        // Validar antes de enviar
+        $("#formFactura").submit(function (e) {
+          if (productosAgregados.length === 0) {
+            e.preventDefault();
+            alert("Agrega al menos un producto");
+            return false;
+          }
+
+          // Validar stock
+          let stockValido = true;
+          let mensajeError = "";
+
+          productosAgregados.forEach((producto) => {
+            if (producto.cantidad > producto.stock) {
+              stockValido = false;
+              mensajeError += `${producto.nombre}: Stock disponible ${producto.stock}, solicitado ${producto.cantidad}\n`;
+            }
+          });
+
+          if (!stockValido) {
+            e.preventDefault();
+            alert("Error de stock:\n" + mensajeError);
+            return false;
+          }
+
+          return confirm("¿Confirmar facturación?");
+        });
+
+        // Inicializar
+        actualizarTabla();
+      });
     </script>
-</body>
+  </body>
 </html>

@@ -1,148 +1,370 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title th:text="${producto.id != null ? 'Editar Producto' : 'Nuevo Producto'}"></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="mb-0" th:text="${producto.id != null ? '✏️ Editar Producto' : '➕ Nuevo Producto'}"></h4>
-                    </div>
-                    <div class="card-body">
-                        <form th:action="@{/productos/guardar}" method="post">
-                            <input type="hidden" name="id" th:value="${producto.id}" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="${titulo} + ' - MiBombay'"></title>
 
-                            <div class="row mb-3">
-                                <div class="col-md-8">
-                                    <label class="form-label">Nombre *</label>
-                                    <input type="text" name="nombre" 
-                                           th:value="${producto.nombre}"
-                                           class="form-control" required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Tipo de Producto</label>
-                                    <div class="form-check mt-2">
-                                        <input class="form-check-input" type="checkbox" 
-                                               name="tieneReceta" id="tieneReceta"
-                                               th:checked="${producto.tieneReceta}">
-                                        <label class="form-check-label" for="tieneReceta">
-                                            Producto Elaborado (con receta)
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
 
-                            <!-- SECCIÓN CONDICIONAL PARA RECETA -->
-                            <div class="card mb-3" id="recetaSection" style="display: none;">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Receta Asociada</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <label class="form-label">Seleccionar Receta *</label>
-                                        <select name="recetaId" class="form-select" id="recetaSelect">
-                                            <option value="">-- Seleccionar Receta --</option>
-                                            <option th:each="receta : ${recetas}"
-                                                    th:value="${receta.id}"
-                                                    th:text="${receta.nombre + ' ($' + #numbers.formatDecimal(receta.costoReceta, 1, 2) + ')'}"
-                                                    th:selected="${producto.receta != null && producto.receta.id == receta.id}">
-                                            </option>
-                                        </select>
-                                        <div class="form-text">
-                                            Costo de receta: 
-                                            <span id="costoReceta" class="fw-bold">$0.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    <style>
+      /* =========================
+           PALETA MIBOMBAY
+        ========================== */
+      :root {
+        --black-sidebar: #0a0a0f;
+        --purple-primary: #667eea;
+        --purple-secondary: #764ba2;
+        --success: #06d6a0;
+        --warning: #ffd166;
+        --danger: #ef476f;
+        --bg-gray: #f8fafc;
+        --text-white: #ffffff;
+      }
 
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Precio de Venta *</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="number" step="0.01" name="precioVenta" 
-                                               th:value="${producto.precioVenta}"
-                                               class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Stock Actual</label>
-                                    <input type="number" name="stock" 
-                                           th:value="${producto.stock}"
-                                           class="form-control" min="0">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Unidad de Medida</label>
-                                    <input type="text" name="unidadMedidaVenta" 
-                                           th:value="${producto.unidadMedidaVenta}"
-                                           class="form-control" 
-                                           placeholder="Ej: unidades, litros">
-                                </div>
-                            </div>
+      body {
+        background: var(--bg-gray);
+        font-family: "Segoe UI", system-ui, sans-serif;
+        padding: 30px 15px;
+      }
 
-                            <!-- Mostrar Precio de Compra (información) -->
-                            <div class="alert alert-info" th:if="${producto.precioCompra > 0}">
-                                <strong>Información de Costos:</strong><br>
-                                Precio de Compra: <span th:text="${'$' + #numbers.formatDecimal(producto.precioCompra, 1, 2)}"></span><br>
-                                Margen: <span th:text="${#numbers.formatDecimal((producto.precioVenta - producto.precioCompra) / producto.precioCompra * 100, 1, 1) + '%'}"></span>
-                            </div>
+      /* =========================
+           CONTENEDOR
+        ========================== */
+      .form-container {
+        max-width: 900px;
+        margin: auto;
+      }
 
-                            <div class="d-flex justify-content-between">
-                                <a th:href="@{/productos}" class="btn btn-secondary">Cancelar</a>
-                                <button type="submit" class="btn btn-primary">
-                                    <span th:text="${producto.id != null ? 'Actualizar' : 'Crear'}"></span> Producto
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+      /* =========================
+           HEADER
+        ========================== */
+      .header-section {
+        background: linear-gradient(
+          135deg,
+          var(--purple-primary),
+          var(--purple-secondary)
+        );
+        color: white;
+        padding: 1.5rem 2rem;
+        border-radius: 12px 12px 0 0;
+        border-left: 6px solid var(--purple-primary);
+      }
+
+      .page-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
+      .page-subtitle {
+        font-size: 0.95rem;
+        opacity: 0.95;
+        margin-bottom: 0;
+      }
+
+      /* =========================
+           CARD
+        ========================== */
+      .form-card {
+        background: white;
+        border-radius: 0 0 12px 12px;
+        border: 2px solid #e5e7eb;
+        border-top: none;
+      }
+
+      .form-body {
+        padding: 2rem;
+      }
+
+      /* =========================
+           INFO CARD
+        ========================== */
+      .card-info {
+        background: #f1f5ff;
+        border-left: 5px solid var(--purple-primary);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+      }
+
+      /* =========================
+           FORM
+        ========================== */
+      .form-label {
+        font-weight: 600;
+      }
+
+      .form-label.required::after {
+        content: " *";
+        color: var(--danger);
+      }
+
+      .form-control-custom {
+        border: 2px solid #d1d5db;
+        border-radius: 8px;
+        padding: 10px 14px;
+      }
+
+      .form-control-custom:focus {
+        border-color: var(--purple-primary);
+        box-shadow: 0 0 0 2px #667eea33;
+      }
+
+      /* =========================
+           CHECKBOX
+        ========================== */
+      .form-check-input {
+        border: 2px solid #d1d5db;
+      }
+
+      .form-check-input:checked {
+        background-color: var(--purple-primary);
+        border-color: var(--purple-primary);
+      }
+
+      /* =========================
+           ALERTAS
+        ========================== */
+      .alert-info {
+        background: #eef2ff;
+        border-left: 5px solid var(--purple-primary);
+        color: #1e293b;
+      }
+
+      /* =========================
+           BOTONES
+        ========================== */
+      .btn-primary-custom {
+        background: linear-gradient(
+          135deg,
+          var(--purple-primary),
+          var(--purple-secondary)
+        );
+        color: white;
+        border: none;
+        font-weight: 600;
+        padding: 10px 28px;
+        border-radius: 8px;
+      }
+
+      .btn-primary-custom:hover {
+        opacity: 0.95;
+      }
+
+      .btn-secondary-custom {
+        background: #6b7280;
+        color: white;
+        border: none;
+        font-weight: 600;
+        padding: 10px 28px;
+        border-radius: 8px;
+      }
+
+      /* =========================
+           RESPONSIVE
+        ========================== */
+      @media (max-width: 768px) {
+        .page-title {
+          font-size: 1.5rem;
+        }
+        .form-body {
+          padding: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="form-container">
+      <!-- HEADER -->
+      <div class="header-section">
+        <h1 class="page-title">
+          <i class="bi bi-box-seam me-2"></i>
+          <span th:text="${titulo}"></span>
+        </h1>
+        <p class="page-subtitle">
+          <span th:if="${producto.id == null}">
+            Crear nuevo producto para venta
+          </span>
+          <span th:if="${producto.id != null}">
+            Editando producto ID <strong th:text="${producto.id}"></strong>
+          </span>
+        </p>
+      </div>
+
+      <!-- CARD -->
+      <div class="form-card">
+        <div class="form-body">
+          <!-- Mensaje de error -->
+          <div class="alert alert-danger" th:if="${error}">
+            <span th:text="${error}"></span>
+          </div>
+
+          <form th:action="@{/productos/guardar}" method="post">
+            <input type="hidden" name="id" th:value="${producto.id}" />
+
+            <!-- INFO -->
+            <div class="card-info">
+              <strong
+                ><i class="bi bi-info-circle me-1"></i> Información del
+                Producto</strong
+              >
             </div>
+
+            <!-- NOMBRE -->
+            <div class="mb-4">
+              <label class="form-label required">Nombre del Producto</label>
+              <input
+                type="text"
+                name="nombre"
+                requeried
+                th:value="${producto.nombre}"
+                class="form-control form-control-custom"
+                required
+              />
+            </div>
+
+            <!-- TIPO -->
+            <div class="mb-4">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="tieneReceta"
+                  name="tieneReceta"
+                  th:checked="${producto.tieneReceta}"
+                />
+                <label class="form-check-label">
+                  Producto elaborado (usa receta)
+                </label>
+              </div>
+            </div>
+
+            <!-- RECETA -->
+            <div class="card-info" id="recetaSection" style="display: none">
+              <label class="form-label required">Receta Asociada</label>
+              <select
+                class="form-control form-control-custom"
+                name="recetaId"
+                id="recetaSelect"
+              >
+                <option value="">-- Seleccionar receta --</option>
+                <option
+                  th:each="receta : ${recetas}"
+                  th:value="${receta.id}"
+                  th:text="${receta.nombre + ' ($' + #numbers.formatDecimal(receta.costoReceta,1,2) + ')'}"
+                  th:selected="${producto.receta != null && producto.receta.id == receta.id}"
+                ></option>
+              </select>
+
+              <small class="text-muted d-block mt-2">
+                Costo receta: <strong id="costoReceta">$0.00</strong>
+              </small>
+            </div>
+
+            <!-- PRECIO / STOCK -->
+            <div class="row mt-4">
+              <div class="col-md-4 mb-3">
+                <label class="form-label required">Precio Venta</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  name="precioVenta"
+                  th:value="${producto.precioVenta}"
+                  class="form-control form-control-custom"
+                  required
+                />
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Stock</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="0.00"
+                  name="stock"
+                  th:value="${producto.id == null ? 0.0 : producto.stock}"
+                  class="form-control form-control-custom"
+                />
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Unidad Venta</label>
+                <input
+                  type="text"
+                  name="unidadMedidaVenta"
+                  placeholder="Unidad"
+                  th:value="${producto.unidadMedidaVenta != null ? producto.unidadMedidaVenta : 'Unidad'}"
+                  class="form-control form-control-custom"
+                />
+              </div>
+            </div>
+
+            <!-- COSTO -->
+            <div
+              class="alert alert-info mt-3"
+              th:if="${producto.precioCompra > 0}"
+            >
+              Precio compra:
+              <strong
+                th:text="${'$' + #numbers.formatDecimal(producto.precioCompra,1,2)}"
+              ></strong
+              ><br />
+              Margen:
+              <strong
+                th:text="${#numbers.formatDecimal((producto.precioVenta - producto.precioCompra) / producto.precioCompra * 100,1,1) + '%'}"
+              ></strong>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+              <a th:href="@{/productos}" class="btn btn-secondary-custom">
+                <i class="bi bi-arrow-left"></i> Cancelar
+              </a>
+              <button type="submit" class="btn btn-primary-custom">
+                <i class="bi bi-check-circle me-1"></i>
+                <span
+                  th:text="${producto.id == null ? 'Guardar Producto' : 'Actualizar Producto'}"
+                ></span>
+              </button>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            // Mostrar/ocultar sección de receta
-            function toggleRecetaSection() {
-                if ($('#tieneReceta').is(':checked')) {
-                    $('#recetaSection').slideDown();
-                    $('#recetaSelect').prop('required', true);
-                } else {
-                    $('#recetaSection').slideUp();
-                    $('#recetaSelect').prop('required', false);
-                }
-            }
-
-            // Mostrar costo de receta seleccionada
-            function actualizarCostoReceta() {
-                var selectedOption = $('#recetaSelect option:selected');
-                var texto = selectedOption.text();
-                var costoMatch = texto.match(/\$([0-9,.]+)/);
-                if (costoMatch) {
-                    $('#costoReceta').text('$' + costoMatch[1]);
-                } else {
-                    $('#costoReceta').text('$0.00');
-                }
-            }
-
-            // Inicializar
-            toggleRecetaSection();
-            actualizarCostoReceta();
-
-            // Event listeners
-            $('#tieneReceta').change(toggleRecetaSection);
-            $('#recetaSelect').change(actualizarCostoReceta);
-        });
-    </script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+
+    <script>
+      const chk = document.getElementById("tieneReceta");
+      const receta = document.getElementById("recetaSection");
+      const select = document.getElementById("recetaSelect");
+      const costo = document.getElementById("costoReceta");
+
+      function toggleReceta() {
+        receta.style.display = chk.checked ? "block" : "none";
+      }
+
+      function updateCosto() {
+        const text = select.options[select.selectedIndex]?.text || "";
+        const match = text.match(/\$([0-9,.]+)/);
+        costo.textContent = match ? "$" + match[1] : "$0.00";
+      }
+
+      toggleReceta();
+      updateCosto();
+
+      chk.addEventListener("change", toggleReceta);
+      select.addEventListener("change", updateCosto);
+    </script>
+  </body>
 </html>

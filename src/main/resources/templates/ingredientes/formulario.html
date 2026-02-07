@@ -1,658 +1,773 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title th:text="${titulo} + ' - MiBombay'"></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+    />
     <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --primary-color: #667eea;
-            --success-color: #198754;
-            --warning-color: #ffc107;
-            --danger-color: #dc3545;
-            --primary-light: rgba(102, 126, 234, 0.1);
-            --success-light: rgba(25, 135, 84, 0.1);
-            --warning-light: rgba(255, 193, 7, 0.1);
+      :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --primary-color: #667eea;
+        --success-color: #198754;
+        --warning-color: #ffc107;
+        --danger-color: #dc3545;
+        --primary-light: rgba(102, 126, 234, 0.1);
+        --success-light: rgba(25, 135, 84, 0.1);
+        --warning-light: rgba(255, 193, 7, 0.1);
+      }
+
+      body {
+        background: #f8f9fa;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+
+      .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      .header-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem 2rem;
+        border-radius: 15px 15px 0 0;
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+      }
+
+      .page-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+
+      .page-subtitle {
+        font-size: 0.95rem;
+        opacity: 0.9;
+        margin-bottom: 0;
+      }
+
+      .form-card {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        border: none;
+      }
+
+      .form-body {
+        padding: 2rem;
+      }
+
+      .form-label {
+        font-weight: 600;
+        color: #444;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+      }
+
+      .form-label.required::after {
+        content: " *";
+        color: var(--danger-color);
+      }
+
+      .form-control-custom {
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        background: white;
+      }
+
+      .form-control-custom:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        background: white;
+      }
+
+      .form-control-custom.is-invalid {
+        border-color: var(--danger-color);
+        background: rgba(220, 53, 69, 0.05);
+      }
+
+      .form-control-custom.is-valid {
+        border-color: var(--success-color);
+        background: rgba(25, 135, 84, 0.05);
+      }
+
+      .input-group-text-custom {
+        background: var(--primary-light);
+        border: 2px solid #e0e0e0;
+        border-right: none;
+        color: var(--primary-color);
+        font-weight: 500;
+        border-radius: 10px 0 0 10px;
+      }
+
+      .form-check-input-custom {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ced4da;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .form-check-input-custom:checked {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+
+      .form-check-input-custom:focus {
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+      }
+
+      .form-check-label-custom {
+        font-weight: 500;
+        color: #444;
+        cursor: pointer;
+        margin-left: 8px;
+      }
+
+      .btn-primary-custom {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 12px 32px;
+        border-radius: 10px;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-primary-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        color: white;
+      }
+
+      .btn-secondary-custom {
+        background: #6c757d;
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 12px 32px;
+        border-radius: 10px;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-secondary-custom:hover {
+        background: #5a6268;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .alert-message {
+        border-radius: 10px;
+        border: none;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        animation: slideIn 0.3s ease-out;
+      }
+
+      .alert-info {
+        background: var(--primary-light);
+        color: var(--primary-color);
+        border-left: 4px solid var(--primary-color);
+      }
+
+      .alert-success {
+        background: var(--success-light);
+        color: var(--success-color);
+        border-left: 4px solid var(--success-color);
+      }
+
+      .card-info {
+        background: var(--primary-light);
+        border-left: 4px solid var(--primary-color);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .unit-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .unit-badge {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .unit-badge:hover {
+        background: var(--primary-light);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .unit-badge.active {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+
+      .stock-alert {
+        background: var(--warning-light);
+        border-left: 4px solid var(--warning-color);
+        border-radius: 8px;
+        padding: 0.75rem;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        display: none;
+      }
+
+      .stock-alert.show {
+        display: block;
+        animation: fadeIn 0.3s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
         }
-        
-        body {
-            background: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-top: 20px;
-            padding-bottom: 40px;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .loading-spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 768px) {
         .form-container {
-            max-width: 800px;
-            margin: 0 auto;
-            animation: fadeIn 0.5s ease-in;
+          padding: 0 15px;
         }
-        
-        .header-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1.5rem 2rem;
-            border-radius: 15px 15px 0 0;
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
-        }
-        
-        .page-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-        
-        .page-subtitle {
-            font-size: 0.95rem;
-            opacity: 0.9;
-            margin-bottom: 0;
-        }
-        
-        .form-card {
-            background: white;
-            border-radius: 0 0 15px 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            border: none;
-        }
-        
+
         .form-body {
-            padding: 2rem;
+          padding: 1.5rem;
         }
-        
-        .form-label {
-            font-weight: 600;
-            color: #444;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
+
+        .header-section {
+          padding: 1.25rem 1.5rem;
         }
-        
-        .form-label.required::after {
-            content: " *";
-            color: var(--danger-color);
+
+        .page-title {
+          font-size: 1.5rem;
         }
-        
-        .form-control-custom {
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 12px 16px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background: white;
-        }
-        
-        .form-control-custom:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            background: white;
-        }
-        
-        .form-control-custom.is-invalid {
-            border-color: var(--danger-color);
-            background: rgba(220, 53, 69, 0.05);
-        }
-        
-        .form-control-custom.is-valid {
-            border-color: var(--success-color);
-            background: rgba(25, 135, 84, 0.05);
-        }
-        
-        .input-group-text-custom {
-            background: var(--primary-light);
-            border: 2px solid #e0e0e0;
-            border-right: none;
-            color: var(--primary-color);
-            font-weight: 500;
-            border-radius: 10px 0 0 10px;
-        }
-        
-        .form-check-input-custom {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #ced4da;
-            border-radius: 6px;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .form-check-input-custom:checked {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-        
-        .form-check-input-custom:focus {
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
-        }
-        
-        .form-check-label-custom {
-            font-weight: 500;
-            color: #444;
-            cursor: pointer;
-            margin-left: 8px;
-        }
-        
-        .btn-primary-custom {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            color: white;
-            font-weight: 600;
-            padding: 12px 32px;
-            border-radius: 10px;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-primary-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-            color: white;
-        }
-        
-        .btn-secondary-custom {
-            background: #6c757d;
-            border: none;
-            color: white;
-            font-weight: 600;
-            padding: 12px 32px;
-            border-radius: 10px;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-secondary-custom:hover {
-            background: #5a6268;
-            color: white;
-            transform: translateY(-2px);
-        }
-        
-        .alert-message {
-            border-radius: 10px;
-            border: none;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            animation: slideIn 0.3s ease-out;
-        }
-        
-        .alert-info {
-            background: var(--primary-light);
-            color: var(--primary-color);
-            border-left: 4px solid var(--primary-color);
-        }
-        
-        .alert-success {
-            background: var(--success-light);
-            color: var(--success-color);
-            border-left: 4px solid var(--success-color);
-        }
-        
-        .card-info {
-            background: var(--primary-light);
-            border-left: 4px solid var(--primary-color);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .unit-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        
-        .unit-badge {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            padding: 6px 12px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .unit-badge:hover {
-            background: var(--primary-light);
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-        
-        .unit-badge.active {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-        
-        .stock-alert {
-            background: var(--warning-light);
-            border-left: 4px solid var(--warning-color);
-            border-radius: 8px;
-            padding: 0.75rem;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            display: none;
-        }
-        
-        .stock-alert.show {
-            display: block;
-            animation: fadeIn 0.3s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .loading-spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        @media (max-width: 768px) {
-            .form-container {
-                padding: 0 15px;
-            }
-            
-            .form-body {
-                padding: 1.5rem;
-            }
-            
-            .header-section {
-                padding: 1.25rem 1.5rem;
-            }
-            
-            .page-title {
-                font-size: 1.5rem;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="form-container">
-        <!-- Header -->
-        <div class="header-section">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="page-title">
-                        <i class="bi bi-box-seam me-2"></i><span th:text="${titulo}"></span>
-                    </h1>
-                    <p class="page-subtitle">
-                        <span th:if="${ingrediente.id == null}">Agrega un nuevo ingrediente al inventario</span>
-                        <span th:if="${ingrediente.id != null}">Editando ingrediente ID: <strong th:text="${ingrediente.id}"></strong></span>
-                    </p>
-                </div>
-                <div class="d-none d-md-block">
-                    <span class="badge bg-light text-dark">
-                        <i class="bi bi-info-circle me-1"></i> Todos los campos son importantes
-                    </span>
-                </div>
-            </div>
+      <!-- Header -->
+      <div class="header-section">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="page-title">
+              <i class="bi bi-box-seam me-2"></i
+              ><span th:text="${titulo}"></span>
+            </h1>
+            <p class="page-subtitle">
+              <span th:if="${ingrediente.id == null}"
+                >Agrega un nuevo ingrediente al inventario</span
+              >
+              <span th:if="${ingrediente.id != null}"
+                >Editando ingrediente ID:
+                <strong th:text="${ingrediente.id}"></strong
+              ></span>
+            </p>
+          </div>
+          <div class="d-none d-md-block">
+            <span class="badge bg-light text-dark">
+              <i class="bi bi-info-circle me-1"></i> Todos los campos son
+              importantes
+            </span>
+          </div>
         </div>
+      </div>
 
-        <!-- Form Card -->
-        <div class="form-card">
-            <div class="form-body">
-                <!-- Info Message -->
-                <div class="alert alert-info alert-message" th:if="${ingrediente.id != null}">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-pencil-square me-3" style="font-size: 1.2rem;"></i>
-                        <div>
-                            <strong class="d-block mb-1">Modo edición</strong>
-                            <small>Estás editando un ingrediente existente. Los cambios se aplicarán inmediatamente.</small>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Success Message (if any) -->
-                <div th:if="${param.success}" class="alert alert-success alert-message">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-check-circle-fill me-3" style="font-size: 1.2rem;"></i>
-                        <div>
-                            <strong class="d-block mb-1">¡Éxito!</strong>
-                            <small th:text="${param.message ?: 'Ingrediente guardado correctamente.'}"></small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Form -->
-                <form th:action="@{/ingredientes/guardar}" th:object="${ingrediente}" method="post" id="ingredientForm">
-                    <input type="hidden" th:field="*{id}">
-                    
-                    <!-- Basic Info Card -->
-                    <div class="card-info">
-                        <h6 class="mb-2"><i class="bi bi-info-circle me-2"></i>Información Básica</h6>
-                        <p class="mb-0 small text-muted">Completa los datos principales del ingrediente</p>
-                    </div>
-                    
-                    <!-- Nombre -->
-                    <div class="mb-4">
-                        <label class="form-label required">Nombre del Ingrediente</label>
-                        <div class="input-group">
-                            <span class="input-group-text input-group-text-custom">
-                                <i class="bi bi-tag"></i>
-                            </span>
-                            <input type="text" 
-                                   th:field="*{nombre}" 
-                                   class="form-control form-control-custom" 
-                                   required
-                                   placeholder="Ej: Harina de trigo, Aceite de oliva, Carne molida..."
-                                   minlength="3"
-                                   maxlength="100">
-                        </div>
-                        <div class="form-text">
-                            <small class="text-muted">Nombre descriptivo del ingrediente (3-100 caracteres)</small>
-                        </div>
-                    </div>
-                    
-                    <!-- Unidad de Medida y Precio -->
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <label class="form-label required">Unidad de Medida</label>
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text-custom">
-                                    <i class="bi bi-rulers"></i>
-                                </span>
-                                <input type="text" 
-                                       th:field="*{unidadMedida}" 
-                                       class="form-control form-control-custom" 
-                                       required
-                                       placeholder="kg, litros, unidades..."
-                                       id="unitInput">
-                            </div>
-                            <div class="unit-badges">
-                                <span class="unit-badge" onclick="setUnit('kg')">kg</span>
-                                <span class="unit-badge" onclick="setUnit('g')">g</span>
-                                <span class="unit-badge" onclick="setUnit('litros')">litros</span>
-                                <span class="unit-badge" onclick="setUnit('ml')">ml</span>
-                                <span class="unit-badge" onclick="setUnit('unidades')">unidades</span>
-                                <span class="unit-badge" onclick="setUnit('cajas')">cajas</span>
-                                <span class="unit-badge" onclick="setUnit('paquetes')">paquetes</span>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6 mb-4">
-                            <label class="form-label required">Precio Unitario</label>
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text-custom">
-                                    <i class="bi bi-currency-dollar"></i>
-                                </span>
-                                <input type="number" 
-                                       step="0.01" 
-                                       th:field="*{precio}" 
-                                       class="form-control form-control-custom" 
-                                       min="0"
-                                       required
-                                       placeholder="0.00"
-                                       id="priceInput">
-                            </div>
-                            <div class="form-text">
-                                <small class="text-muted">Precio por unidad de medida. Ej: $15.50 por kg</small>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Stock Info Card -->
-                    <div class="card-info">
-                        <h6 class="mb-2"><i class="bi bi-box-seam me-2"></i>Control de Stock</h6>
-                        <p class="mb-0 small text-muted">Configura los niveles de inventario</p>
-                    </div>
-                    
-                    <!-- Stock Actual y Mínimo -->
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <label class="form-label required">Stock Actual</label>
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text-custom">
-                                    <i class="bi bi-box"></i>
-                                </span>
-                                <input type="number" 
-                                       step="0.01" 
-                                       th:field="*{stockActual}" 
-                                       class="form-control form-control-custom" 
-                                       min="0"
-                                       required
-                                       placeholder="0.00"
-                                       id="currentStockInput">
-                            </div>
-                            <div class="form-text">
-                                <small class="text-muted">Cantidad actual en inventario</small>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6 mb-4">
-                            <label class="form-label required">Stock Mínimo</label>
-                            <div class="input-group">
-                                <span class="input-group-text input-group-text-custom">
-                                    <i class="bi bi-exclamation-triangle"></i>
-                                </span>
-                                <input type="number" 
-                                       step="0.01" 
-                                       th:field="*{stockMinimo}" 
-                                       class="form-control form-control-custom" 
-                                       min="0"
-                                       required
-                                       placeholder="0.00"
-                                       id="minStockInput">
-                            </div>
-                            <div class="form-text">
-                                <small class="text-muted">Cantidad mínima antes de alerta</small>
-                            </div>
-                            <div class="stock-alert" id="stockAlert">
-                                <i class="bi bi-exclamation-circle me-2"></i>
-                                <strong>¡Atención!</strong> El stock actual está por debajo del mínimo recomendado.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Estado -->
-                    <div class="mb-4">
-                        <div class="form-check">
-                            <input type="checkbox" 
-                                   th:field="*{activo}" 
-                                   class="form-check-input form-check-input-custom"
-                                   id="activeCheckbox">
-                            <label class="form-check-label form-check-label-custom" for="activeCheckbox">
-                                Activo en el sistema
-                            </label>
-                        </div>
-                        <div class="form-text">
-                            <small class="text-muted">
-                                <span th:if="${ingrediente.id == null}">Desactiva esta opción para crear el ingrediente como inactivo</span>
-                                <span th:if="${ingrediente.id != null}">Desactiva para ocultar este ingrediente en listados y procesos</span>
-                            </small>
-                        </div>
-                    </div>
-                    
-                    <!-- Botones -->
-                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-                        <a th:href="@{/ingredientes}" class="btn btn-secondary-custom">
-                            <i class="bi bi-arrow-left me-2"></i> Cancelar
-                        </a>
-                        
-                        <div>
-                            <button type="submit" class="btn btn-primary-custom" id="submitButton">
-                                <span class="loading-spinner" id="loadingSpinner"></span>
-                                <i class="bi bi-check-circle me-2"></i>
-                                <span th:if="${ingrediente.id == null}">Guardar Ingrediente</span>
-                                <span th:if="${ingrediente.id != null}">Actualizar Cambios</span>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+      <!-- Form Card -->
+      <div class="form-card">
+        <div class="form-body">
+          <!-- Info Message -->
+          <div
+            class="alert alert-info alert-message"
+            th:if="${ingrediente.id != null}"
+          >
+            <div class="d-flex align-items-center">
+              <i class="bi bi-pencil-square me-3" style="font-size: 1.2rem"></i>
+              <div>
+                <strong class="d-block mb-1">Modo edición</strong>
+                <small
+                  >Estás editando un ingrediente existente. Los cambios se
+                  aplicarán inmediatamente.</small
+                >
+              </div>
             </div>
+          </div>
+
+          <!-- Success Message (if any) -->
+          <div
+            th:if="${param.success}"
+            class="alert alert-success alert-message"
+          >
+            <div class="d-flex align-items-center">
+              <i
+                class="bi bi-check-circle-fill me-3"
+                style="font-size: 1.2rem"
+              ></i>
+              <div>
+                <strong class="d-block mb-1">¡Éxito!</strong>
+                <small
+                  th:text="${param.message ?: 'Ingrediente guardado correctamente.'}"
+                ></small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <div class="alert alert-danger" th:if="${error}">
+            <span th:text="${error}"></span>
+          </div>
+
+          <form
+            th:action="@{/ingredientes/guardar}"
+            th:object="${ingrediente}"
+            method="post"
+            id="ingredientForm"
+          >
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- Basic Info Card -->
+            <div class="card-info">
+              <h6 class="mb-2">
+                <i class="bi bi-info-circle me-2"></i>Información Básica
+              </h6>
+              <p class="mb-0 small text-muted">
+                Completa los datos principales del ingrediente
+              </p>
+            </div>
+
+            <!-- Nombre -->
+            <div class="mb-4">
+              <label class="form-label required">Nombre del Ingrediente</label>
+              <div class="input-group">
+                <span class="input-group-text input-group-text-custom">
+                  <i class="bi bi-tag"></i>
+                </span>
+                <input
+                  type="text"
+                  th:field="*{nombre}"
+                  class="form-control form-control-custom"
+                  required
+                  placeholder="Ej: Harina de trigo, Aceite de oliva, Carne molida..."
+                  minlength="3"
+                  maxlength="100"
+                />
+              </div>
+              <div class="form-text">
+                <small class="text-muted"
+                  >Nombre descriptivo del ingrediente (3-100 caracteres)</small
+                >
+              </div>
+            </div>
+
+            <!-- Unidad de Medida y Precio -->
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <label class="form-label required">Unidad de Medida</label>
+                <div class="input-group">
+                  <span class="input-group-text input-group-text-custom">
+                    <i class="bi bi-rulers"></i>
+                  </span>
+                  <input
+                    type="text"
+                    th:field="*{unidadMedida}"
+                    class="form-control form-control-custom"
+                    required
+                    placeholder="kg, litros, unidades..."
+                    id="unitInput"
+                  />
+                </div>
+                <div class="unit-badges">
+                  <span class="unit-badge" onclick="setUnit('kg')">kg</span>
+                  <span class="unit-badge" onclick="setUnit('g')">g</span>
+                  <span class="unit-badge" onclick="setUnit('litros')"
+                    >litros</span
+                  >
+                  <span class="unit-badge" onclick="setUnit('ml')">ml</span>
+                  <span class="unit-badge" onclick="setUnit('unidades')"
+                    >unidades</span
+                  >
+                  <span class="unit-badge" onclick="setUnit('cajas')"
+                    >cajas</span
+                  >
+                  <span class="unit-badge" onclick="setUnit('paquetes')"
+                    >paquetes</span
+                  >
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <label class="form-label required">Precio Unitario</label>
+                <div class="input-group">
+                  <span class="input-group-text input-group-text-custom">
+                    <i class="bi bi-currency-dollar"></i>
+                  </span>
+                  <input
+                    type="number"
+                    step="0.01"
+                    th:field="*{precio}"
+                    class="form-control form-control-custom"
+                    min="0"
+                    required
+                    placeholder="0.00"
+                    id="priceInput"
+                  />
+                </div>
+                <div class="form-text">
+                  <small class="text-muted"
+                    >Precio por unidad de medida. Ej: $15.50 por kg</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Stock Info Card -->
+            <div class="card-info">
+              <h6 class="mb-2">
+                <i class="bi bi-box-seam me-2"></i>Control de Stock
+              </h6>
+              <p class="mb-0 small text-muted">
+                Configura los niveles de inventario
+              </p>
+            </div>
+
+            <!-- Stock Actual y Mínimo -->
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <label class="form-label required">Stock Actual</label>
+                <div class="input-group">
+                  <span class="input-group-text input-group-text-custom">
+                    <i class="bi bi-box"></i>
+                  </span>
+                  <input
+                    type="number"
+                    step="0.01"
+                    th:field="*{stockActual}"
+                    class="form-control form-control-custom"
+                    min="0"
+                    required
+                    placeholder="0.00"
+                    id="currentStockInput"
+                  />
+                </div>
+                <div class="form-text">
+                  <small class="text-muted"
+                    >Cantidad actual en inventario</small
+                  >
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <label class="form-label required">Stock Mínimo</label>
+                <div class="input-group">
+                  <span class="input-group-text input-group-text-custom">
+                    <i class="bi bi-exclamation-triangle"></i>
+                  </span>
+                  <input
+                    type="number"
+                    step="0.01"
+                    th:field="*{stockMinimo}"
+                    class="form-control form-control-custom"
+                    min="0"
+                    required
+                    placeholder="0.00"
+                    id="minStockInput"
+                  />
+                </div>
+                <div class="form-text">
+                  <small class="text-muted"
+                    >Cantidad mínima antes de alerta</small
+                  >
+                </div>
+                <div class="stock-alert" id="stockAlert">
+                  <i class="bi bi-exclamation-circle me-2"></i>
+                  <strong>¡Atención!</strong> El stock actual está por debajo
+                  del mínimo recomendado.
+                </div>
+              </div>
+            </div>
+
+            <!-- Estado -->
+            <div class="mb-4">
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  th:field="*{activo}"
+                  class="form-check-input form-check-input-custom"
+                  id="activeCheckbox"
+                />
+                <label
+                  class="form-check-label form-check-label-custom"
+                  for="activeCheckbox"
+                >
+                  Activo en el sistema
+                </label>
+              </div>
+              <div class="form-text">
+                <small class="text-muted">
+                  <span th:if="${ingrediente.id == null}"
+                    >Desactiva esta opción para crear el ingrediente como
+                    inactivo</span
+                  >
+                  <span th:if="${ingrediente.id != null}"
+                    >Desactiva para ocultar este ingrediente en listados y
+                    procesos</span
+                  >
+                </small>
+              </div>
+            </div>
+
+            <!-- Botones -->
+            <div
+              class="d-flex justify-content-between align-items-center pt-3 border-top"
+            >
+              <a th:href="@{/ingredientes}" class="btn btn-secondary-custom">
+                <i class="bi bi-arrow-left me-2"></i> Cancelar
+              </a>
+
+              <div>
+                <button
+                  type="submit"
+                  class="btn btn-primary-custom"
+                  id="submitButton"
+                >
+                  <span class="loading-spinner" id="loadingSpinner"></span>
+                  <i class="bi bi-check-circle me-2"></i>
+                  <span th:if="${ingrediente.id == null}"
+                    >Guardar Ingrediente</span
+                  >
+                  <span th:if="${ingrediente.id != null}"
+                    >Actualizar Cambios</span
+                  >
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('ingredientForm');
-            const submitButton = document.getElementById('submitButton');
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            const currentStockInput = document.getElementById('currentStockInput');
-            const minStockInput = document.getElementById('minStockInput');
-            const stockAlert = document.getElementById('stockAlert');
-            const unitInput = document.getElementById('unitInput');
-            
-            // Check stock levels and show alert if current stock is below minimum
-            function checkStockLevels() {
-                const currentStock = parseFloat(currentStockInput.value) || 0;
-                const minStock = parseFloat(minStockInput.value) || 0;
-                
-                if (currentStock < minStock && minStock > 0) {
-                    stockAlert.classList.add('show');
-                } else {
-                    stockAlert.classList.remove('show');
-                }
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("ingredientForm");
+        const submitButton = document.getElementById("submitButton");
+        const loadingSpinner = document.getElementById("loadingSpinner");
+        const currentStockInput = document.getElementById("currentStockInput");
+        const minStockInput = document.getElementById("minStockInput");
+        const stockAlert = document.getElementById("stockAlert");
+        const unitInput = document.getElementById("unitInput");
+
+        // Check stock levels and show alert if current stock is below minimum
+        function checkStockLevels() {
+          const currentStock = parseFloat(currentStockInput.value) || 0;
+          const minStock = parseFloat(minStockInput.value) || 0;
+
+          if (currentStock < minStock && minStock > 0) {
+            stockAlert.classList.add("show");
+          } else {
+            stockAlert.classList.remove("show");
+          }
+        }
+
+        // Add event listeners for stock inputs
+        currentStockInput.addEventListener("input", checkStockLevels);
+        minStockInput.addEventListener("input", checkStockLevels);
+
+        // Initial check
+        checkStockLevels();
+
+        // Form validation and submission
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Basic validation
+          const nombre = document.querySelector('[name="nombre"]').value.trim();
+          const unidadMedida = unitInput.value.trim();
+          const precio = document.querySelector('[name="precio"]').value;
+          const stockActual = currentStockInput.value;
+          const stockMinimo = minStockInput.value;
+
+          let isValid = true;
+
+          // Reset previous errors
+          const inputs = form.querySelectorAll(".form-control-custom");
+          inputs.forEach((input) => {
+            input.classList.remove("is-invalid");
+          });
+
+          // Validate nombre
+          if (!nombre || nombre.length < 3) {
+            document
+              .querySelector('[name="nombre"]')
+              .classList.add("is-invalid");
+            isValid = false;
+          }
+
+          // Validate unidadMedida
+          if (!unidadMedida) {
+            unitInput.classList.add("is-invalid");
+            isValid = false;
+          }
+
+          // Validate precio
+          if (!precio || parseFloat(precio) < 0) {
+            document
+              .querySelector('[name="precio"]')
+              .classList.add("is-invalid");
+            isValid = false;
+          }
+
+          // Validate stockActual
+          if (!stockActual || parseFloat(stockActual) < 0) {
+            currentStockInput.classList.add("is-invalid");
+            isValid = false;
+          }
+
+          // Validate stockMinimo
+          if (!stockMinimo || parseFloat(stockMinimo) < 0) {
+            minStockInput.classList.add("is-invalid");
+            isValid = false;
+          }
+
+          if (!isValid) {
+            // Scroll to first error
+            const firstError = form.querySelector(".is-invalid");
+            if (firstError) {
+              firstError.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+              firstError.focus();
             }
-            
-            // Add event listeners for stock inputs
-            currentStockInput.addEventListener('input', checkStockLevels);
-            minStockInput.addEventListener('input', checkStockLevels);
-            
-            // Initial check
-            checkStockLevels();
-            
-            // Form validation and submission
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Basic validation
-                const nombre = document.querySelector('[name="nombre"]').value.trim();
-                const unidadMedida = unitInput.value.trim();
-                const precio = document.querySelector('[name="precio"]').value;
-                const stockActual = currentStockInput.value;
-                const stockMinimo = minStockInput.value;
-                
-                let isValid = true;
-                
-                // Reset previous errors
-                const inputs = form.querySelectorAll('.form-control-custom');
-                inputs.forEach(input => {
-                    input.classList.remove('is-invalid');
-                });
-                
-                // Validate nombre
-                if (!nombre || nombre.length < 3) {
-                    document.querySelector('[name="nombre"]').classList.add('is-invalid');
-                    isValid = false;
-                }
-                
-                // Validate unidadMedida
-                if (!unidadMedida) {
-                    unitInput.classList.add('is-invalid');
-                    isValid = false;
-                }
-                
-                // Validate precio
-                if (!precio || parseFloat(precio) < 0) {
-                    document.querySelector('[name="precio"]').classList.add('is-invalid');
-                    isValid = false;
-                }
-                
-                // Validate stockActual
-                if (!stockActual || parseFloat(stockActual) < 0) {
-                    currentStockInput.classList.add('is-invalid');
-                    isValid = false;
-                }
-                
-                // Validate stockMinimo
-                if (!stockMinimo || parseFloat(stockMinimo) < 0) {
-                    minStockInput.classList.add('is-invalid');
-                    isValid = false;
-                }
-                
-                if (!isValid) {
-                    // Scroll to first error
-                    const firstError = form.querySelector('.is-invalid');
-                    if (firstError) {
-                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        firstError.focus();
-                    }
-                    return;
-                }
-                
-                // Show loading state
-                submitButton.disabled = true;
-                loadingSpinner.style.display = 'inline-block';
-                submitButton.querySelector('i').style.display = 'none';
-                
-                // Re-enable after 5 seconds in case of error
-                setTimeout(() => {
-                    submitButton.disabled = false;
-                    loadingSpinner.style.display = 'none';
-                    submitButton.querySelector('i').style.display = 'inline';
-                }, 5000);
-                
-                // Submit form
-                this.submit();
-            });
-            
-            // Unit badges functionality
-            window.setUnit = function(unit) {
-                unitInput.value = unit;
-                unitInput.classList.remove('is-invalid');
-                unitInput.classList.add('is-valid');
-                
-                // Update badges active state
-                document.querySelectorAll('.unit-badge').forEach(badge => {
-                    badge.classList.remove('active');
-                    if (badge.textContent === unit) {
-                        badge.classList.add('active');
-                    }
-                });
-            };
-            
-            // Auto-focus name field if new ingredient
-            if (!document.querySelector('[name="id"]').value) {
-                document.querySelector('[name="nombre"]').focus();
-            }
-            
-            // Format price input on blur
-            const priceInput = document.getElementById('priceInput');
-            priceInput.addEventListener('blur', function() {
-                if (this.value) {
-                    this.value = parseFloat(this.value).toFixed(2);
-                }
-            });
-            
-            // Keyboard shortcuts
-            document.addEventListener('keydown', function(e) {
-                // Ctrl+S to save
-                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                    e.preventDefault();
-                    submitButton.click();
-                }
-                
-                // Esc to cancel
-                if (e.key === 'Escape') {
-                    const cancelBtn = document.querySelector('a[href*="/ingredientes"]');
-                    if (cancelBtn) {
-                        cancelBtn.click();
-                    }
-                }
-            });
+            return;
+          }
+
+          // Show loading state
+          submitButton.disabled = true;
+          loadingSpinner.style.display = "inline-block";
+          submitButton.querySelector("i").style.display = "none";
+
+          // Re-enable after 5 seconds in case of error
+          setTimeout(() => {
+            submitButton.disabled = false;
+            loadingSpinner.style.display = "none";
+            submitButton.querySelector("i").style.display = "inline";
+          }, 5000);
+
+          // Submit form
+          this.submit();
         });
+
+        // Unit badges functionality
+        window.setUnit = function (unit) {
+          unitInput.value = unit;
+          unitInput.classList.remove("is-invalid");
+          unitInput.classList.add("is-valid");
+
+          // Update badges active state
+          document.querySelectorAll(".unit-badge").forEach((badge) => {
+            badge.classList.remove("active");
+            if (badge.textContent === unit) {
+              badge.classList.add("active");
+            }
+          });
+        };
+
+        // Auto-focus name field if new ingredient
+        if (!document.querySelector('[name="id"]').value) {
+          document.querySelector('[name="nombre"]').focus();
+        }
+
+        // Format price input on blur
+        const priceInput = document.getElementById("priceInput");
+        priceInput.addEventListener("blur", function () {
+          if (this.value) {
+            this.value = parseFloat(this.value).toFixed(2);
+          }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener("keydown", function (e) {
+          // Ctrl+S to save
+          if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+            e.preventDefault();
+            submitButton.click();
+          }
+
+          // Esc to cancel
+          if (e.key === "Escape") {
+            const cancelBtn = document.querySelector(
+              'a[href*="/ingredientes"]',
+            );
+            if (cancelBtn) {
+              cancelBtn.click();
+            }
+          }
+        });
+      });
     </script>
-</body>
+  </body>
 </html>

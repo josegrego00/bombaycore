@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,7 @@ import jpd.sistemafacinv.sistemadefacturacioneinventario.modelos.Cliente;
 import jpd.sistemafacinv.sistemadefacturacioneinventario.modelos.Factura;
 import jpd.sistemafacinv.sistemadefacturacioneinventario.modelos.FacturaDetalle;
 import jpd.sistemafacinv.sistemadefacturacioneinventario.modelos.Producto;
+import jpd.sistemafacinv.sistemadefacturacioneinventario.modelos.DTO.ProductoPOSDTO;
 import jpd.sistemafacinv.sistemadefacturacioneinventario.repositorios.CierreInventarioDiarioRepositorio;
 import jpd.sistemafacinv.sistemadefacturacioneinventario.servicios.ClienteServicio;
 import jpd.sistemafacinv.sistemadefacturacioneinventario.servicios.FacturaServicio;
@@ -108,9 +110,31 @@ public class FacturaControlador {
             // Redirigir con mensaje de error
             return "redirect:/facturas?error=El día ya está cerrado. No se pueden crear nuevas facturas.";
         }
+        List<Producto> productos = productoServicio.listarProductos();
+
+        List<ProductoPOSDTO> productosPOS = productos.stream().map(p -> {
+
+            ProductoPOSDTO dto = new ProductoPOSDTO();
+            dto.setId(p.getId());
+            dto.setNombre(p.getNombre());
+            dto.setPrecio(p.getPrecioVenta());
+            dto.setTieneReceta(p.isTieneReceta());
+
+            double stock;
+
+            if (p.isTieneReceta()) {
+                stock = productoServicio.calcularStockPosible(p.getId());
+            } else {
+                stock = p.getStock();
+            }
+
+            dto.setStockPosible(stock);
+            return dto;
+
+        }).toList();
 
         modelo.addAttribute("clientes", clienteServicio.listarClientes());
-        modelo.addAttribute("productos", productoServicio.listarProductos());
+        modelo.addAttribute("productos", productosPOS);
         modelo.addAttribute("fechaHoy", LocalDate.now());
 
         log.debug("Punto de venta cargado - Clientes: {}, Productos: {}",

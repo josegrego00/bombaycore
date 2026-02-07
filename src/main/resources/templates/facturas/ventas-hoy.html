@@ -1,119 +1,275 @@
 <!DOCTYPE html>
+<!-- Módulo: Ventas del Día - Ajustes visuales MiBombay -->
+<!-- VARIABLES PRESERVADAS: totalVentas, cantidadFacturas, facturas -->
+<!-- RUTAS PRESERVADAS: /facturas, /, /facturas/detalle/{id} -->
+
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Ventas del Día</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="container mt-4">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>📊 Ventas del Día</h1>
-        <div>
-          <a th:href="@{/facturas}" class="btn btn-secondary"
-            >← Volver a Facturas</a
-          >
-          <a th:href="@{/}" class="btn btn-outline-primary ms-2">Inicio</a>
-        </div>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ventas del Día</title>
 
-      <!-- Tarjetas de Resumen -->
-      <div class="row mb-4">
-        <div class="col-md-6 mb-3">
-          <div class="card text-white bg-primary">
-            <div class="card-body text-center">
-              <h5 class="card-title">Total Facturado Hoy</h5>
-              <h2
-                th:text="'$' + ${#numbers.formatDecimal(totalVentas, 1, 2, 'COMMA')}"
-              >
-                $0.00
-              </h2>
-              <p class="mb-0">
-                [[${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}]]
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 mb-3">
-          <div class="card text-white bg-success">
-            <div class="card-body text-center">
-              <h5 class="card-title">Facturas Realizadas</h5>
-              <h2 th:text="${cantidadFacturas}">0</h2>
-              <p class="mb-0">Transacciones del día</p>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+    rel="stylesheet"
+  />
 
-      <!-- Listado de Facturas del Día -->
-      <div class="card">
-        <div class="card-header bg-light">
-          <h5 class="mb-0">📋 Detalle de Facturas - Hoy</h5>
-        </div>
+  <style>
+    :root {
+      --negro: #0a0a0f;
+      --morado: #667eea;
+      --morado-oscuro: #764ba2;
+      --verde: #06d6a0;
+      --amarillo: #ffd166;
+      --rojo: #ef476f;
+      --gris-fondo: #f8fafc;
+      --gris-borde: #e2e8f0;
+      --blanco: #ffffff;
+    }
+
+    body {
+      background-color: var(--gris-fondo);
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    h1 {
+      font-weight: 700;
+      color: var(--negro);
+    }
+
+    /* Cards MiBombay */
+    .card {
+      border: 2px solid var(--gris-borde);
+      border-radius: 14px;
+      box-shadow: 0 6px 16px rgba(10, 10, 15, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background-color: var(--morado);
+    }
+
+    .card-header {
+      background-color: var(--blanco);
+      border-bottom: 2px solid var(--gris-borde);
+      font-weight: 600;
+    }
+
+    /* Cards resumen */
+    .summary-card {
+      color: var(--blanco);
+      text-align: center;
+    }
+
+    .summary-primary {
+      background-color: var(--morado);
+      border: 2px solid var(--morado-oscuro);
+    }
+
+    .summary-success {
+      background-color: var(--verde);
+      color: #000;
+      border: 2px solid var(--verde);
+    }
+
+    /* Badges */
+    .badge {
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 0.45em 0.7em;
+      font-size: 0.85rem;
+    }
+
+    .bg-warning {
+      background-color: var(--amarillo) !important;
+      color: #000;
+    }
+
+    .bg-primary {
+      background-color: var(--morado) !important;
+    }
+
+    .bg-success {
+      background-color: var(--verde) !important;
+      color: #000;
+    }
+
+    .bg-info {
+      background-color: #c7d2fe !important;
+      color: #000;
+    }
+
+    /* Tabla */
+    table {
+      border: 2px solid var(--gris-borde);
+    }
+
+    thead {
+      background-color: var(--gris-fondo);
+    }
+
+    th {
+      font-weight: 600;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f1f5f9;
+    }
+
+    /* Botones */
+    .btn {
+      font-weight: 600;
+      border-radius: 10px;
+    }
+
+    .btn-info {
+      background-color: var(--morado);
+      border: 2px solid var(--morado-oscuro);
+      color: #fff;
+    }
+
+    .btn-info:hover {
+      background-color: var(--morado-oscuro);
+      color: #fff;
+    }
+
+    .btn-outline-primary {
+      border: 2px solid var(--morado);
+      color: var(--morado);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--morado);
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container mt-4 mb-5">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-graph-up-arrow me-2"></i>Ventas del Día</h1>
+    <div>
+      <a th:href="@{/facturas}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Volver a Facturas
+      </a>
+      <a th:href="@{/}" class="btn btn-outline-primary ms-2">
+        <i class="bi bi-house"></i> Inicio
+      </a>
+    </div>
+  </div>
+
+  <!-- Tarjetas Resumen -->
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3">
+      <div class="card summary-card summary-primary">
         <div class="card-body">
-          <div th:if="${cantidadFacturas == 0}" class="alert alert-info">
-            No hay facturas realizadas hoy.
-          </div>
-
-          <table th:if="${cantidadFacturas > 0}" class="table table-hover">
-            <thead>
-              <tr>
-                <th>No. Factura</th>
-                <th>Hora</th>
-                <th>Cliente</th>
-                <th>Forma de Pago</th>
-                <th>Estado</th>
-                <th>Total</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="factura : ${facturas}">
-                <td th:text="${factura.numeroFactura}"></td>
-                <td th:text="${#temporals.format(factura.fecha, 'HH:mm')}"></td>
-                <td>
-                  <span
-                    th:if="${factura.cliente != null}"
-                    th:text="${factura.cliente.nombre}"
-                    class="badge bg-info text-dark"
-                  ></span>
-                  <span
-                    th:unless="${factura.cliente != null}"
-                    class="text-muted"
-                    >Consumidor Final</span
-                  >
-                </td>
-                <td>
-                 <span class="badge" th:classappend="${(factura.formaPago == 'EFECTIVO') ? 'bg-warning' : ((factura.formaPago == 'TARJETA') ? 'bg-primary' : 'bg-secondary')}" th:text="${factura.formaPago}"></span>
-                </td>
-                <td>
-                  <span
-                    th:if="${factura.estado == 'PAGADA'}"
-                    class="badge bg-success"
-                    >Pagada</span
-                  >
-                </td>
-                <td
-                  th:text="'$' + ${#numbers.formatDecimal(factura.total, 1, 2)}"
-                ></td>
-                <td>
-                  <a
-                    th:href="@{/facturas/detalle/{id}(id=${factura.id})}"
-                    class="btn btn-sm btn-info"
-                    >Ver</a
-                  >
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <h5 class="card-title">Total Facturado Hoy</h5>
+          <h2
+            th:text="'$' + ${#numbers.formatDecimal(totalVentas, 1, 2, 'COMMA')}"
+          >
+            $0.00
+          </h2>
+          <p class="mb-0">
+            [[${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}]]
+          </p>
         </div>
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+    <div class="col-md-6 mb-3">
+      <div class="card summary-card summary-success">
+        <div class="card-body">
+          <h5 class="card-title">Facturas Realizadas</h5>
+          <h2 th:text="${cantidadFacturas}">0</h2>
+          <p class="mb-0">Transacciones del día</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Listado -->
+  <div class="card">
+    <div class="card-header">
+      <i class="bi bi-receipt me-2"></i> Detalle de Facturas - Hoy
+    </div>
+    <div class="card-body">
+
+      <div th:if="${cantidadFacturas == 0}" class="alert alert-info">
+        No hay facturas realizadas hoy.
+      </div>
+
+      <table th:if="${cantidadFacturas > 0}" class="table mb-0">
+        <thead>
+        <tr>
+          <th>No. Factura</th>
+          <th>Hora</th>
+          <th>Cliente</th>
+          <th>Forma de Pago</th>
+          <th>Estado</th>
+          <th class="text-end">Total</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="factura : ${facturas}">
+          <td th:text="${factura.numeroFactura}"></td>
+          <td th:text="${#temporals.format(factura.fecha, 'HH:mm')}"></td>
+          <td>
+            <span
+              th:if="${factura.cliente != null}"
+              th:text="${factura.cliente.nombre}"
+              class="badge bg-info"
+            ></span>
+            <span th:unless="${factura.cliente != null}" class="text-muted">
+              Consumidor Final
+            </span>
+          </td>
+          <td>
+            <span class="badge"
+              th:classappend="${(factura.formaPago == 'EFECTIVO') ? 'bg-warning' : ((factura.formaPago == 'TARJETA') ? 'bg-primary' : 'bg-secondary')}"
+              th:text="${factura.formaPago}">
+            </span>
+          </td>
+          <td>
+            <span th:if="${factura.estado == 'PAGADA'}" class="badge bg-success">
+              Pagada
+            </span>
+          </td>
+          <td class="text-end"
+              th:text="'$' + ${#numbers.formatDecimal(factura.total, 1, 2)}">
+          </td>
+          <td>
+            <a
+              th:href="@{/facturas/detalle/{id}(id=${factura.id})}"
+              class="btn btn-sm btn-info"
+            >
+              <i class="bi bi-eye"></i> Ver
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

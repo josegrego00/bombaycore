@@ -1,122 +1,241 @@
 <!DOCTYPE html>
+<!-- 
+  Módulo: Productos - Ajustes visuales MiBombay
+  VARIABLES PRESERVADAS:
+  ${productos}
+  ${stockPosibleMap}
+  ${ingredienteLimitanteMap}
+
+  RUTAS PRESERVADAS:
+  /productos
+  /productos/nuevo
+  /productos/editar/{id}
+  /productos/eliminar/{id}
+  /principal
+-->
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Productos</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="container mt-4">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>📦 Productos</h1>
-        <a th:href="@{/productos/nuevo}" class="btn btn-primary">
-          + Nuevo Producto
+    <title>Productos | MiBombay</title>
+
+    <!-- Bootstrap + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --negro-sidebar: #0a0a0f;
+            --morado-primario: #667eea;
+            --morado-secundario: #764ba2;
+            --verde-exito: #06d6a0;
+            --amarillo-advertencia: #ffd166;
+            --rojo-peligro: #ef476f;
+            --blanco: #ffffff;
+            --gris-fondo: #f8fafc;
+            --gris-borde: #e2e8f0;
+        }
+
+        body {
+            background-color: var(--gris-fondo);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* HEADER */
+        .page-header {
+            background-color: var(--negro-sidebar);
+            border: 3px solid var(--morado-primario);
+            border-radius: 14px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--blanco);
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* BOTONES */
+        .btn-primary-mb {
+            background-color: var(--morado-primario);
+            border: 2px solid var(--morado-secundario);
+            color: var(--blanco);
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
+        .btn-primary-mb:hover {
+            background-color: var(--morado-secundario);
+            border-color: var(--morado-primario);
+        }
+
+        /* CARD */
+        .card-mb {
+            background-color: var(--blanco);
+            border: 2px solid var(--gris-borde);
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-mb::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--morado-primario);
+        }
+
+        .card-header-mb {
+            background-color: #f8fafc;
+            border-bottom: 2px solid var(--gris-borde);
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        /* TABLE */
+        .table-mb th {
+            background-color: #f8fafc;
+            border-bottom: 3px solid var(--morado-primario);
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .table-mb td {
+            border-bottom: 2px solid var(--gris-borde);
+            vertical-align: middle;
+        }
+
+        .table-mb tbody tr:hover {
+            background-color: #f7fafc;
+            border-left: 3px solid var(--morado-primario);
+        }
+
+        /* BADGES */
+        .badge-elaborado { background-color: var(--morado-primario); }
+        .badge-comprado { background-color: #4a5568; }
+        .badge-activo { background-color: var(--verde-exito); }
+        .badge-inactivo { background-color: var(--rojo-peligro); }
+
+        /* ACCIONES */
+        .btn-warning {
+            background-color: var(--amarillo-advertencia);
+            border: 2px solid #e0a800;
+            color: #2d3748;
+        }
+
+        .btn-danger {
+            background-color: var(--rojo-peligro);
+            border: 2px solid #d90429;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container mt-4">
+
+    <!-- HEADER -->
+    <div class="page-header d-flex justify-content-between align-items-center flex-wrap">
+        <h1><i class="bi bi-box-seam me-2"></i>Productos</h1>
+        <a th:href="@{/productos/nuevo}" class="btn btn-primary-mb mt-3 mt-md-0">
+            <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
         </a>
-      </div>
-
-      <div class="card">
-        <div class="card-body">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Tipo</th>
-                <th>Receta Asociada</th>
-                <th>Precio Venta</th>
-                <th>Stock(Estimacion)</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="producto : ${productos}">
-                <td th:text="${producto.id}"></td>
-                <td th:text="${producto.nombre}"></td>
-                <td>
-                  <span th:if="${producto.tieneReceta}" class="badge bg-primary"
-                    >Elaborado</span
-                  >
-                  <span
-                    th:unless="${producto.tieneReceta}"
-                    class="badge bg-secondary"
-                    >Comprado</span
-                  >
-                </td>
-                <td>
-                  <span
-                    th:if="${producto.receta != null}"
-                    th:text="${producto.receta.nombre}"
-                    class="badge bg-info text-dark"
-                  ></span>
-                  <span
-                    th:unless="${producto.receta != null}"
-                    class="text-muted"
-                    >N/A</span
-                  >
-                </td>
-                <td
-                  th:text="${'$' + #numbers.formatDecimal(producto.precioVenta, 1, 2)}"
-                ></td>
-                <td>
-                  <!-- Productos SIN receta: muestran stock normal -->
-                  <span
-                    th:if="${!producto.tieneReceta}"
-                    th:text="${producto.stock}"
-                  ></span>
-
-                  <!-- Productos CON receta: muestran solo stock producible -->
-                  <span th:if="${producto.tieneReceta}">
-                    <span
-                      th:text="${stockPosibleMap.get(producto.id)} ?: 0"
-                    ></span>
-                    <small
-                      th:if="${ingredienteLimitanteMap.containsKey(producto.id)}"
-                      class="text-muted d-block"
-                    >
-                      Limitado por:
-                      <span
-                        th:text="${ingredienteLimitanteMap.get(producto.id)}"
-                      ></span>
-                    </small>
-                  </span>
-                </td>
-                <td>
-                  <span th:if="${producto.activo}" class="badge bg-success"
-                    >Activo</span
-                  >
-                  <span th:unless="${producto.activo}" class="badge bg-danger"
-                    >Inactivo</span
-                  >
-                </td>
-                <td>
-                  <a
-                    th:href="@{/productos/editar/{id}(id=${producto.id})}"
-                    class="btn btn-sm btn-warning"
-                    >Editar</a
-                  >
-                  <a
-                    th:href="@{/productos/eliminar/{id}(id=${producto.id})}"
-                    class="btn btn-sm btn-danger"
-                    onclick="return confirm('¿Eliminar este producto?')"
-                    >Eliminar</a
-                  >
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="mt-3">
-        <a th:href="@{/principal}" class="btn btn-secondary">← Volver al Inicio</a>
-      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+    <!-- CARD -->
+    <div class="card-mb">
+        <div class="card-header-mb">
+            <i class="bi bi-list-check me-2"></i>Listado de Productos
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-mb mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Receta</th>
+                            <th>Precio Venta</th>
+                            <th>Stock (Estimado)</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="producto : ${productos}">
+                            <td th:text="${producto.id}" class="fw-bold text-muted"></td>
+                            <td th:text="${producto.nombre}" class="fw-bold"></td>
+                            <td>
+                                <span th:if="${producto.tieneReceta}" class="badge badge-elaborado">
+                                    Elaborado
+                                </span>
+                                <span th:unless="${producto.tieneReceta}" class="badge badge-comprado">
+                                    Comprado
+                                </span>
+                            </td>
+                            <td>
+                                <span th:if="${producto.receta != null}" 
+                                      th:text="${producto.receta.nombre}" 
+                                      class="badge bg-info text-dark"></span>
+                                <span th:unless="${producto.receta != null}" class="text-muted">N/A</span>
+                            </td>
+                            <td th:text="${'$' + #numbers.formatDecimal(producto.precioVenta,1,2)}"></td>
+                            <td>
+                                <span th:if="${!producto.tieneReceta}" th:text="${producto.stock}"></span>
+                                <span th:if="${producto.tieneReceta}">
+                                    <span th:text="${stockPosibleMap.get(producto.id)} ?: 0"></span>
+                                    <small th:if="${ingredienteLimitanteMap.containsKey(producto.id)}"
+                                           class="d-block text-muted">
+                                        Limitado por:
+                                        <span th:text="${ingredienteLimitanteMap.get(producto.id)}"></span>
+                                    </small>
+                                </span>
+                            </td>
+                            <td>
+                                <span th:if="${producto.activo}" class="badge badge-activo">Activo</span>
+                                <span th:unless="${producto.activo}" class="badge badge-inactivo">Inactivo</span>
+                            </td>
+                            <td>
+                                <a th:href="@{/productos/editar/{id}(id=${producto.id})}" 
+                                   class="btn btn-sm btn-warning me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a th:href="@{/productos/eliminar/{id}(id=${producto.id})}" 
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('¿Eliminar este producto?')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="mt-4">
+        <a th:href="@{/principal}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver al Inicio
+        </a>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

@@ -1,15 +1,154 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Nueva Compra - Proveedor</title>
+
+    <!-- Bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+      :root {
+        --negro: #0a0a0f;
+        --morado: #667eea;
+        --morado-oscuro: #764ba2;
+        --verde: #06d6a0;
+        --amarillo: #ffd166;
+        --rojo: #ef476f;
+        --gris-fondo: #f8fafc;
+        --gris-borde: #e2e8f0;
+        --blanco: #ffffff;
+      }
+
+      body {
+        background-color: var(--gris-fondo);
+        font-family: "Segoe UI", system-ui, sans-serif;
+      }
+
+      h4,
+      h5 {
+        font-weight: 700;
+      }
+
+      /* Cards */
+      .card {
+        border: 2px solid var(--gris-borde);
+        border-radius: 14px;
+        box-shadow: 0 6px 16px rgba(10, 10, 15, 0.08);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background-color: var(--morado);
+      }
+
+      .card-header {
+        background-color: var(--blanco);
+        border-bottom: 2px solid var(--gris-borde);
+        font-weight: 600;
+      }
+
+      .header-success {
+        background-color: var(--verde);
+        color: #000;
+      }
+
+      .header-info {
+        background-color: var(--morado);
+        color: #fff;
+      }
+
+      /* Formularios */
+      .form-control,
+      .form-select {
+        border: 2px solid var(--gris-borde);
+        border-radius: 10px;
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--morado);
+        box-shadow: none;
+      }
+
+      /* Tabla */
+      table {
+        border: 2px solid var(--gris-borde);
+      }
+
+      thead {
+        background-color: var(--gris-fondo);
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #f1f5f9;
+      }
+
+      /* Badges */
+      .badge {
+        border-radius: 10px;
+        font-weight: 600;
+      }
+
+      .bg-success {
+        background-color: var(--verde) !important;
+        color: #000;
+      }
+
+      /* Botones */
+      .btn {
+        border-radius: 10px;
+        font-weight: 600;
+      }
+
+      .btn-success {
+        background-color: var(--verde);
+        border: 2px solid #04b88b;
+        color: #000;
+      }
+
+      .btn-success:hover {
+        background-color: #04b88b;
+      }
+
+      .btn-danger {
+        background-color: var(--rojo);
+        border: 2px solid #d63c60;
+      }
+
+      .btn-secondary {
+        border: 2px solid var(--gris-borde);
+      }
+
+      /* Sticky panel */
+      .sticky-top {
+        top: 20px;
+      }
+
+      .alert-warning {
+        background-color: var(--amarillo);
+        border: 2px solid #e6bb5c;
+        color: #000;
+      }
+    </style>
   </head>
+
   <body>
     <div class="container-fluid mt-3">
       <div class="row">
@@ -175,7 +314,10 @@
                     type="button"
                     id="btnCancelar"
                     class="btn btn-secondary"
-                    onclick="if(confirm('¿Seguro que deseas cancelar esta Compra?')) window.location.href='/principal'"
+                    onclick="
+                      if (confirm('¿Seguro que deseas cancelar esta Compra?'))
+                        window.location.href = '/principal';
+                    "
                   >
                     Cancelar Compra
                   </button>
@@ -347,7 +489,7 @@
 
             // Reemplazar índice en los nombres
             $fila.html(
-              $fila.html().replace(/\[\]/g, "[" + ingrediente.indice + "]")
+              $fila.html().replace(/\[\]/g, "[" + ingrediente.indice + "]"),
             );
 
             // Llenar datos
@@ -407,13 +549,13 @@
 
           // Actualizar contador
           $("#contadorIngredientes").text(
-            ingredientesAgregados.length + " ingredientes"
+            ingredientesAgregados.length + " ingredientes",
           );
 
           // Habilitar/deshabilitar botón
           $("#btnRegistrar").prop(
             "disabled",
-            ingredientesAgregados.length === 0
+            ingredientesAgregados.length === 0,
           );
         }
 
@@ -422,7 +564,7 @@
           if (
             ingredientesAgregados.length > 0 &&
             !confirm(
-              "¿Cancelar esta compra? Se perderán los ingredientes agregados."
+              "¿Cancelar esta compra? Se perderán los ingredientes agregados.",
             )
           ) {
             return;
@@ -464,7 +606,7 @@
           }
 
           return confirm(
-            "¿Confirmar registro de compra? El stock se actualizará automáticamente."
+            "¿Confirmar registro de compra? El stock se actualizará automáticamente.",
           );
         });
       });

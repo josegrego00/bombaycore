@@ -24,23 +24,33 @@ public class IngredienteServicio {
 
     public Ingrediente crearIngrediente(Ingrediente ingrediente) {
         long empresaId = TenantContext.getCurrentTenant();
-        log.debug("Creando ingrediente '{}' para empresa ID: {}", ingrediente.getNombre(), empresaId);
+        log.debug("Guardando ingrediente '{}' para empresa ID: {}", ingrediente.getNombre(), empresaId);
 
-        if (ingrediente.getEmpresa() != null && !ingrediente.getEmpresa().getId().equals(empresaId)) {
-            log.error("Intento de asignar empresa diferente. Empresa ID ingrediente: {}, Empresa ID contexto: {}",
-                    ingrediente.getEmpresa().getId(), empresaId);
-            throw new RuntimeException("No puede asignar otra empresa");
+        // CREAR
+        if (ingrediente.getId() == null) {
+            if (repositorio.existsByNombreAndEmpresa_Id(ingrediente.getNombre(), empresaId)) {
+                log.warn("Intento de crear ingrediente duplicado: {}", ingrediente.getNombre());
+                throw new RuntimeException("Ya existe un ingrediente con ese nombre");
+            }
+        }
+        // EDITAR
+        else {
+            if (repositorio.existsByNombreAndEmpresa_IdAndIdNot(
+                    ingrediente.getNombre(), empresaId, ingrediente.getId())) {
+                log.warn("Intento de editar ingrediente a un nombre duplicado: {}", ingrediente.getNombre());
+                throw new RuntimeException("Ya existe otro ingrediente con ese nombre");
+            }
         }
 
+        // Asignar empresa si no está
         Empresa empresa = new Empresa();
         empresa.setId(empresaId);
         ingrediente.setEmpresa(empresa);
 
-        Ingrediente ingredienteCreado = repositorio.save(ingrediente);
-        log.info("Ingrediente creado exitosamente: '{}' (ID: {}) para empresa ID: {}",
-                ingredienteCreado.getNombre(), ingredienteCreado.getId(), empresaId);
-
-        return ingredienteCreado;
+        Ingrediente ingredienteGuardado = repositorio.save(ingrediente);
+        log.info("Ingrediente guardado exitosamente: '{}' (ID: {})", ingredienteGuardado.getNombre(),
+                ingredienteGuardado.getId());
+        return ingredienteGuardado;
     }
 
     public List<Ingrediente> listaIngredientes() {

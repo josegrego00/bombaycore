@@ -27,7 +27,7 @@ import lombok.AllArgsConstructor;
 public class RecetaControlador {
 
     private static final Logger log = LoggerFactory.getLogger(RecetaControlador.class);
-    
+
     private final RecetaServicio recetaServicio;
     private final IngredienteServicio ingredienteServicio;
 
@@ -48,27 +48,48 @@ public class RecetaControlador {
     }
 
     @PostMapping("/guardar")
-    public String guardarReceta(@RequestParam(required = false) Integer id,
+    public String guardarReceta(
+            @RequestParam(required = false) Integer id,
             @RequestParam String nombre,
             @RequestParam String descripcion,
             @RequestParam(value = "ingredienteIds", required = false) List<Integer> ingredienteIds,
-            @RequestParam(value = "cantidades", required = false) List<Double> cantidades) {
+            @RequestParam(value = "cantidades", required = false) List<Double> cantidades,
+            Model model) {
 
-        log.info("💾 POST /recetas/guardar - Guardando receta. ID: {}, Nombre: {}", id, nombre);
-        log.debug("Ingredientes recibidos: {}, Cantidades: {}", 
-                 ingredienteIds != null ? ingredienteIds.size() : 0, 
-                 cantidades != null ? cantidades.size() : 0);
+        try {
+            log.info("💾 POST /recetas/guardar - Guardando receta. ID: {}, Nombre: {}", id, nombre);
 
-        if (id != null && id > 0) {
-            // Usar el nuevo método del servicio
-            log.debug("Actualizando receta existente ID: {}", id);
-            recetaServicio.actualizarReceta(id, nombre, descripcion, ingredienteIds, cantidades);
-            log.info("✅ Receta actualizada exitosamente ID: {}", id);
-        } else {
-            // Para crear nueva, puedes mantener tu lógica actual o crear método similar en
-            // servicio
-            log.debug("Creando nueva receta: {}", nombre);
+            if (id != null && id > 0) {
+                recetaServicio.actualizarReceta(id, nombre, descripcion, ingredienteIds, cantidades);
+            } else {
+                Receta receta = new Receta();
+                receta.setNombre(nombre);
+                receta.setDescripcion(descripcion);
+
+                List<RecetaDetalle> detalles = new ArrayList<>();
+                if (ingredienteIds != null && cantidades != null) {
+                    for (int i = 0; i < ingredienteIds.size(); i++) {
+                        if (ingredienteIds.get(i) != null && cantidades.get(i) > 0) {
+                            RecetaDetalle detalle = new RecetaDetalle();
+                            detalle.setIngrediente(ingredienteServicio.buscarIngrediente(ingredienteIds.get(i)));
+                            detalle.setCantidadIngrediente(cantidades.get(i));
+                            detalle.setReceta(receta);
+                            detalles.add(detalle);
+                        }
+                    }
+                }
+                receta.setIngredientes(detalles);
+                recetaServicio.crearReceta(receta);
+            }
+
+            return "redirect:/recetas";
+
+        } catch (RuntimeException e) {
+            log.warn("Error al guardar receta: {}", e.getMessage());
+
+            // Mantener los datos ingresados
             Receta receta = new Receta();
+            receta.setId(id != null ? id.longValue() : null);
             receta.setNombre(nombre);
             receta.setDescripcion(descripcion);
 
@@ -81,19 +102,18 @@ public class RecetaControlador {
                         detalle.setCantidadIngrediente(cantidades.get(i));
                         detalle.setReceta(receta);
                         detalles.add(detalle);
-                        
-                        log.trace("Agregando ingrediente ID: {}, Cantidad: {}", 
-                                 ingredienteIds.get(i), cantidades.get(i));
                     }
                 }
             }
             receta.setIngredientes(detalles);
-            Receta recetaCreada = recetaServicio.crearReceta(receta);
-            log.info("✅ Receta creada exitosamente: {} (ID: {}) con {} ingredientes", 
-                    recetaCreada.getNombre(), recetaCreada.getId(), detalles.size());
-        }
 
-        return "redirect:/recetas";
+            model.addAttribute("receta", receta);
+            model.addAttribute("ingredientes", ingredienteServicio.listaIngredientes());
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("titulo", id != null ? "Editar Receta" : "Nueva Receta");
+
+            return "recetas/formulario";
+        }
     }
 
     @GetMapping("/editar/{id}")
@@ -103,9 +123,9 @@ public class RecetaControlador {
         model.addAttribute("receta", receta);
         model.addAttribute("ingredientes", ingredienteServicio.listaIngredientes());
         model.addAttribute("titulo", "Editar Receta");
-        
-        log.debug("Receta encontrada: '{}' con {} ingredientes", 
-                 receta.getNombre(), receta.getIngredientes().size());
+
+        log.debug("Receta encontrada: '{}' con {} ingredientes",
+                receta.getNombre(), receta.getIngredientes().size());
         return "recetas/formulario";
     }
 

@@ -15,18 +15,24 @@ import jpd.sistemafacinv.sistemadefacturacioneinventario.modelos.Receta;
 @Transactional
 public interface RecetaRepositorio extends JpaRepository<Receta, Integer> {
 
-    // Métodos con filtro empresa_id
-    List<Receta> findByEmpresaId(Long empresaId);
+        // Métodos con filtro empresa_id
+        List<Receta> findByEmpresaId(Long empresaId);
 
-    Optional<Receta> findByIdAndEmpresaId(Long id, Long empresaId);
+        Optional<Receta> findByIdAndEmpresaId(Long id, Long empresaId);
 
-    @Query("SELECT DISTINCT r FROM Receta r LEFT JOIN FETCH r.ingredientes WHERE r.empresa.id = :empresaId")
-    List<Receta> findByEmpresaIdWithIngredientes(@Param("empresaId") Long empresaId);
+        @Query("SELECT DISTINCT r FROM Receta r LEFT JOIN FETCH r.ingredientes WHERE r.empresa.id = :empresaId")
+        List<Receta> findByEmpresaIdWithIngredientes(@Param("empresaId") Long empresaId);
 
-    @Query("SELECT r FROM Receta r " +
-            "LEFT JOIN FETCH r.ingredientes " +
-            "WHERE r.id = :id AND r.empresa.id = :empresaId")
-    Optional<Receta> findByIdWithIngredientes(
-            @Param("id") Long id,
-            @Param("empresaId") Long empresaId);
+        @Query("SELECT r FROM Receta r " +
+                        "LEFT JOIN FETCH r.ingredientes " +
+                        "WHERE r.id = :id AND r.empresa.id = :empresaId")
+        Optional<Receta> findByIdWithIngredientes(
+                        @Param("id") Long id,
+                        @Param("empresaId") Long empresaId);
+
+        // para crear Receta
+        boolean existsByNombreAndEmpresa_id(String nombre, Long empresaId);
+
+        // para editar Receta
+        boolean existsByNombreAndEmpresa_IdAndIdNot(String nombre, Long empresaId, Long id);
 }
